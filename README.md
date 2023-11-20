@@ -7,4 +7,4 @@ REACT LTS
 construir
 
 MYSQL
-VERSION??
+VERSION 8.0.35
