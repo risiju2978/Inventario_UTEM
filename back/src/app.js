@@ -110,8 +110,46 @@ app.post("/api/usuario/crear_usuario", (req, res) => {
 
 
 
+// Endpoint para editar roles
+app.put("/api/usuario/editar_rol", (req, res) => {
+  // Extraer el ID del usuario de los parámetros de la solicitud
 
+const usuario_id = (req.usuario_id);
 
+// Extraer los  campos relacionados con roles, nombre usuario y correo electrónico 
+const { new_rol, new_name, new_email } = req;
+
+  try {
+    // Encontrar el usuario por ID
+    const usuarioIndex = usuario.findIndex(user => user.usuario_id === usuario_id);
+
+    if (usuarioIndex !== -1) {
+      // Actualizar roles, nombre de usuario y correo electrónico
+      usuarios[usuarioIndex].rol_usuario = new_rol;
+      usuarios[usuarioIndex].username = new_name;
+      usuarios[usuarioIndex].correo = new_email;
+
+      res.status(200).json({
+        status: 200,
+        data: {
+          //data actualizada 
+          ...usuarios[usuarioIndex],
+          message: "Roles  actualizados con éxito",
+        },
+      });
+    } else {
+      res.status(404).json({
+        status: 404,
+        error: "Usuario no encontrado",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      error: "Error en el servidor",
+    });
+  }
+});
 
 
 
