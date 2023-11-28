@@ -123,7 +123,7 @@ app.put("/api/usuario/editar_rol", (req, res) => {
   const { user_id, rol_id, state } = req;
 
   // validaciones
-  if (user_id == null)
+  if (user_id == undefined || user_id == 0)
     return res
       .status(404)
       .json({ status: 404, error: "Usuario no encontrado" });
