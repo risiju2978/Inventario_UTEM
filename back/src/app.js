@@ -112,12 +112,12 @@ app.post("/api/usuario/crear_usuario", (req, res) => {
 
 // Endpoint para editar roles
 app.put("/api/usuario/editar_rol", (req, res) => {
-  // Extraer el ID del usuario de los parámetros de la solicitud
 
-const usuario_id = (req.usuario_id);
+
+
 
 // Extraer los  campos relacionados con roles, nombre usuario y correo electrónico 
-const { new_rol, new_name, new_email } = req;
+const { new_rol, new_name, new_email,usuario_id } = req;
 
   try {
     // Encontrar el usuario por ID
