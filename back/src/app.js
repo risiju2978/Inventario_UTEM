@@ -3,126 +3,72 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
+const bodyParser = require("body-parser");
 const port = process.env.PORT;
 
 const { db } = require("../utils/utils.helpers");
 
+//rutas 
+const usuarioListarRoutes = require('./services/usuario/userRoutes/userListarRoutes');
+const usuarioLoginRoutes = require('./services/usuario/userRoutes/userLoginRoutes');
+
 const app = express();
+
+app.use(morgan("combined"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// cabeceras
+//configuracion CORS para las cabeceras por si se reciben solicitudes desde un dominio diferente
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET,POST,OPTIONS,PUT,DELETE'
+  );
+  res.setHeader('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+})
+
+
+
 
 // 1. crear las rutas ( routes & controllers )
 // 2. configurar cabeceras y CORS (estudiar)
 // 3. interceptores
+// Configurar middleware de análisis del cuerpo
 
 
 
+// Configurar las rutas
+//################### RUTA LISTAR #########################
 
 
 // Endpoint para listar usuarios
-app.post("/api/usuario/listar", (req, res) => {
-  try {
-    // Consulta SQL para obtener la lista de usuarios
-    const sql = "SELECT * FROM usuario";
-
-    //  consulta  tal 
-    db.query(sql, (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({
-          status: 500,
-          error: "Error al obtener la lista de usuarios desde la base de datos",
-        });
-      }
-
-      // Mapear los resultados 
-      const userList = result.map((user) => ({
-        user_id: user.user_id,
-        username: user.username,
-        password: user.password,
-        email: user.email,
-        campus_id: user.campus_id,
-        rol_id: user.rol_id,
-        user_state: user.user_state,
-      }));
-
-      res.status(200).json({
-        status: 200,
-        data: userList,
-        mensaje: "Lista de usuarios obtenida correctamente",
-      });
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      status: 500,
-      error: "Error interno del servidor al obtener la lista de usuarios",
-    });
-  }
-});
+app.use('/api/usuario', usuarioListarRoutes);
 
 
 
 
+//################### RUTA LOGIN #########################
 
 // Endpoint para login de usuario
-app.post("/api/usuario/login", async (req, res) => {
-  try {
-    // Obtener credenciales del cuerpo de la solicitud
-    const { username, password } = req.body;
-
-    // Verifica si los campos obligatorios están presentes y coinciden
-    if (!username || !password) {
-      return res.status(400).json({
-        status: 400,
-        error: "Faltan campos obligatorios",
-      });
-    }
-
-    // Consultar en la base de datos para obtener el usuario por nombre
-    //campos que se requieren en vez de asterisco ya que es mala practica 
-    const [conseguir_user] = await db.promise().query('SELECT * FROM usuario WHERE usuario = ?', [username]);
-    //si no esta en arreglo  da error 
-    if (conseguir_user.length === 0) {
-      return res.status(404).json({
-        status: 404,
-        error: "Usuario no encontrado",
-      });
-    }
-    //asignar  contenido del user
-    const user = conseguir_user[0];
-
-   
-    // Enviar respuesta exitosa
-    res.status(200).json({
-      status: 200,
-      data: {
-       user_id : user.user_id,   
-        username: user.username,
-        password: user.password,
-        email: user.email,
-        rol_id : user.rol_id,
-        campus_id: user.campus_id,
-        user_state:user.user_state,
-        token: "genera_un_token_aqui", //  token JWT (cuando se aprenda)
-        message: "Ha accedido con éxito",
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      status: 500,
-      error: "Error interno del servidor",
-    });
-  }
-});
+app.use('/api/usuario', usuarioLoginRoutes);
 
 
 
-
+//################### RUTA CREAR USUARIO #########################
 
 
 //endpoint para crear usuario
 app.post("/api/usuario/crear_usuario", (req, res) => {
   try {
+    console.log(req.body)
     //  datos del cuerpo de la solicitud
     const { username, email, rol, user_state, password } = req.body;
 
