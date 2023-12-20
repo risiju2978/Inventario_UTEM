@@ -1,9 +1,9 @@
-const express = require('express');
-const usuarioListarController = require('../services/usuarioListarController');
+import { Router } from 'express';
+import { listarUsuarios } from '../services/usuarioListarController';
 
-const router = express.Router();
+const router = Router();
 
 // Endpoint para listar usuarios
-router.get('/listar', usuarioListarController.listarUsuarios);
+router.get('/listar', listarUsuarios);
 
-module.exports = router;
+export default router;

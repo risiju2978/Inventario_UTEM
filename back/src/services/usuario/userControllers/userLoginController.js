@@ -1,4 +1,4 @@
-const { db } = require("../utils/utils.helpers");
+import { db } from "../utils/utils.helpers";
 
 const usuarioLoginController = {
 loginUsuario : async (req, res) => {
@@ -62,7 +62,7 @@ loginUsuario : async (req, res) => {
 
 };
 
-module.exports = usuarioLoginController;
+export default usuarioLoginController;
 
 
 

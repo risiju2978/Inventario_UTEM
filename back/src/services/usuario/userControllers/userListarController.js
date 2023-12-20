@@ -1,4 +1,4 @@
-const { db } = require("../utils/utils.helpers");
+import { db } from "../utils/utils.helpers";
 
 const usuarioListarController = {
   listarUsuarios: (req, res) => {
@@ -49,4 +49,4 @@ const usuarioListarController = {
   },
 };
 
-module.exports = usuarioListarController;
+export default usuarioListarController;

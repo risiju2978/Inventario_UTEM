@@ -9,12 +9,12 @@ const port = process.env.PORT;
 const { db } = require("../utils/utils.helpers");
 
 //rutas 
-const usuarioListarRoutes = require('./services/usuario/userRoutes/userListarRoutes');
-const usuarioLoginRoutes = require('./services/usuario/userRoutes/userLoginRoutes');
-const usuarioCreateUserRoutes = require("./services/usuario/userRoutes/userCreateUserRoutes");
-const usuarioEditarRolRoutes = require("./services/usuario/userRoutes/userEditRolRoutes");
-const  userEditUserRoutes = require("./services/usuario/userRoutes/userEditUserRoutes")
-
+const usuarioListarRoutes = require('./services/usuario/userRoutes/userListarRoutes').default;
+const usuarioLoginRoutes = require('./services/usuario/userRoutes/userLoginRoutes').default;
+const usuarioCreateUserRoutes = require("./services/usuario/userRoutes/userCreateUserRoutes").default;
+const usuarioEditarRolRoutes = require("./services/usuario/userRoutes/userEditRolRoutes").default;
+const userEditUserRoutes = require("./services/usuario/userRoutes/userEditUserRoutes").default;
+const userInfoUserRoutes = require("./services/usuario/userControllers/userInfoUserController").default;
 
 
 
@@ -90,7 +90,23 @@ app.use('/api/usuario', userEditUserRoutes);
 
 
 
+//################### RUTA  INFORMACION PERSONAL #########################
+
+
+// endpoint para Info personal del usuario
+app.use("/info_User",userInfoUserRoutes);
+
+
+
 //################### RUTA (NUEVA RUTA) #########################
+
+
+
+
+
+
+
+
 
 
 

@@ -1,13 +1,13 @@
-const express = require('express');
+import { Router } from 'express';
 
-const usuarioLoginController = require('../userControllers/userLoginController');
+import usuarioLoginController from '../userControllers/userLoginController';
 
-const router = express.Router();
+const router = Router();
 
 // Endpoint para login de usuario
 router.post("/login", usuarioLoginController.loginUsuario);
 
-module.exports = router;
+export default router;
 
 
 

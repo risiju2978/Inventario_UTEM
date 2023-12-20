@@ -1,5 +1,5 @@
 
-const { db } = require("../utils/utils.helpers");
+import { db } from "../utils/utils.helpers";
 
 const userEditUserController = {
   editarUsuario: async (req, res) => {
@@ -52,7 +52,7 @@ const userEditUserController = {
   },
 };
 
-module.exports = userEditUserController;
+export default userEditUserController;
 
 
 

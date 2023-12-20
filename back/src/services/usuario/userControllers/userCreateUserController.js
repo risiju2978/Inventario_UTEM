@@ -1,4 +1,4 @@
-const { db } = require("../utils/utils.helpers");
+import { db } from "../utils/utils.helpers";
 
 const userCreateUserController = {
   crearUsuario: (req, res) => {
@@ -50,7 +50,7 @@ const userCreateUserController = {
   },
 };
 
-module.exports = userCreateUserController;
+export default userCreateUserController;
 
 
 

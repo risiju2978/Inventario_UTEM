@@ -1,12 +1,12 @@
-const express = require('express');
-const userEditUserController = require('../userControllers/userEditUserController');
+import { Router } from 'express';
+import userEditUserController from '../userControllers/userEditUserController';
 
-const router = express.Router();
+const router = Router();
 
 // Endpoint para editar usuario
 router.put('/editar_usuario', userEditUserController.editarUsuario);
 
-module.exports = router;
+export default router;
 
 
 

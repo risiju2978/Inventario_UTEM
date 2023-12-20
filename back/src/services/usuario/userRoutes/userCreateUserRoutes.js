@@ -1,14 +1,14 @@
 
 
-const express = require('express');
-const userCreateUserController = require('../userControllers/userCreateUserController');
+import { Router } from 'express';
+import userCreateUserController from '../userControllers/userCreateUserController';
 
-const router = express.Router();
+const router = Router();
 
 // Endpoint para crear usuario
 router.post('/crear_usuario', userCreateUserController.crearUsuario);
 
-module.exports = router;
+export default router;
 
 
 
