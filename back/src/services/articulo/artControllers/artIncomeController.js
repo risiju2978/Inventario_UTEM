@@ -1,12 +1,14 @@
-//funcion para crear el articulo y una vez creado se obtinee id articulo 
-//id articulo sirve para inyectar detalle articulo 
 
+import fs from 'fs';
 
 import { db } from "../utils/utils.helpers";
 
+
+
 const artIncomeController = {
-    incomeArticulo: async (req, res) => {
+  incomeArticulo: async (req, res) => {
     try {
+      // recupero datos del front
       const {
         anio,
         dimension,
@@ -17,72 +19,125 @@ const artIncomeController = {
         art_image_path,
         articulo_estado,
         categoria,
-        campus,
-        departament,
         office,
         id_usuario,
-        
       } = req.body;
 
-      const sql = `
-        INSERT INTO articulo (
-          anio,
-          dimension,
-          art_num,
-          art_nombre,
-          art_codigo,
-          art_glosa,
-          art_image_path,
+      db.beginTransaction((error) => {
+        if (error) {
+          throw error;
+        }
+
+      // Validacion de  campos obligatorios para insertar en la tabla articulo
+      if (!articulo_estado || !categoria || !id_usuario || !office) {
+        return res.status(400).json({
+          status: 400,
+          error: "Faltan campos obligatorios para insertar en la tabla articulo",
+        });
+      }
+
+        // 1. insertar en articulo;
+        const sqlArticulo = `
+          INSERT INTO articulo (
+            articulo_estado_id,
+            categoria_id,
+            usaurio_id,
+            oficina_id
+          ) VALUES (?, ?, ?, ?) 
+        `;
+
+        // 2. obtener articulo_id
+      
+        const dataInsertArticulo = {
           articulo_estado,
           categoria,
-          campus,
-          departament,
+          id_usuario,
           office,
-          id_usuario
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
+        };
 
-      const result = await db.promise().query(sql, [
-        anio,
-        dimension,
-        art_num,
-        art_nombre,
-        art_codigo,
-        art_glosa,
-        art_image_path,
-        articulo_estado,
-        categoria,
-        campus,
-        departament,
-        office,
-        id_usuario,
-      ]);
+        // inserto el articulo
+        db.query(sqlArticulo, dataInsertArticulo, (error, result, field) => {
+          // si falla el insert
+          if (error) {
+            return db.rollback(() => {
+              throw error;
+            });
+          }
 
-      const articuloId = result.insertId;
+          // si esto inserta recupero el id del articulo creado
+          const id_articulo = result.insertId;
 
-      const detalleSql = `
-        INSERT INTO articulo_detalle (nombres, anio, dimension, articulo_id) VALUES (?, ?, ?, ?)
-      `;
+          // procesar el binary file de la imagen,
+          // guardarlo en disco y obtener la ruta fisica del archivo
+          // que se pasa en el parametro de art_image_path ( crear una funcion para eso )
+ 
+   // Función para convertir imagen binaria a base64
+   function convertirABase64(art_image_path) {
+    const imageBuffer = Buffer.from(art_image_path, 'binary');
+    return imageBuffer.toString('base64');
+  }
 
-      await db.promise().query(detalleSql, [
-        detalle_articulo.nombres,
-        detalle_articulo.anio,
-        detalle_articulo.dimension,
-        articuloId,
-      ]);
 
-      const responseData = {
-        status: 200,
-        data: {},
-        message: "Artículo ingresado con éxito",
-      };
+ const art_image_path_base64 = convertirABase64(art_image_path); // Convierte la imagen binaria a base64
+          // 3. insertar detalle articulo usando articulo_id anterior
+          const sqlArticuloDetalle = `
+                      INSERT INTO articulo_detalle (
+                        id_articulo,
+                        anio,
+                        dimension,
+                        art_num,
+                        art_nombre,
+                        art_ingreso,
+                        art_codigo,
+                        art_glosa,
+                        art_image_path
+                      ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)
+                    `;
 
-      res.setHeader("Content-Type", "application/json");
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Allow", "POST");
-      res.setHeader("Date", new Date().toUTCString());
+          // objeto de articulo_detalle
+          const dataInsertArticuloDetalle = {
+            id_articulo,
+            anio,
+            dimension,
+            art_num,
+            art_nombre,
+            art_ingreso,
+            art_codigo,
+            art_glosa,
+            art_image_path: art_image_path_base64, // Almacena la imagen en formato base64 en la base de datos
+          };
 
-      res.status(200).json(responseData);
+          // insert el detalle del articulo
+          db.query(
+            sqlArticuloDetalle,
+            dataInsertArticuloDetalle,
+            (error, result, field) => {
+              // si falla el insert
+              if (error) {
+                return db.rollback(() => {
+                  throw error;
+                });
+              }
+
+            
+
+              // si esta ok hago un commit
+              db.commit((error) => {
+                if (error) {
+                  return db.rollback(() => {
+                    throw error;
+                  });
+                }
+
+                res.status(200).json({
+                  status: 200,
+                  message: "Artículo creado correctamente",
+                });
+              });
+            }
+          );
+        });
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({
@@ -94,15 +149,3 @@ const artIncomeController = {
 };
 
 export default artIncomeController;
-
-
-
-
-
-
-
-
-
-
-
-

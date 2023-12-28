@@ -15,10 +15,19 @@ const userCreateUserController = {
       }
 
       // Consulta SQL para insertar un nuevo usuario
-      const sql = "INSERT INTO usuario (username, email, rol, user_state, password) VALUES (?, ?, ?, ?, ?)";
+      const sql = `INSERT INTO usuario (
+        username, 
+        email, 
+        rol, 
+        user_state, 
+        password
+        )  VALUES (?, ?, ?, ?, ?)`;
+
+      //data para crear usuario
+      const userCreateData = {username, email, rol, user_state, password};
 
       // Ejecutar la consulta con los valores proporcionados
-      db.query(sql, [username, email, rol, user_state, password], (errDB, resultDB) => {
+      db.query(sql, userCreateData, (errDB, resultDB) => {
         if (errDB) {
           console.error(errDB);
           return res.status(500).json({
@@ -28,10 +37,7 @@ const userCreateUserController = {
         }
 
         res.status(200)
-          .header('Content-Type', 'application/json')
-          .header('Access-Control-Allow-Origin', '*')
-          .header('Allow', 'POST')
-          .header('Date', new Date().toUTCString())
+        
           .json({
             status: 200,
             data: {

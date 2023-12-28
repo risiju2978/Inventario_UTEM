@@ -14,7 +14,7 @@ const userInfoUserController = {
       }
 
       const sql = "SELECT * FROM usuario WHERE user_id = ?";
-      const [user] = await db.promise().query(sql, [user_id]);
+      const [user] = await db.query(sql, [user_id]);
 
       if (user.length === 0) {
         return res.status(400).json({
@@ -37,11 +37,7 @@ const userInfoUserController = {
         message: "Información personal mostrada con éxito",
       };
 
-      // Agregar las cabeceras
-      res.setHeader("Content-Type", "application/json");
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Allow", "GET");
-      res.setHeader("Date", new Date().toUTCString());
+     
 
       res.status(200).json(responseData);
     } catch (error) {

@@ -1,28 +1,33 @@
 require("dotenv").config();
 
-const express = require("express");
-const morgan = require("morgan");
-const path = require("path");
-const bodyParser = require("body-parser");
+import express, { json, urlencoded } from "express";
+import morgan from "morgan";
+import path from "path";
+import bodyParser from "body-parser";
 const port = process.env.PORT;
 
-const { db } = require("../utils/utils.helpers");
+
 
 //rutas 
-const usuarioListarRoutes = require('./services/usuario/userRoutes/userListarRoutes').default;
-const usuarioLoginRoutes = require('./services/usuario/userRoutes/userLoginRoutes').default;
-const usuarioCreateUserRoutes = require("./services/usuario/userRoutes/userCreateUserRoutes").default;
-const usuarioEditarRolRoutes = require("./services/usuario/userRoutes/userEditRolRoutes").default;
-const userEditUserRoutes = require("./services/usuario/userRoutes/userEditUserRoutes").default;
-const userInfoUserRoutes = require("./services/usuario/userControllers/userInfoUserController").default;
+import usuarioListarRoutes from './services/usuario/userRoutes/userListarRoutes';
+import usuarioLoginRoutes from './services/usuario/userRoutes/userLoginRoutes';
+import usuarioCreateUserRoutes from "./services/usuario/userRoutes/userCreateUserRoutes";
+import usuarioEditarRolRoutes from "./services/usuario/userRoutes/userEditRolRoutes";
+import userEditUserRoutes from "./services/usuario/userRoutes/userEditUserRoutes";
+import userInfoUserRoutes from "./services/usuario/userControllers/userInfoUserController";
+//RUTAS ARTICULOS
+import artEditRoutes from "./services/articulo/artControllers/artEditController";
+import artIncomeRoutes from "./services/articulo/artControllers/artIncomeController";
+import artBajaRoutes from "./services/articulo/artControllers/artBajaController";
+import artGeneratorInfoRoutes from "./services/articulo/artControllers/artGeneratorInfoController";
 
 
 
 const app = express();
 
 app.use(morgan("combined"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 
 // cabeceras
 //configuracion CORS para las cabeceras por si se reciben solicitudes desde un dominio diferente
@@ -94,21 +99,38 @@ app.use('/api/usuario', userEditUserRoutes);
 
 
 // endpoint para Info personal del usuario
-app.use("/info_User",userInfoUserRoutes);
+app.use('/info_User',userInfoUserRoutes);
 
 
 
-//################### RUTA (NUEVA RUTA) #########################
+//################### RUTA EDITAR ARTICULO #########################
+
+// endpoint para editar articulo 
+app.use('/edit_art',artEditRoutes);
+
+
+//################### RUTA (INGRESAR ARTICULO) #########################
+
+
+// endpoint para agregar articulo 
+app.use('/income_art',artIncomeRoutes);
+
+
+
+//################### RUTA DAR DE BAJA ARTICULO #########################
+
+
+//endpoint para dar de baja articulos
+app.use('/api/articulo', artBajaRoutes);
 
 
 
 
+//################### RUTA GENERAR INFORME  #########################
 
 
-
-
-
-
+//endpoint para dar generar informes
+app.use('/generator_inf', artGeneratorInfoRoutes);
 
 
 

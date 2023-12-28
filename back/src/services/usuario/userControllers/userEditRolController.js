@@ -10,12 +10,14 @@ const userEditRolController = {
       // Validaciones
       if (user_id === undefined || user_id === 0)
         return res
-          .status(404)
-          .json({ status: 404, error: "Usuario no encontrado" });
+          .status(405)
+          .json({ status: 405, error: "Usuario no encontrado" });
 
       const sql = "SELECT user_id FROM usuario WHERE user_id = ?";
 
-      db.query(sql, [user_id], (err, result) => {
+      const user_ID  ={user_id};
+
+      db.query(sql,user_ID, (err, result) => {
         if (err) {
           console.log(err);
           return res
@@ -67,11 +69,7 @@ const userEditRolController = {
                 error: "Error al actualizar",
               });
             } else {
-                //cabeceras
-                res.setHeader("Content-Type", "application/json");
-                res.setHeader("Access-Control-Allow-Origin", "*");
-                res.setHeader("Allow", "POST");
-                res.setHeader("Date", new Date().toUTCString());
+                
              
              
                 return res.status(200).json({

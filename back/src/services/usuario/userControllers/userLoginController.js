@@ -16,7 +16,7 @@ loginUsuario : async (req, res) => {
   
       // Consultar en la base de datos para obtener el usuario por nombre
       // campos que se requieren en vez de asterisco ya que es mala practica 
-      const [conseguir_user] = await db.promise().query('SELECT * FROM usuario WHERE usuario = ?', [username]);
+      const [conseguir_user] = await db.query('SELECT * FROM usuario WHERE usuario = ?', [username]);
       // si no está en arreglo da error 
       if (conseguir_user.length === 0) {
         return res.status(404).json({
@@ -26,20 +26,9 @@ loginUsuario : async (req, res) => {
       }
       // asignar contenido del usuario
       const user = conseguir_user[0];
-  
- //  cabeceras
- res.setHeader('Content-Type', 'application/json');
- res.setHeader('Access-Control-Allow-Origin', '*');
- res.setHeader('Allow', 'POST');
- res.setHeader('Date', new Date().toUTCString());
 
-
-
-
-      // Enviar respuesta exitosa
-      res.status(200).json({
-        status: 200,
-        data: {
+ 
+const data = {
           user_id: user.user_id,
           username: user.username,
           password: user.password,
@@ -49,7 +38,14 @@ loginUsuario : async (req, res) => {
           user_state: user.user_state,
           token: "genera_un_token_aqui", // token JWT (cuando se aprenda)
           message: "Ha accedido con éxito",
-        },
+};
+
+
+
+      // Enviar respuesta exitosa
+      res.status(200).json({
+        status: 200,
+        data,
       });
     } catch (error) {
       console.error(error);
