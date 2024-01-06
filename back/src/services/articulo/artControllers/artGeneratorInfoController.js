@@ -8,13 +8,18 @@ const articuloController = {
   generarInforme: async (req, res) => {
     try {
       //que deberia desesctructurar?
-      const { } = req.body;
+      const {anio,state, } = req.body;
 
       // Crear una conexión a la base de datos
       const connection = await mysql.createConnection(db);
 
       // Lógica para construir la consulta SQL 
       //aplicar filtros una vez sepa?
+      //armar una vista **
+      /*basado 
+      const = 
+
+      */
       const sql = `
         SELECT * FROM articulo_detalle
         WHERE
