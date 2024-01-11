@@ -1,12 +1,13 @@
-
-import { db } from "../utils/utils.helpers";
+require("dotenv").config();
+const {db} =require("../../../../utils/utils.helpers");
 
 const categoriaCRUD = {
   // Obtener todas las categorías
+  //REVISADO Y FUNCIONANDO
   getCategorias: async (req, res) => {
     try {
       const sql = "SELECT * FROM categoria";
-      const [categoria] = await db.query(sql);
+      const [categoria] = await db.promise().query(sql);
       res.status(200).json({ status: 200, data: categoria });
     } catch (error) {
       console.error(error);
@@ -17,9 +18,9 @@ const categoriaCRUD = {
   // Obtener una categoría por ID
   getCategoriaById: async (req, res) => {
     try {
-      const { id } = req.params;
+      const { categoria_id} = req.body;
       const sql = "SELECT * FROM categoria WHERE categoria_id = ?";
-      const [categoria] = await db.query(sql, [id]);
+      const [categoria] = await db.promise().query(sql, [categoria_id]);
 
       if (categoria.length === 0) {
         return res.status(404).json({
@@ -43,7 +44,7 @@ const categoriaCRUD = {
     try {
       const { categoria } = req.body;
       const sql = "INSERT INTO categoria (categoria) VALUES (?)";
-      const [result] = await db.query(sql, [categoria]);
+      const [result] = await db.promise().query(sql, [categoria]);
       const categoria_id = result.insertId;
 
       res.status(201).json({
@@ -60,11 +61,11 @@ const categoriaCRUD = {
   // Actualizar una categoría por ID
   updateCategoria: async (req, res) => {
     try {
-      const {id} = req.params;
-      const { categoria } = req.body;
+      
+      const { categoria, categoria_id } = req.body;
 
       const sql = "UPDATE categoria SET categoria = ? WHERE categoria_id = ?";
-      await db.query(sql, [categoria, id]);
+      await db.promise().query(sql, [categoria,categoria_id]);
 
       res.status(200).json({
          status: 200, 
@@ -80,9 +81,9 @@ const categoriaCRUD = {
   // Eliminar una categoría por ID
   deleteCategoria: async (req, res) => {
     try {
-      const { id } = req.params;
+      const {categoria_id } = req.body;
       const sql = "DELETE FROM categoria WHERE categoria_id = ?";
-      await db.query(sql, [id]);
+      await db.promise().query(sql, [categoria_id]);
 
       res.status(200).json({ 
         status: 200, 
@@ -95,5 +96,4 @@ const categoriaCRUD = {
     }
   },
 };
-
-export default categoriaCRUD;
+module.exports =categoriaCRUD;

@@ -33,7 +33,7 @@ const usuarioRoutes = require('./services/usuario/userRoutes/userRoutes');
 
 const articuloRoutes = require('./services/articulo/artRoutes/artRoutes');
 
-
+const categoriaRoutes = require('./services/categoria/categoriaRoutes/categoriaRutasGeneral');
 
 
 //Endpoint para articulos 
@@ -48,6 +48,8 @@ app.use('/api/articulo',articuloRoutes);
 app.use('/api/usuario', usuarioRoutes);
 
 
+//endpoint para mantenedor de categorias
+app.use('/api/categoria', categoriaRoutes);
 
 
 
@@ -56,6 +58,9 @@ app.get("/*", (req, res) => {
 });
 
 app.post("/*", (req, res) => {
+  res.status(400).json({ status: 400, message: "ruta no especificada" });
+});
+app.put("/*", (req, res) => {
   res.status(400).json({ status: 400, message: "ruta no especificada" });
 });
 

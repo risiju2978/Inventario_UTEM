@@ -5,6 +5,7 @@ const {db} =require("../../../../utils/utils.helpers");
 
 
 const userController = {
+  //FUNCIONANDO
 //##################################################################################
     listarUsuarios: (req, res) => {
         try {
@@ -50,120 +51,117 @@ const userController = {
       },
 //##################################################################################
 
+//REVISADO Y FUNCIONANDO  (trae todos los datos de los usuarios que cumplan con un username y password correctos dentro de los registros)
+loginUsuario: async (req, res) => {
+  try {
+    // Obtener credenciales del cuerpo de la solicitud
+    const { username, password } = req.body;
 
-
-loginUsuario : async (req, res) => {
-    try {
-      // Obtener credenciales del cuerpo de la solicitud
-      const { username, password } = req.body;
-  
-      // Verifica si los campos obligatorios están presentes y coinciden
-      if (!username || !password) {
-        return res.status(400).json({
-          status: 400,
-          error: "Faltan campos obligatorios",
-        });
-      }
-  
-      // Consultar en la base de datos para obtener el usuario por nombre
-      // campos que se requieren en vez de asterisco ya que es mala practica 
-      const [conseguir_user] = await db.query('SELECT * FROM usuario WHERE usuario = ?', [username]);
-      // si no está en arreglo da error 
-      if (conseguir_user.length === 0) {
-        return res.status(404).json({
-          status: 404,
-          error: "Usuario no encontrado",
-        });
-      }
-      // asignar contenido del usuario
-      const user = conseguir_user[0];
-
- 
-const data = {
-          user_id: user.user_id,
-          username: user.username,
-          password: user.password,
-          email: user.email,
-          rol_id: user.rol_id,
-          campus_id: user.campus_id,
-          user_state: user.user_state,
-          token: "genera_un_token_aqui", // token JWT (cuando se aprenda)
-          message: "Ha accedido con éxito",
-};
-
-
-
-      // Enviar respuesta exitosa
-      res.status(200).json({
-        status: 200,
-        data,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        status: 500,
-        error: "Error interno del servidor",
+    // Verifica si los campos obligatorios están presentes y coinciden
+    if (!username || !password) {
+      return res.status(400).json({
+        status: 400,
+        error: "Faltan campos obligatorios",
       });
     }
-  },
+
+    // Consultar en la base de datos para obtener el usuario por nombre y contraseña
+    const sql = `SELECT * FROM usuario WHERE username = ? AND password = ?`;
+    const [user] = await db.promise().query(sql, [username, password]);
+
+    // Si no está en arreglo, el usuario no existe
+    if (user.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        error: "Usuario no encontrado",
+      });
+    }
+
+    // Enviar respuesta exitosa con los datos del usuario
+    res.status(200).json({
+      status: 200,
+      data: user,
+      message: "Usuario accedido con exito ",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      error: "Error interno del servidor" + error.message,
+    });
+  }
+},
+ 
+
 //##################################################################################
-
-crearUsuario: (req, res) => {
+//FUNCIONANDO
+crearUsuario: async(req, res) => {
     try {
-      // Datos del cuerpo de la solicitud
-      const { username, email, rol, user_state, password } = req.body;
-
-      // Verificar si todos los campos necesarios están presentes
-      if (!username || !email || !rol || !user_state || !password) {
-        return res.status(400).json({
-          status: 400,
-          error: "Faltan campos obligatorios",
-        });
-      }
-
-      // Consulta SQL para insertar un nuevo usuario
-      const sql = `INSERT INTO usuario (
-        username, 
-        email, 
-        rol, 
-        user_state, 
-        password
-        )  VALUES (?, ?, ?, ?, ?)`;
-
-      //data para crear usuario
-      const userCreateData = {username, email, rol, user_state, password};
-
-      // Ejecutar la consulta con los valores proporcionados
-      db.query(sql, userCreateData, (errDB, resultDB) => {
-        if (errDB) {
-          console.error(errDB);
-          return res.status(500).json({
+          // Datos del cuerpo de la solicitud
+          const { username, email, campus_id, rol_id, user_state, password } = req.body;
+      
+          // Verificar si todos los campos necesarios están 
+         //tuve que cambiar user_state para que valide que tenga un valor porque si solo compruebo si es falso no me acepta el 0 pero con undefinied sirve aunque hay que verificar que no sea null
+          if (!username || !email || !rol_id ||  user_state === undefined ||  user_state === null || !password || !campus_id) {
+            return res.status(400).json({
+              status: 400,
+              error: "Faltan campos obligatorios",
+            });
+          }
+      
+          // Verificar si campus_id existe en la tabla sede
+          const checkCampusQuery = 'SELECT COUNT(*) AS count FROM sede WHERE campus_id = ?';
+          const [campusCheckResult] = await db.promise().query(checkCampusQuery, [campus_id]);
+      
+          if (campusCheckResult[0].count === 0) {
+            return res.status(400).json({
+              status: 400,
+              error: "El campus_id proporcionado no existe en la tabla sede",
+            });
+          }
+      
+          // Iniciar una transacción
+          await db.promise().beginTransaction();
+      
+          try {
+            // Consulta SQL para insertar un nuevo usuario
+            const insertUserQuery = 'INSERT INTO usuario (username, email, rol_id, user_state, password, campus_id) VALUES (?, ?, ?, ?, ?, ?)';
+            const userCreateData = [username, email, rol_id, user_state, password, campus_id];
+      
+            // Ejecutar la consulta con los valores proporcionados
+            const [resultDB] = await db.promise().query(insertUserQuery, userCreateData);
+      
+            // Confirmar la transacción
+            await db.promise().commit();
+      
+            res.status(200).json({
+              status: 200,
+              data: {
+                message: "Usuario agregado con éxito",
+                user_id: resultDB.insertId,
+              },
+            });
+          } catch (error) {
+            // Revertir la transacción en caso de error
+            await db.promise().rollback();
+      
+            console.error(error);
+            res.status(500).json({
+              status: 500,
+              error: "Error interno del servidor",
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({
             status: 500,
-            error: "Error al agregar usuario a la base de datos",
+            error: "Error interno del servidor",
           });
         }
-
-        res.status(200)
-        
-          .json({
-            status: 200,
-            data: {
-              message: "Usuario agregado con éxito",
-              user_id: resultDB.insertId,  // ID del nuevo usuario 
-            },
-          });
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        status: 500,
-        error: "Error interno del servidor",
-      });
-    }
-  },
+      },
 
 //##################################################################################
-
+//REVISADO Y FUNCIONANDO
 editarRolUsuario: async (req, res) => {
     try {
       // Extraer los campos relacionados con roles, nombre usuario y correo electrónico
@@ -263,105 +261,87 @@ editarRolUsuario: async (req, res) => {
 
 
 //##################################################################################
-
-
+//REVISADO Y FUNCIONANDO  
 editarUsuario: async (req, res) => {
-    try {
-      // Extraer los campos relacionados, nombre de usuario, correo electrónico y contraseña
-      const { user_id, username, email, password } = req.body;
+  try {
+    // Extraer los campos relacionados, nombre de usuario, correo electrónico y contraseña
+    const { user_id, username, email, password } = req.body;
 
-      // Validar si user_id está definido
-      if (user_id == undefined || user_id == 0) {
-        return res.status(405).json({ status: 404, error: "Usuario no encontrado" });
-      }
-
-      // Verificar si el usuario existe
-      const sqlUserCheck = "SELECT user_id FROM usuario WHERE user_id = ?";
-
-      const userID = {user_id};
-
-      db.query(sqlUserCheck, userID, (errCheck, resultCheck) => {
-        if (errCheck) {
-          return res.status(500).json({ status: 500, error: "Error en la consulta de usuario" });
-        }
-
-        if (resultCheck.length === 0) {
-          return res.status(404).json({ status: 404, error: "No existe usuario" });
-        }
-
-        // Actualizar datos de usuario
-        const sqlUpdate = "UPDATE usuario SET username = ?, email = ?, password = ? WHERE user_id = ?";
-        const data = {username, email, password, user_id};
-
-        // Ejecutar la actualización
-        db.query(sqlUpdate, data, (errUpdate, resultUpdate) => {
-          if (errUpdate) {
-            return res.status(500).json({ status: 500, error: "Error al actualizar usuario" });
-          }
-
-          if (resultUpdate.affectedRows > 0) {
-           
-
-            return res.status(200).json({ status: 200, message: "Usuario actualizado correctamente" });
-          } else {
-            return res.status(401).json({ status: 401, error: "Error al actualizar" });
-          }
-        });
-      });
-    } catch (error) {
-      return res.status(500).json({ status: 500, error: "Error en el servidor" });
+    // Validar si user_id está definido
+    if (user_id == undefined || user_id == 0) {
+      return res.status(405).json({ status: 404, error: "Usuario no encontrado" });
     }
-  },
 
+    // Verificar si el usuario existe
+    const sqlUserCheck = "SELECT user_id FROM usuario WHERE user_id = ?";
+    const [userCheck] = await db.promise().query(sqlUserCheck, [user_id]);
+
+    if (userCheck.length === 0) {
+      return res.status(404).json({ status: 404, error: "No existe usuario" });
+    }
+
+    // Actualizar datos de usuario
+    const sqlUpdate = "UPDATE usuario SET username=?, email=?, password=? WHERE user_id=?";
+    const data = [username, email, password, user_id];
+
+    // Ejecutar la actualización
+    const [resultUpdate] = await db.promise().query(sqlUpdate, data);
+
+    if (resultUpdate.affectedRows > 0) {
+      return res.status(200).json({ status: 200, message: "Usuario actualizado correctamente" });
+    } else {
+      return res.status(401).json({ status: 401, error: "Error al actualizar" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ status: 500, error: "Error en el servidor" });
+  }
+},
 
 //##################################################################################
-
+//FUNCIONANDO
 getInfoUser: async (req, res) => {
-    try {
-      const { user_id } = req.query;
-
-      if (!user_id) {
-        return res.status(400).json({
-          status: 400,
-          error: "Falta el parámetro id_usuario en la solicitud",
-        });
-      }
-
-      const sql = "SELECT * FROM usuario WHERE user_id = ?";
-      const [user] = await db.query(sql, [user_id]);
-
-      if (user.length === 0) {
-        return res.status(400).json({
-          status: 400,
-          error: "No se encontró el usuario con el ID proporcionado",
-        });
-      }
-
-      const responseData = {
-        status: 200,
-        data: [
-          {
-            username: user[0].username,
-            password: user[0].password,
-            correo: user[0].email,
-            rol: user[0].rol,
-          },
-        ],
-        estado: user[0].user_state,
-        message: "Información personal mostrada con éxito",
-      };
-
-     
-
-      res.status(200).json(responseData);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        status: 500,
-        error: "Error interno del servidor al extraer datos",
+  try {
+    const { user_id } = req.body;
+    
+    if (!user_id || user_id ===undefined  || user_id === null) {
+      return res.status(400).json({
+        status: 400,
+        error: "Falta el parámetro id_usuario en la solicitud",
       });
     }
-  },
+
+    const sql = "SELECT * FROM usuario WHERE user_id = ?";
+    const [user] = await db.promise().query(sql, [user_id]);
+
+    if (user.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        error: "No se encontró el usuario con el ID proporcionado",
+      });
+    }
+
+    const responseData = {
+      status: 200,
+      data: {
+        username: user[0].username,
+        password: user[0].password,
+        correo: user[0].email,
+        rol: user[0].rol,
+        estado: user[0].user_state, 
+      },
+      message: "Información personal mostrada con éxito",
+    };
+
+    res.status(200).json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      error: "Error interno del servidor al extraer datos: " + error.message,
+    });
+  }
+},
 //##################################################################################
 
 

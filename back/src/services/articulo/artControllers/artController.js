@@ -9,6 +9,7 @@ const artController = {
 
 
     //##################################################################################
+    //REVISADO Y FUNCIONANDO  
     editArticulo: async (req, res) => {
       try {
           const {
@@ -21,11 +22,7 @@ const artController = {
             art_codigo,
             art_glosa,
             art_image_path,
-            articulo_estado,
-            categoria,
-            sede,
-            departamento,
-            oficina,
+          
           } = req.body;
     
           db.beginTransaction((error) => {
@@ -34,7 +31,7 @@ const artController = {
             }
     
             // Validar campos obligatorios para editar en la tabla articulo
-            if (!id_articulo || !anio || !dimension || !art_num || !art_nombre || !art_ingreso || !art_codigo || !art_glosa || !art_image_path || !articulo_estado || !categoria || !sede || !departamento || !oficina) {
+            if (!id_articulo || !anio || !dimension || !art_num || !art_nombre || !art_ingreso || !art_codigo || !art_glosa || !art_image_path ) {
               return res.status(400).json({
                 status: 400,
                 error: "Faltan campos obligatorios para editar en la tabla articulo",
@@ -103,218 +100,197 @@ const artController = {
         }
       },
 //##################################################################################
+//REVISADO Y FUNCIONANDO
 bajaArticulo: async (req, res) => {
-    try {
-      const { id_articulo,articulo_estado_id, fecha_baja, motivo_baja, autorizacion } = req.body;
+  try {
+    const { id_articulo, motivo_baja, autorizacion } = req.body;
 
-      // Validar campos obligatorios
-      if (!id_articulo || !fecha_baja || !motivo_baja || !autorizacion) {
-        return res.status(400).json({
-          status: 400,
-          error: "Faltan campos obligatorios para dar de baja el artículo",
-        });
-      }
-
-      db.beginTransaction(async (error) => {
-        if (error) {
-          throw error;
-        }
-
-        try {
-          // Actualizar la tabla articulo_baja
-          const sqlArticuloBaja = `
-            INSERT INTO articulo_baja (id_articulo, fecha_baja, motivo_baja, autorizacion)
-            VALUES (?, ?, ?, ?)
-          `;
-
-          const dataInsertArticuloBaja = {id_articulo, fecha_baja, motivo_baja, autorizacion};
-          await db.query(sqlArticuloBaja, dataInsertArticuloBaja);
-
-          // Actualizar el estado del artículo en la tabla articulo a "dado de baja"
-          const sqlActualizarArticulo = `
-            UPDATE articulo_estado
-            SET articulo_estado_id = ?, articulo_estado = 0
-            WHERE id_articulo = ?
-          `;
-
-          await db.query(sqlActualizarArticulo, [articulo_estado_id, id_articulo], (error, result, field) => {
-            // si falla la actualización
-            if (error) {
-              return db.rollback(() => {
-                throw error;
-              });
-            }
-
-            // si la actualización tiene éxito, hago un commit
-            db.commit((error) => {
-              if (error) {
-                return db.rollback(() => {
-                  throw error;
-                });
-              }
-
-              res.status(200).json({
-                status: 200,
-                message: "Artículo dado de baja con éxito",
-              });
-            });
-          });
-        } catch (error) {
-          // Rollback en caso de error
-          await db.rollback();
-          throw error;
-        }
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        status: 500,
-        error: "Error interno del servidor al extraer datos",
+    // Validar campos obligatorios
+    if (!id_articulo || !motivo_baja || !autorizacion) {
+      return res.status(400).json({
+        status: 400,
+        error: "Faltan campos obligatorios para dar de baja el artículo",
       });
     }
-  },
-//##################################################################################
-//agregar articulo
-  incomeArticulo: async (req, res) => {
-    try {
-      // recupero datos del front
-      const {
-        anio,
-        dimension,
-        art_num,
-        art_nombre,
-        art_codigo,
-        art_glosa,
-        art_image_path,
-        articulo_estado,
-        categoria,
-        office,
-        id_usuario,
-      } = req.body;
 
-      db.beginTransaction((error) => {
-        if (error) {
-          throw error;
-        }
+    const fecha_baja = new Date(); // Obtén la fecha actual
 
-      // Validacion de  campos obligatorios para insertar en la tabla articulo
-      if (!articulo_estado || !categoria || !id_usuario || !office) {
-        return res.status(400).json({
-          status: 400,
-          error: "Faltan campos obligatorios para insertar en la tabla articulo",
-        });
+    db.beginTransaction(async (error) => {
+      if (error) {
+        throw error;
       }
 
-        // 1. insertar en articulo;
-        const sqlArticulo = `
-          INSERT INTO articulo (
-            articulo_estado_id,
-            categoria_id,
-            usaurio_id,
-            oficina_id
-          ) VALUES (?, ?, ?, ?) 
+      try {
+        // Actualizar la tabla articulo_baja
+        const sqlArticuloBaja = `
+          INSERT INTO articulo_baja (id_articulo, fecha_baja, motivo_baja, autorizacion)
+          VALUES (?,NOW(), ?, ?)
         `;
 
-        // 2. obtener articulo_id
-      
-        const dataInsertArticulo = {
-          articulo_estado,
-          categoria,
-          id_usuario,
-          office,
-        };
+        const dataInsertArticuloBaja = [id_articulo, fecha_baja, motivo_baja, autorizacion];
+        await db.promise().query(sqlArticuloBaja, dataInsertArticuloBaja);
 
-        // inserto el articulo
-        db.query(sqlArticulo, dataInsertArticulo, (error, result, field) => {
-          // si falla el insert
+        // Actualizar el estado del artículo en la tabla articulo a "dado de baja"
+        const sqlActualizarArticulo = `
+          UPDATE articulo
+          SET articulo_estado_id = 1
+          WHERE id_articulo = ?
+        `;
+
+        const [result] = await db.promise().query(sqlActualizarArticulo, [id_articulo]);
+
+        // Verificar si se actualizó algún registro
+        if (result.affectedRows === 0) {
+          return res.status(404).json({
+            status: 404,
+            error: "No se encontró el artículo para dar de baja",
+          });
+        }
+
+        // Si la actualización tiene éxito, hago un commit
+        db.commit((error) => {
           if (error) {
             return db.rollback(() => {
               throw error;
             });
           }
 
-          // si esto inserta recupero el id del articulo creado
-          const id_articulo = result.insertId;
-
-          // procesar el binary file de la imagen,
-          // guardarlo en disco y obtener la ruta fisica del archivo
-          // que se pasa en el parametro de art_image_path ( crear una funcion para eso )
- 
-   // Función para convertir imagen binaria a base64
-   function convertirABase64(art_image_path) {
-    const imageBuffer = Buffer.from(art_image_path, 'binary');
-    return imageBuffer.toString('base64');
+          res.status(200).json({
+            status: 200,
+            message: "Artículo dado de baja con éxito",
+          });
+        });
+      } catch (error) {
+        // Rollback en caso de error
+        await db.promise().rollback();
+        throw error;
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      error: "Error interno del servidor al extraer datos",
+    });
   }
+},
+//##################################################################################
+//agregar articulo
+//REVISADO Y FUNCIONANDO
+incomeArticulo: async (req, res) => {
+  try {
+    const {
+      usuario_id,
+      anio,
+      dimension,
+      art_num,
+      art_nombre,
+      art_codigo,
+      art_glosa,
+      art_ingreso,
+      art_image_path,
+      articulo_estado_id,
+      categoria_id,
+      oficina_id,
+    } = req.body;
+
+    // Validación de campos obligatorios para insertar en la tabla articulo
+    if (!articulo_estado_id || !categoria_id || !usuario_id || !oficina_id) {
+      return res.status(400).json({
+        status: 400,
+        error: "Faltan campos obligatorios para insertar en la tabla articulo",
+      });
+    }
+
+    // Iniciar transacción
+    db.beginTransaction(async (error) => {
+      if (error) {
+        throw error;
+      }
+
+      try {
+        // 1. Insertar en la tabla articulo
+        const sqlArticulo = `
+          INSERT INTO articulo (
+            articulo_estado_id,
+            categoria_id,
+            usuario_id,
+            oficina_id
+          ) VALUES (?, ?, ?, ?)`;
+
+        const dataInsertArticulo = [
+          articulo_estado_id,
+          categoria_id,
+          usuario_id,
+          oficina_id,
+        ];
+
+        const [resultArticulo] = await db.promise().query(sqlArticulo, dataInsertArticulo);
+
+        const id_articulo = resultArticulo.insertId;
+
+        // 2. Convertir imagen binaria a base64
+        const imageBuffer = Buffer.from(art_image_path, 'binary');
+        const art_image_path_base64 = imageBuffer.toString('base64');
 
 
- const art_image_path_base64 = convertirABase64(art_image_path); // Convierte la imagen binaria a base64
-          // 3. insertar detalle articulo usando articulo_id anterior
-          const sqlArticuloDetalle = `
-                      INSERT INTO articulo_detalle (
-                        id_articulo,
-                        anio,
-                        dimension,
-                        art_num,
-                        art_nombre,
-                        art_ingreso,
-                        art_codigo,
-                        art_glosa,
-                        art_image_path
-                      ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)
-                    `;
-
-          // objeto de articulo_detalle
-          const dataInsertArticuloDetalle = {
+        //funcion NOW() con ella recupero la fecha exacta desde el ordenador
+        // 3. Insertar en la tabla articulo_detalle
+        const sqlArticuloDetalle = `
+          INSERT INTO articulo_detalle (
             id_articulo,
             anio,
             dimension,
             art_num,
             art_nombre,
-            art_ingreso,
             art_codigo,
+            art_ingreso,
             art_glosa,
-            art_image_path: art_image_path_base64, // Almacena la imagen en formato base64 en la base de datos
-          };
+            art_image_path
+          ) VALUES (?, ?, ?, ?, ?, ?,NOW(), ?,?)`;
 
-          // insert el detalle del articulo
-          db.query(
-            sqlArticuloDetalle,
-            dataInsertArticuloDetalle,
-            (error, result, field) => {
-              // si falla el insert
-              if (error) {
-                return db.rollback(() => {
-                  throw error;
-                });
-              }
+        const dataInsertArticuloDetalle = [
+          id_articulo,
+          anio,
+          dimension,
+          art_num,
+          art_nombre,
+          art_codigo,
+          art_ingreso,
+          art_glosa,
+          art_image_path_base64,
+        ];
 
-            
+        await db.promise().query(sqlArticuloDetalle, dataInsertArticuloDetalle);
 
-              // si esta ok hago un commit
-              db.commit((error) => {
-                if (error) {
-                  return db.rollback(() => {
-                    throw error;
-                  });
-                }
+        // Hacer commit si todo fue exitoso
+        db.commit((error) => {
+          if (error) {
+            return db.rollback(() => {
+              throw error;
+            });
+          }
 
-                res.status(200).json({
-                  status: 200,
-                  message: "Artículo creado correctamente",
-                });
-              });
-            }
-          );
+          res.status(200).json({
+            status: 200,
+            message: "Artículo creado correctamente",
+          });
         });
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        status: 500,
-        error: "Error interno del servidor al extraer datos",
-      });
-    }
-  },
+      } catch (error) {
+        // Si hay un error, hacer rollback
+        db.rollback(() => {
+          throw error;
+        });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      error: "Error interno del servidor al extraer datos",
+    });
+  }
+},
 //########################################################################################
 
 
