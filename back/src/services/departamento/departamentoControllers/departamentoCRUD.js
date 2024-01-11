@@ -1,9 +1,11 @@
-import { db } from '../utils/utils.helpers';
+require("dotenv").config();
+const {db} =require("../../../../utils/utils.helpers");
 
 const departamentoCRUD = {
+   //REVISADO Y FUNCIONANDO
   getAllDepartamentos: async (req, res) => {
     try {
-      const [departamentos] = await db.query('SELECT * FROM departamento');
+      const [departamentos] = await db.promise().query('SELECT * FROM departamento');
       res.status(200).json({ 
         status: 200,
          data: departamentos
@@ -16,11 +18,11 @@ const departamentoCRUD = {
          });
     }
   },
-
+   //REVISADO Y FUNCIONANDO
   getDepartamentoById: async (req, res) => {
     try {
-      const { departamento_id } = req.params;
-      const [departamento] = await db.query('SELECT * FROM departamento WHERE departamento_id = ?', [departamento_id]);
+      const { departament_id} = req.body;
+      const [departamento] = await db.promise().query('SELECT * FROM departamento WHERE departament_id = ?', [departament_id]);
 
       if (departamento.length === 0) {
         return res.status(404).json({ status: 404,
@@ -40,11 +42,11 @@ const departamentoCRUD = {
          });
     }
   },
-
+ //REVISADO Y FUNCIONANDO
   createDepartamento: async (req, res) => {
     try {
-      const { departamento, campus_id } = req.body;
-      const [result] = await db.query('INSERT INTO departamento (departamento, campus_id) VALUES (?, ?)', [departamento, campus_id]);
+      const { departament, campus_id } = req.body;
+      const [result] = await db.promise().query('INSERT INTO departamento (departament, campus_id) VALUES (?,?)', [ departament, campus_id]);
 
       res.status(201).json({
          status: 201,
@@ -58,13 +60,13 @@ const departamentoCRUD = {
     });
     }
   },
-
+ //REVISADO Y FUNCIONANDO
   updateDepartamento: async (req, res) => {
     try {
-      const { departamento_id } = req.params;
-      const { departamento, campus_id } = req.body;
+      
+      const {  departament, campus_id } = req.body;
 
-      const [result] = await db.query('UPDATE departamento SET departamento = ?, campus_id = ? WHERE departamento_id = ?', [departamento, campus_id, departamento_id]);
+      const [result] = await db.promise().query('UPDATE departamento SET  departament = ?  WHERE campus_id = ?', [ departament, campus_id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
@@ -85,11 +87,11 @@ const departamentoCRUD = {
     });
     }
   },
-
+ //REVISADO Y FUNCIONANDO
   deleteDepartamento: async (req, res) => {
     try {
-      const { departamento_id } = req.params;
-      const [result] = await db.query('DELETE FROM departamento WHERE departamento_id = ?', [departamento_id]);
+      const { departament_id } = req.body;
+      const [result] = await db.promise().query('DELETE FROM departamento WHERE departament_id = ?', [departament_id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
@@ -112,4 +114,4 @@ const departamentoCRUD = {
   },
 };
 
-export default departamentoCRUD;
+module.exports = departamentoCRUD;

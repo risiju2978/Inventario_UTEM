@@ -16,6 +16,7 @@ const categoriaCRUD = {
   },
 
   // Obtener una categoría por ID
+  //REVISADO Y FUNCIONANDO
   getCategoriaById: async (req, res) => {
     try {
       const { categoria_id} = req.body;
@@ -40,6 +41,7 @@ const categoriaCRUD = {
   },
 
   // Crear una nueva categoría
+  //REVISADO Y FUNCIONANDO
   createCategoria: async (req, res) => {
     try {
       const { categoria } = req.body;
@@ -59,6 +61,7 @@ const categoriaCRUD = {
   },
 
   // Actualizar una categoría por ID
+   //REVISADO Y FUNCIONANDO
   updateCategoria: async (req, res) => {
     try {
       
@@ -79,6 +82,7 @@ const categoriaCRUD = {
   },
 
   // Eliminar una categoría por ID
+   //REVISADO Y FUNCIONANDO
   deleteCategoria: async (req, res) => {
     try {
       const {categoria_id } = req.body;

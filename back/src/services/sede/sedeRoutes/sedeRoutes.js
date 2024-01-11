@@ -1,13 +1,15 @@
-import express from 'express';
-import sedeCRUD from '../sedeControllers/sedeCRUD';
+
+
+const sedeCRUD = require ('../sedeControllers/sedeCRUD');
+const express = require("express");
 
 const router = express.Router();
 
 // Rutas para CRUD de sede
-router.get('/', sedeCRUD.getAllSedes);
-router.get('/:id', sedeCRUD.getSedeById);
-router.post('/', sedeCRUD.createSede);
-router.put('/:id', ssedeCRUD.updateSede);
-router.delete('/:id', sedeCRUD.deleteSede);
+router.get('/getAllSedes', sedeCRUD.getAllSedes);
+router.get('/getSedeByID', sedeCRUD.getSedeById);
+router.post('/createSede', sedeCRUD.createSede);
+router.put('/updateSede', sedeCRUD.updateSede);
+router.delete('/deleteSede', sedeCRUD.deleteSede);
 
-export default router;
+module.exports = router;

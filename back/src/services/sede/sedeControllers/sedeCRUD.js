@@ -1,9 +1,11 @@
-import { db } from '../utils/utils.helpers';
+require("dotenv").config();
+const {db} =require("../../../../utils/utils.helpers");
 
 const sedeController = {
+   //REVISADO Y FUNCIONANDO
   getAllSedes: async (req, res) => {
     try {
-      const [sedes] = await db.query('SELECT * FROM sede');
+      const [sedes] = await db.promise().query('SELECT * FROM sede');
       res.status(200).json({
          status: 200,
           data: sedes 
@@ -16,11 +18,11 @@ const sedeController = {
          });
     }
   },
-
+   //REVISADO Y FUNCIONANDO
   getSedeById: async (req, res) => {
     try {
-      const { sede_id } = req.params;
-      const [sede] = await db.query('SELECT * FROM sede WHERE sede_id = ?', [sede_id]);
+      const { campus_id } = req.body;
+      const [sede] = await db.promise().query('SELECT * FROM sede WHERE campus_id = ?', [campus_id]);
 
       if (!sede.length) {
         return res.status(404).json({ 
@@ -41,11 +43,11 @@ const sedeController = {
         });
     }
   },
-
+   //REVISADO Y FUNCIONANDO
   createSede: async (req, res) => {
     try {
-      const { campus_id, campus } = req.body;
-      const [result] = await db.query('INSERT INTO sede (campus_id, campus) VALUES (?, ?)', [campus_id, campus]);
+      const {  campus } = req.body;
+      const [result] = await db.promise().query('INSERT INTO sede ( campus) VALUES ( ?)', [ campus]);
 
       res.status(201).json({ 
         status: 201,
@@ -60,12 +62,12 @@ const sedeController = {
     });
     }
   },
-
+   //REVISADO Y FUNCIONANDO
   updateSede: async (req, res) => {
     try {
       
       const {  campus, campus_id } = req.body;
-      const [result] = await db.query('UPDATE sede SET  campus = ? WHERE campus_id = ?', [ campus, campus_id]);
+      const [result] = await db.promise().query('UPDATE sede SET  campus = ? WHERE campus_id = ?', [ campus, campus_id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({ 
@@ -86,11 +88,11 @@ const sedeController = {
         });
     }
   },
-
+   //REVISADO Y FUNCIONANDO
   deleteSede: async (req, res) => {
     try {
-      const { id } = req.params;
-      const [result] = await db.query('DELETE FROM sede WHERE sede_id = ?', [id]);
+      const { campus_id } = req.body;
+      const [result] = await db.promise().query('DELETE FROM sede WHERE campus_id = ?', [campus_id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({ 
@@ -113,4 +115,4 @@ const sedeController = {
   },
 };
 
-export default sedeController;
+module.exports = sedeController;

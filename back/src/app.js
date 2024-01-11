@@ -35,6 +35,13 @@ const articuloRoutes = require('./services/articulo/artRoutes/artRoutes');
 
 const categoriaRoutes = require('./services/categoria/categoriaRoutes/categoriaRutasGeneral');
 
+const departamentoRoutes = require('./services/departamento/departamentoRoutes/departamentoRoutes');
+
+const  sedeRoutes = require('./services/sede/sedeRoutes/sedeRoutes');
+
+const articuloEstadoRoutes = require('./services/articulo_estado/articuloEstadoRoutes/articuloEstadoRoutes');
+
+const oficinaRoutes = require('./services/oficina/oficinaRoutes/oficinaRoutes');
 
 //Endpoint para articulos 
 app.use('/api/articulo',articuloRoutes);
@@ -50,6 +57,21 @@ app.use('/api/usuario', usuarioRoutes);
 
 //endpoint para mantenedor de categorias
 app.use('/api/categoria', categoriaRoutes);
+
+//endpoint para mantenedor de departamentos
+app.use('/api/departamento', departamentoRoutes);
+
+//endpoint para mantenedor de sedes
+app.use('/api/sede', sedeRoutes);
+
+//endpoint para mantenedor de articulo estado
+app.use('/api/articuloEstado',articuloEstadoRoutes);
+
+//endpoint para mantenedor de oficinas
+app.use('/api/oficina',oficinaRoutes);
+
+
+
 
 
 

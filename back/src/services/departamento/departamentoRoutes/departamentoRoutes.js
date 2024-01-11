@@ -1,12 +1,17 @@
-import express from 'express';
-import departamentoCRUD from '../departamentoControllers/departamentoCRUD';
+
+
+
+const departamentoCRUD = require ('../departamentoControllers/departamentoCRUD');
+const express = require("express");
+
+
 
 const router = express.Router();
 
-router.get('/', departamentoCRUD.getAllDepartamentos);
-router.get('/:departamento_id', departamentoCRUD.getDepartamentoById);
-router.post('/', departamentoCRUD.createDepartamento);
-router.put('/:departamento_id', departamentoCRUD.updateDepartamento);
-router.delete('/:departamento_id', departamentoCRUD.deleteDepartamento);
+router.get('/getAllDepartaments', departamentoCRUD.getAllDepartamentos);
+router.get('/getDepartamentsByID', departamentoCRUD.getDepartamentoById);
+router.post('/createDepartament', departamentoCRUD.createDepartamento);
+router.put('/updateDepartament', departamentoCRUD.updateDepartamento);
+router.delete('/deleteDepartament', departamentoCRUD.deleteDepartamento);
 
-export default router;
+module.exports = router;
