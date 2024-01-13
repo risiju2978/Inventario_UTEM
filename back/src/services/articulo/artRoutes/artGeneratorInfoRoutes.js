@@ -1,11 +1,11 @@
-import express from 'express';
-import artGeneratorInfoController from '../artControllers/artGeneratorInfoController';
 
+const GeneratorInfoController = require ('../artControllers/artGeneratorInfoController');
+const express = require("express")
 const router = express.Router();
 
-router.post('/generator_inf', artGeneratorInfoController.generarInforme);
+router.post('/generator_inf', GeneratorInfoController.generarInforme);
 
-export default router;
+module.exports =router;
 
 
 

@@ -43,13 +43,18 @@ const articuloEstadoRoutes = require('./services/articulo_estado/articuloEstadoR
 
 const oficinaRoutes = require('./services/oficina/oficinaRoutes/oficinaRoutes');
 
+const infGenerator = require('./services/articulo/artRoutes/artGeneratorInfoRoutes');
+
+
+//################### RUTAS #########################
+
+
+
+//Endpoint para generar informes
+app.use('/api/informe/generator_inf',infGenerator);
+
 //Endpoint para articulos 
 app.use('/api/articulo',articuloRoutes);
-
-
-//################### RUTA LISTAR #########################
-
-
 
 // Endpoint para listar usuarios
 app.use('/api/usuario', usuarioRoutes);
