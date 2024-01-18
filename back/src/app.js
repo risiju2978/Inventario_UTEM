@@ -51,7 +51,7 @@ const infGenerator = require('./services/articulo/artRoutes/artGeneratorInfoRout
 
 
 //Endpoint para generar informes
-app.use('/api/informe/generator_inf',infGenerator);
+app.use('/api/informe',infGenerator);
 
 //Endpoint para articulos 
 app.use('/api/articulo',articuloRoutes);

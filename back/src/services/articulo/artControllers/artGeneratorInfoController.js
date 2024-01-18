@@ -10,12 +10,13 @@ const infGeneratorController = {
   generarInforme: async (req, res) => {
     try {
       const { art_ingreso, categoria_id, office_id, campus_id, departament_id, tipo_formato, id_articulo_baja } = req.body;
-
+console.log(req.body);
       // VALIDACIONES
 
-        
+        //las fechas se manejan como new Date(art_ingreso)
       // Validación de art_ingreso como rango de fechas válido
-      const [fechaInicio, fechaFin] = art_ingreso;
+      /*const [fechaInicio, fechaFin] = art_ingreso;
+      
       if (!fechaInicio || !fechaFin || fechaInicio > fechaFin) {
         return res.status(400).json({
           status: 400,
@@ -23,29 +24,29 @@ const infGeneratorController = {
         });
       }
 
-     
-      if (categoria_id === null || isNaN(categoria_id)) {
+     */
+      if (categoria_id === undefined || isNaN(categoria_id)) {
         return res.status(400).json({
           status: 400,
           error: "categoria_id no puede ser nulo y debe ser un número",
         });
       }
 
-      if (office_id === null || isNaN(office_id)) {
+      if (office_id === undefined || isNaN(office_id)) {
         return res.status(400).json({
           status: 400,
           error: "office_id no puede ser nulo y debe ser un número",
         });
       }
 
-      if (campus_id === null || isNaN(campus_id)) {
+      if (campus_id === undefined || isNaN(campus_id)) {
         return res.status(400).json({
           status: 400,
           error: "campus_id no puede ser nulo y debe ser un número",
         });
       }
 
-      if (departament_id === null || isNaN(departament_id)) {
+      if (departament_id === undefined || isNaN(departament_id)) {
         return res.status(400).json({
           status: 400,
           error: "departament_id no puede ser nulo y debe ser un número",
@@ -59,26 +60,26 @@ const infGeneratorController = {
         });
       }
 
-      if (id_articulo_baja === null|| id_articulo_baja === undefined|| isNaN(id_articulo_baja) ) {
+      if ( id_articulo_baja === undefined|| isNaN(id_articulo_baja) ) {
         return res.status(400).json({
           status: 400,
           error: "id_articulo_baja debe ser un número ",
         });
       }
-
-      // Crear una conexión a la base de datos
-      const connection = await mysql.createConnection(db);
-
+const fechaInicio = null;
+const fechaFin = null;
+       
+//reemplazar asterisco por los cmpos en concreto
       // Lógica para construir la consulta SQL
       const sql = `
-        SELECT * FROM infGenerator
+        SELECT * FROM v_infogenerator
         WHERE
           art_ingreso >= ? AND art_ingreso <= ?
           AND (categoria_id = ?)
           AND (office_id = ? )
           AND (campus_id = ? )
           AND (departament_id = ? )
-          AND (tipo_formato = ?)
+          
           AND ( id_articulo_baja = ?)
       `;
       const  combo =[
@@ -88,13 +89,13 @@ const infGeneratorController = {
          office_id,
          campus_id, 
          departament_id, 
-         tipo_formato,
+         
          id_articulo_baja, 
          ]
 
-
+//hacer validacion del rows y ver qwue tenga contenido  con su largo 
       // Ejecutar la consulta
-      const [rows] = await connection.execute(sql,combo );
+      const [rows] = await db.promise().query(sql,combo );
 
 
 
@@ -104,6 +105,11 @@ const infGeneratorController = {
       const ws = wb ? wb.addWorksheet('Informe') : null;
       const fileName = `documento-${new Date().toISOString()}.${tipo_formato.toLowerCase()}`;
 
+      let stream = null;
+      if(doc){
+        stream = new require('stream').PassThrough();
+      doc.pipe(stream);
+      }
       // Agregar contenido al documento según los datos obtenidos
       //todo esto debe estar dentro de la vista en la base de datos
       //codigo en caso pdf
@@ -124,23 +130,23 @@ const infGeneratorController = {
 
     // Finalizar el documento y guardar en disco
 if (doc) {
-  const pdfFilePath = `./${fileName}`;
-  const pdfStream = fs.createWriteStream(pdfFilePath);
-
-  doc.pipe(pdfStream);
+  
+  //const pdfFilePath = `./${fileName}`;
+  //const pdfStream = fs.createWriteStream(pdfFilePath);
+  
+  //doc.pipe(pdfStream);
   doc.end();
 
   // Esperar a que la escritura del archivo PDF se complete
-  pdfStream.on('finish', () => {
-    res.status(200).json({
-      status: 200,
-      data: {
-        file_path: pdfFilePath,
-        file_name: fileName,
-        'content-type': 'application/pdf',
-      },
-      message: 'Documento PDF generado y guardado con éxito',
-    });
+  res.status(200).json({
+    status: 200,
+    data: {
+       binary:doc ?  stream : "",
+      
+      file_name: fileName,
+      'content-type': 'application/pdf',
+    },
+    message: 'Documento PDF generado y guardado con éxito',
   });
 } else {
   res.status(400).json({
