@@ -78,8 +78,6 @@ app.use('/api/oficina',oficinaRoutes);
 
 
 
-
-
 app.get("/*", (req, res) => {
   res.status(400).json({ status: 400, message: "ruta no especificada" });
 });
