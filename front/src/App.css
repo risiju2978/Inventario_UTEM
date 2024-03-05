@@ -1,6 +1,9 @@
 .App {
   text-align: center;
 }
+.btn-close-with-margin {
+  margin-right: 5px;
+}
 
 .App-logo {
   height: 40vmin;
@@ -35,4 +38,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.acciones-header {
+  padding-right: 10px;
 }

@@ -177,6 +177,7 @@ bajaArticulo: async (req, res) => {
 //##################################################################################
 //agregar articulo
 //REVISADO Y FUNCIONANDO
+
 incomeArticulo: async (req, res) => {
   try {
     const {
@@ -191,11 +192,11 @@ incomeArticulo: async (req, res) => {
       art_image_path,
       articulo_estado_id,
       categoria_id,
-      oficina_id,
+      office_id,
     } = req.body;
 
     // Validación de campos obligatorios para insertar en la tabla articulo
-    if (!articulo_estado_id || !categoria_id || !usuario_id || !oficina_id) {
+    if (!articulo_estado_id || !categoria_id || !usuario_id || !office_id) {
       return res.status(400).json({
         status: 400,
         error: "Faltan campos obligatorios para insertar en la tabla articulo",
@@ -215,29 +216,61 @@ incomeArticulo: async (req, res) => {
             articulo_estado_id,
             categoria_id,
             usuario_id,
-            oficina_id
+            office_id
           ) VALUES (?, ?, ?, ?)`;
 
         const dataInsertArticulo = [
           articulo_estado_id,
           categoria_id,
           usuario_id,
-          oficina_id,
+          office_id,
         ];
 
         const [resultArticulo] = await db.promise().query(sqlArticulo, dataInsertArticulo);
 
         const id_articulo = resultArticulo.insertId;
 
-        // 2. Convertir imagen binaria a base64
-        const imageBuffer = Buffer.from(art_image_path, 'binary');
-        const art_image_path_base64 = imageBuffer.toString('base64');
+        // 2. Convertir imagen base64 a binaria
+        const base64Data = art_image_path.split(';base64,').pop();
+        const imageBuffer = Buffer.from(base64Data, 'base64');
 
+        // Directorio donde se guardarán las imágenes
+        const directorio = 'ruta/donde/guardar';
 
-        //funcion NOW() con ella recupero la fecha exacta desde el ordenador
-        // 3. Insertar en la tabla articulo_detalle
-        const sqlArticuloDetalle = `
-          INSERT INTO articulo_detalle (
+        // Crear el directorio si no existe
+        if (!fs.existsSync(directorio)) {
+          fs.mkdirSync(directorio, { recursive: true });
+        }
+
+        // Nombre de archivo único (aquí puedes generar uno único)
+        const nombreArchivo = `imagen_${Date.now()}.jpg`;
+
+        // Ruta completa del archivo
+        const rutaArchivo = path.join(directorio, nombreArchivo);
+
+        // Escribir el archivo en el directorio
+        fs.writeFile(rutaArchivo, imageBuffer, async (err) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al guardar la imagen' });
+          }
+
+          //funcion NOW() con ella recupero la fecha exacta desde el ordenador
+          // 3. Insertar en la tabla articulo_detalle
+          const sqlArticuloDetalle = `
+            INSERT INTO articulo_detalle (
+              id_articulo,
+              anio,
+              dimension,
+              art_num,
+              art_nombre,
+              art_codigo,
+              art_ingreso,
+              art_glosa,
+              art_image_path
+            ) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?)`;
+
+          const dataInsertArticuloDetalle = [
             id_articulo,
             anio,
             dimension,
@@ -246,34 +279,23 @@ incomeArticulo: async (req, res) => {
             art_codigo,
             art_ingreso,
             art_glosa,
-            art_image_path
-          ) VALUES (?, ?, ?, ?, ?, ?,NOW(), ?,?)`;
+            rutaArchivo, // Guardamos la ruta del archivo en la base de datos
+          ];
 
-        const dataInsertArticuloDetalle = [
-          id_articulo,
-          anio,
-          dimension,
-          art_num,
-          art_nombre,
-          art_codigo,
-          art_ingreso,
-          art_glosa,
-          art_image_path_base64,
-        ];
+          await db.promise().query(sqlArticuloDetalle, dataInsertArticuloDetalle);
 
-        await db.promise().query(sqlArticuloDetalle, dataInsertArticuloDetalle);
+          // Hacer commit si todo fue exitoso
+          db.commit((error) => {
+            if (error) {
+              return db.rollback(() => {
+                throw error;
+              });
+            }
 
-        // Hacer commit si todo fue exitoso
-        db.commit((error) => {
-          if (error) {
-            return db.rollback(() => {
-              throw error;
+            res.status(200).json({
+              status: 200,
+              message: "Artículo creado correctamente",
             });
-          }
-
-          res.status(200).json({
-            status: 200,
-            message: "Artículo creado correctamente",
           });
         });
       } catch (error) {
