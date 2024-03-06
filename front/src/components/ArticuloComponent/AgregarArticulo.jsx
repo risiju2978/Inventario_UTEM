@@ -112,7 +112,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
     if (validateForm()) {
       try {
         console.log("Datos a enviar:", formData); // Verifica los datos que estás enviando
-        const response = await axios.post("http://localhost:8080/api/vista/incomeArticulo", formData);
+        const response = await axios.post("http://localhost:8080/api/articulo/income_art", formData);
         console.log("Artículo agregado correctamente:", response.data);
         toggleModal(); // Cierra el modal después de agregar el artículo
       } catch (error) {

@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from "react";
 import AgregarArticulo from './AgregarArticulo';
+import EditarArticulo from './EditarArticulo';
+import DarDeBaja from './DarDeBaja';
 import axios from 'axios';
-import moment from 'moment';
+
 
 function ArticuloComponent() {
-  const [modalVisible, setModalVisible] = useState(false); // Estado para controlar la visibilidad del modal
+  const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
+  const [modalEditarVisible, setModalEditarVisible] = useState(false); // Estado para controlar la visibilidad del modal de editar artículo
+  const [modalDarDeBajaVisible, setModalDarDeBajaVisible] = useState(false); // Estado para controlar la visibilidad del modal de dar de baja artículo
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
 
-  const toggleModal = () => {
-    setModalVisible(!modalVisible); // Cambia el estado de visibilidad del modal
-    console.log("ha pasado algo");
+
+  const toggleDarDeBajaModal = () => {
+    setModalDarDeBajaVisible(!modalDarDeBajaVisible); // Cambia el estado de visibilidad del modal de dar de baja artículo
   };
 
+  const toggleAgregarModal = () => {
+    setModalAgregarVisible(!modalAgregarVisible); // Cambia el estado de visibilidad del modal de agregar artículo
+  };
+
+  const toggleEditarModal = () => {
+    setModalEditarVisible(!modalEditarVisible); // Cambia el estado de visibilidad del modal de editar artículo
+  };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
@@ -27,15 +38,8 @@ function ArticuloComponent() {
   };
   
 
-  const darDeBaja = (id_articulo) => {
-    // Lógica para dar de baja el artículo
-    console.log("Dando de baja el artículo con ID:", id_articulo);
-  };
 
-  const Editar = (id_articulo) => {
-    // Lógica para editar el artículo
-    console.log("Editando el artículo con ID:", id_articulo);
-  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +68,7 @@ function ArticuloComponent() {
       <table className="table table-bordered">
         <thead>
           <tr>
+         
             <th>Año</th>
             <th>Dimensión</th>
             <th>Número</th>
@@ -80,8 +85,8 @@ function ArticuloComponent() {
             <th className="acciones-header" style={{ display: "flex", alignItems: "center" }}>
               <span style={{ marginRight: "10px" }}>Acciones</span> 
               <AgregarArticulo
-                modalVisible={modalVisible}
-                toggleModal={toggleModal}
+                modalVisible={modalAgregarVisible}
+                toggleModal={toggleAgregarModal}
               />
             </th>
           </tr>
@@ -103,8 +108,8 @@ function ArticuloComponent() {
               <td>{item.art_image_path}</td>
               <td>{item.articulo_estado}</td>
               <td>
-                <button className="btn btn-danger" style={{ marginRight: "20px" }} onClick={() => darDeBaja(item.id_articulo)}>Dar de Baja</button>
-                <button className="btn btn-warning" style={{ marginRight: "20px" }} onClick={() => Editar(item.id_articulo)}>Editar</button>
+                <DarDeBaja    modalVisible={modalDarDeBajaVisible} toggleModal={toggleDarDeBajaModal}  item={item.ID} />
+                <EditarArticulo modalVisible={modalEditarVisible} toggleModal={toggleEditarModal} item={item} />
               </td>
             </tr>
           ))}

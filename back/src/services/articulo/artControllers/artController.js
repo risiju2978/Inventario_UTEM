@@ -2,43 +2,67 @@
 require("dotenv").config();
 const {db} =require("../../../../utils/utils.helpers");
 
-
+const fs = require('fs');
+const path = require('path');
 
 const artController = {
 
 
 
     //##################################################################################
-    //REVISADO Y FUNCIONANDO  
     editArticulo: async (req, res) => {
       try {
-          const {
-            id_articulo,
-            anio,
-            dimension,
-            art_num,
-            art_nombre,
-            art_ingreso,
-            art_codigo,
-            art_glosa,
-            art_image_path,
-          
-          } = req.body;
+        const {
+          id_articulo,
+          anio,
+          dimension,
+          art_num,
+          art_nombre,   
+          art_codigo,
+          art_glosa,
+          art_image_path,
+        } = req.body;
     
-          db.beginTransaction((error) => {
-            if (error) {
-              throw error;
+        db.beginTransaction((error) => {
+          if (error) {
+            throw error;
+          }
+    
+          // Validar campos obligatorios para editar en la tabla articulo
+          if (!id_articulo || !anio || !dimension || !art_num || !art_nombre || !art_codigo || !art_glosa || !art_image_path) {
+            return res.status(400).json({
+              status: 400,
+              error: "Faltan campos obligatorios para editar en la tabla articulo",
+            });
+          }
+    
+          // Verifica si se proporciona una imagen
+          if (art_image_path) {
+            // Convierte la imagen de base64 a binario
+            const base64Data = art_image_path.split(';base64,').pop();
+            const imageBuffer = Buffer.from(base64Data, 'base64');
+    
+            // Directorio donde se guardarán las imágenes
+            const directorio = 'c:/imagenes';
+    
+            // Nombre de archivo único (aquí puedes generar uno único)
+            const nombreArchivo = `imagen_${Date.now()}.jpg`;
+    
+            // Ruta completa del archivo
+            const rutaArchivo = path.join(directorio, nombreArchivo);
+    
+            // Crea el directorio si no existe
+            if (!fs.existsSync(directorio)) {
+              fs.mkdirSync(directorio, { recursive: true });
             }
     
-            // Validar campos obligatorios para editar en la tabla articulo
-            if (!id_articulo || !anio || !dimension || !art_num || !art_nombre || !art_ingreso || !art_codigo || !art_glosa || !art_image_path ) {
-              return res.status(400).json({
-                status: 400,
-                error: "Faltan campos obligatorios para editar en la tabla articulo",
-              });
-            }
+            // Escribe el archivo en el directorio
+            fs.writeFile(rutaArchivo, imageBuffer, async (err) => {
+              if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Error al guardar la imagen' });
+              }
     
-          
               // Actualizar en articulo_detalle
               const sqlArticuloDetalle = `
                 UPDATE articulo_detalle
@@ -47,7 +71,6 @@ const artController = {
                   dimension = ?,
                   art_num = ?,
                   art_nombre = ?,
-                  art_ingreso = ?,
                   art_codigo = ?,
                   art_glosa = ?,
                   art_image_path = ?
@@ -59,10 +82,9 @@ const artController = {
                 dimension,
                 art_num,
                 art_nombre,
-                art_ingreso,
                 art_codigo,
                 art_glosa,
-                art_image_path,
+                rutaArchivo,
                 id_articulo,
               ];
     
@@ -89,32 +111,32 @@ const artController = {
                   });
                 });
               });
-            
-          });
-        } catch (error) {
-          console.error(error);
-          res.status(500).json({
-            status: 500,
-            error: "Error interno del servidor al extraer datos",
-          });
-        }
-      },
+            });
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          status: 500,
+          error: "Error interno del servidor al extraer datos",
+        });
+      }
+    },
+    
 //##################################################################################
 //REVISADO Y FUNCIONANDO
 bajaArticulo: async (req, res) => {
   try {
-    const { id_articulo, motivo_baja, autorizacion } = req.body;
+    const { id_articulo, motivo_baja, autorizacion, fecha_baja } = req.body;
 
     // Validar campos obligatorios
-    if (!id_articulo || !motivo_baja || !autorizacion) {
+    if (!id_articulo || !motivo_baja || !autorizacion || !fecha_baja) {
       return res.status(400).json({
         status: 400,
         error: "Faltan campos obligatorios para dar de baja el artículo",
       });
     }
-
-    const fecha_baja = new Date(); // Obtén la fecha actual
-
+// hacer query con id_articulo donde muestre el estado del articulo si ests activo no hace nada si no lo hace 
     db.beginTransaction(async (error) => {
       if (error) {
         throw error;
@@ -124,7 +146,7 @@ bajaArticulo: async (req, res) => {
         // Actualizar la tabla articulo_baja
         const sqlArticuloBaja = `
           INSERT INTO articulo_baja (id_articulo, fecha_baja, motivo_baja, autorizacion)
-          VALUES (?,NOW(), ?, ?)
+          VALUES (?, ?, ?, ?)
         `;
 
         const dataInsertArticuloBaja = [id_articulo, fecha_baja, motivo_baja, autorizacion];
@@ -174,6 +196,7 @@ bajaArticulo: async (req, res) => {
     });
   }
 },
+
 //##################################################################################
 //agregar articulo
 //REVISADO Y FUNCIONANDO
@@ -235,7 +258,7 @@ incomeArticulo: async (req, res) => {
         const imageBuffer = Buffer.from(base64Data, 'base64');
 
         // Directorio donde se guardarán las imágenes
-        const directorio = 'ruta/donde/guardar';
+        const directorio = 'c:/imagenes';
 
         // Crear el directorio si no existe
         if (!fs.existsSync(directorio)) {
@@ -315,13 +338,7 @@ incomeArticulo: async (req, res) => {
 },
 //########################################################################################
 
-
-
-
-
-    };
-   
-    
+};
    module.exports = artController;
   
   
