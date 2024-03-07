@@ -116,7 +116,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
         console.log("Artículo agregado correctamente:", response.data);
         toggleModal(); // Cierra el modal después de agregar el artículo
       } catch (error) {
-        console.error("Error al agregar el artículo:", error);
+        console.log("Error al agregar el artículo:", error);
       }
     }
   };
