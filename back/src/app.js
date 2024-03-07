@@ -8,7 +8,7 @@ const port = process.env.PORT;
 const app = express();
 const cors = require('cors');
 
-const { db } = require("../utils/utils.helpers");
+
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -74,6 +74,7 @@ app.put("/*", (req, res) => {
 app.listen(port, () => {
   console.log("inventario application up on port", port);
 });
+
 
 module.exports = app;
 

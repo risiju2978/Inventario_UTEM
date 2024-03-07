@@ -4,7 +4,7 @@
   "description": "sistma de inventario UTEM",
   "main": "app.js",
   "scripts": {
-    "dev": "npx nodemon /src/app.js"
+    "dev": "npx nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
