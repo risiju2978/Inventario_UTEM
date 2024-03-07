@@ -44,6 +44,7 @@ const articuloEstadoRoutes = require('./services/articulo_estado/articuloEstadoR
 const oficinaRoutes = require('./services/oficina/oficinaRoutes/oficinaRoutes');
 const infGenerator = require('./services/articulo/artRoutes/artGeneratorInfoRoutes');
 const vistaRoutes = require('./services/V_InfoGenerator/V_Routes/V_Routes');
+const { db } = require("../utils/utils.helpers");
 
 // Rutas
 app.use('/api/vista', vistaRoutes);
@@ -71,4 +72,13 @@ app.put("/*", (req, res) => {
 
 app.listen(port, () => {
   console.log("inventario application up on port", port);
+});
+
+
+db.connect((err) => {
+  if (err) {
+    console.error('Error de conexión: ', err);
+    return;
+  }
+  console.log('Conectado a la base de datos!');
 });
