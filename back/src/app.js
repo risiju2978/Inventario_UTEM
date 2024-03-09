@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
-// app.use(upload.single('art_image_path'))
+app.use(express.static('uploads/articulos'));
 
 // Configuración CORS
 
