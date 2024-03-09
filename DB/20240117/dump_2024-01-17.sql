@@ -389,3 +389,13 @@ SET character_set_client = @saved_cs_client;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2024-01-17 22:54:30
+
+-- Procedimiento Read_v_infogenerator en la base de datos que lea los datos  y genere un reporte general de los articulos en la base de datos
+```sql
+DELIMITER $$
+CREATE PROCEDURE Read_v_infogenerator()
+BEGIN
+SELECT * FROM v_infogenerator;
+END$$
+DELIMITER ;
+```
