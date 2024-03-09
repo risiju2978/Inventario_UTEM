@@ -236,10 +236,8 @@ const artController = {
         office_id,
       } = req.body;
 
-
       const imgArticulo = req.file;
 
-      console.log(imgArticulo);
       // Validación de campos obligatorios para insertar en la tabla articulo
       if (!articulo_estado_id || !categoria_id || !usuario_id || !office_id) {
         return res.status(400).json({
@@ -331,7 +329,7 @@ const artController = {
             art_codigo,
             art_ingreso = new Date(),
             art_glosa,
-            art_image_path = "rutaArchivo", // Guardamos la ruta del archivo en la base de datos
+            art_image_path =  imgArticulo.path, // Guardamos la ruta del archivo en la base de datos
           ];
 
           await db
