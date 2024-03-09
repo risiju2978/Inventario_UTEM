@@ -1,5 +1,6 @@
 
 require("dotenv").config();
+const { generarJWT } = require("../../../../utils/utils.generar-jwt");
 const {db} =require("../../../../utils/utils.helpers");
 const bcrypt = require('bcrypt');
 
@@ -88,11 +89,15 @@ loginUsuario: async (req, res) => {
       });
     }
 
+    //generar token
+    const token = await generarJWT(user[0].user_id, user[0].username)
+
     // Enviar respuesta exitosa con los datos del usuario
     res.status(200).json({
       status: 200,
       data: user,
       message: "Usuario accedido con exito ",
+      token: token,
     });
   } catch (error) {
     console.error(error);
