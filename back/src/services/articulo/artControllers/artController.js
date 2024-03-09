@@ -270,42 +270,12 @@ const artController = {
             office_id,
           ];
 
-         
-            const [resultArticulo] = await db
-              .promise()
-              .query(sqlArticulo, dataInsertArticulo);
+          const [resultArticulo] = await db
+            .promise()
+            .query(sqlArticulo, dataInsertArticulo);
 
-            const id_articulo = resultArticulo.insertId;
-          // 2. Convertir imagen base64 a binaria
-          // const base64Data = art_image_path.split(";base64,").pop();
-          // const imageBuffer = Buffer.from(base64Data, "base64");
-//           const base64Data = art_image_path.replace(/^data:image\/\w+;base64,/, "");
-// const imageBuffer = Buffer.from(base64Data, 'base64');
+          const id_articulo = resultArticulo.insertId;
 
-//           // Directorio donde se guardarán las imágenes
-//           const directorio = "imagenes/";
-
-//           // Crear el directorio si no existe
-//           if (!fs.existsSync(directorio)) {
-//             fs.mkdirSync(directorio, { recursive: true });
-//           }
-
-//           // Nombre de archivo único (aquí puedes generar uno único)
-//           const nombreArchivo = `imagen_${Date.now()}.jpg`;
-
-//           // Ruta completa del archivo
-//           const rutaArchivo = path.join(directorio, nombreArchivo);
-
-//           // Escribir el archivo en el directorio
-//           fs.writeFile(rutaArchivo, imageBuffer, async (err) => {
-//             if (err) {
-//               console.error(err);
-//               return res
-//                 .status(500)
-//                 .json({ error: "Error al guardar la imagen" });
-//             }
-//           });
-          //funcion NOW() con ella recupero la fecha exacta desde el ordenador
           // 3. Insertar en la tabla articulo_detalle
           const sqlArticuloDetalle = `
             INSERT INTO articulo_detalle (
@@ -327,9 +297,9 @@ const artController = {
             art_num,
             art_nombre,
             art_codigo,
-            art_ingreso = new Date(),
+            (art_ingreso = new Date()),
             art_glosa,
-            art_image_path =  imgArticulo.path, // Guardamos la ruta del archivo en la base de datos
+            (art_image_path = imgArticulo.path), // Guardamos la ruta del archivo en la base de datos
           ];
 
           await db
@@ -342,7 +312,6 @@ const artController = {
               return db.rollback(() => {
                 console.log("error en el commit");
                 throw new Error();
-                
               });
             }
 
