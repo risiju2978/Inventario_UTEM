@@ -9,30 +9,42 @@ const app = express();
 const cors = require('cors');
 
 
+
+
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-// // Configuración CORS
-// // app.use((req, res, next) => {
-// //   res.setHeader('Access-Control-Allow-Origin', '*');
-// //   res.setHeader(
-// //     'Access-Control-Allow-Methods',
-// //     'GET, POST, OPTIONS, PUT, DELETE'
-// //   );
-// //   res.setHeader(
-// //     'Access-Control-Allow-Headers',
-// //     'Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method'
-// //   );
-// //   res.setHeader('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-// //   res.setHeader('Access-Control-Allow-Credentials', true);
-// //   next();
-// // });
-app.use(cors);
-
-// // Configura body-parser con un límite de tamaño de carga de 50MB
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
+// app.use(upload.single('art_image_path'))
+
+// Configuración CORS
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, DELETE'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method'
+  );
+  res.setHeader('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+// app.use(cors, 
+//   function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+//   }
+// );
+
+// // Configura body-parser con un límite de tamaño de carga de 50MB
+
 
 // // Rutas del servidor
 const usuarioRoutes = require('./services/usuario/userRoutes/userRoutes');
@@ -85,3 +97,17 @@ module.exports = app;
 //   }
 //   console.log('Conectado a la base de datos!');
 // });
+
+
+// const express = require('express');
+// const app = express();
+
+// app.get('/', (req, res) => {
+//   res.send('Hello World');
+// }
+// );
+
+// app.listen(3000, () => {
+//   console.log('Server on port 3000');
+// }
+// );

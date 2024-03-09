@@ -3,6 +3,7 @@ const { db } = require("../../../../utils/utils.helpers");
 
 const fs = require("fs");
 const path = require("path");
+const { request } = require("express");
 
 const artController = {
   //##################################################################################
@@ -220,7 +221,7 @@ const artController = {
   //agregar articulo
   //REVISADO Y FUNCIONANDO
 
-  incomeArticulo: async (req, res) => {
+  incomeArticulo: async (req = request, res) => {
     try {
       const {
         usuario_id,
@@ -230,14 +231,15 @@ const artController = {
         art_nombre,
         art_codigo,
         art_glosa,
-        art_ingreso,
-        art_image_path,
         articulo_estado_id,
         categoria_id,
         office_id,
       } = req.body;
 
-      console.log(req.body);
+
+      const imgArticulo = req.file;
+
+      console.log(imgArticulo);
       // Validación de campos obligatorios para insertar en la tabla articulo
       if (!articulo_estado_id || !categoria_id || !usuario_id || !office_id) {
         return res.status(400).json({
@@ -270,42 +272,44 @@ const artController = {
             office_id,
           ];
 
-          const [resultArticulo] = await db
-            .promise()
-            .query(sqlArticulo, dataInsertArticulo);
+         
+            const [resultArticulo] = await db
+              .promise()
+              .query(sqlArticulo, dataInsertArticulo);
 
-          const id_articulo = resultArticulo.insertId;
-
+            const id_articulo = resultArticulo.insertId;
           // 2. Convertir imagen base64 a binaria
-          const base64Data = art_image_path.split(";base64,").pop();
-          const imageBuffer = Buffer.from(base64Data, "base64");
+          // const base64Data = art_image_path.split(";base64,").pop();
+          // const imageBuffer = Buffer.from(base64Data, "base64");
+//           const base64Data = art_image_path.replace(/^data:image\/\w+;base64,/, "");
+// const imageBuffer = Buffer.from(base64Data, 'base64');
 
-          // Directorio donde se guardarán las imágenes
-          const directorio = "c:/imagenes";
+//           // Directorio donde se guardarán las imágenes
+//           const directorio = "imagenes/";
 
-          // Crear el directorio si no existe
-          if (!fs.existsSync(directorio)) {
-            fs.mkdirSync(directorio, { recursive: true });
-          }
+//           // Crear el directorio si no existe
+//           if (!fs.existsSync(directorio)) {
+//             fs.mkdirSync(directorio, { recursive: true });
+//           }
 
-          // Nombre de archivo único (aquí puedes generar uno único)
-          const nombreArchivo = `imagen_${Date.now()}.jpg`;
+//           // Nombre de archivo único (aquí puedes generar uno único)
+//           const nombreArchivo = `imagen_${Date.now()}.jpg`;
 
-          // Ruta completa del archivo
-          const rutaArchivo = path.join(directorio, nombreArchivo);
+//           // Ruta completa del archivo
+//           const rutaArchivo = path.join(directorio, nombreArchivo);
 
-          // Escribir el archivo en el directorio
-          fs.writeFile(rutaArchivo, imageBuffer, async (err) => {
-            if (err) {
-              console.error(err);
-              return res
-                .status(500)
-                .json({ error: "Error al guardar la imagen" });
-            }
-
-            //funcion NOW() con ella recupero la fecha exacta desde el ordenador
-            // 3. Insertar en la tabla articulo_detalle
-            const sqlArticuloDetalle = `
+//           // Escribir el archivo en el directorio
+//           fs.writeFile(rutaArchivo, imageBuffer, async (err) => {
+//             if (err) {
+//               console.error(err);
+//               return res
+//                 .status(500)
+//                 .json({ error: "Error al guardar la imagen" });
+//             }
+//           });
+          //funcion NOW() con ella recupero la fecha exacta desde el ordenador
+          // 3. Insertar en la tabla articulo_detalle
+          const sqlArticuloDetalle = `
             INSERT INTO articulo_detalle (
               id_articulo,
               anio,
@@ -316,42 +320,44 @@ const artController = {
               art_ingreso,
               art_glosa,
               art_image_path
-            ) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?)`;
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-            const dataInsertArticuloDetalle = [
-              id_articulo,
-              anio,
-              dimension,
-              art_num,
-              art_nombre,
-              art_codigo,
-              art_ingreso,
-              art_glosa,
-              rutaArchivo, // Guardamos la ruta del archivo en la base de datos
-            ];
+          const dataInsertArticuloDetalle = [
+            id_articulo,
+            anio,
+            dimension,
+            art_num,
+            art_nombre,
+            art_codigo,
+            art_ingreso = new Date(),
+            art_glosa,
+            art_image_path = "rutaArchivo", // Guardamos la ruta del archivo en la base de datos
+          ];
 
-            await db
-              .promise()
-              .query(sqlArticuloDetalle, dataInsertArticuloDetalle);
+          await db
+            .promise()
+            .query(sqlArticuloDetalle, dataInsertArticuloDetalle);
 
-            // Hacer commit si todo fue exitoso
-            db.commit((error) => {
-              if (error) {
-                return db.rollback(() => {
-                  throw error;
-                });
-              }
-
-              res.status(200).json({
-                status: 200,
-                message: "Artículo creado correctamente",
+          // Hacer commit si todo fue exitoso
+          db.commit((error) => {
+            if (error) {
+              return db.rollback(() => {
+                console.log("error en el commit");
+                throw new Error();
+                
               });
+            }
+
+            res.status(200).json({
+              status: 200,
+              message: "Artículo creado correctamente",
             });
           });
         } catch (error) {
           // Si hay un error, hacer rollback
+          console.log("error en la transacción", error);
           db.rollback(() => {
-            throw new Error;
+            throw new Error();
           });
         }
       });
@@ -363,6 +369,7 @@ const artController = {
       });
     }
   },
-  //########################################################################################
 };
+//########################################################################################
+
 module.exports = artController;
