@@ -29,9 +29,9 @@ function ArticuloComponent() {
       year: 'numeric',
       month: 'numeric',
       day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
+      // hour: 'numeric',
+      // minute: 'numeric',
+      // second: 'numeric',
       timeZone: 'UTC', // Específicamente para fechas en formato UTC
     };
     return date.toLocaleDateString('es-CL', options); // Cambia 'es-CL' al locale que necesites
@@ -65,7 +65,7 @@ function ArticuloComponent() {
     <div>
       <h1>Articulo Component</h1>
  
-      <table className="table table-bordered">
+      <table className="table table-striped">
         <thead>
           <tr>
          
@@ -100,7 +100,7 @@ function ArticuloComponent() {
               <td>{item.art_nombre}</td>
               <td>{item.art_codigo}</td>
               <td>{item.art_glosa}</td>
-              <td>{formatDate(item.art_Ingreso)}</td>
+              <td>{formatDate(item.art_ingreso).toString()}</td>
               <td>{item.campus}</td>
               <td>{item.departament}</td>
               <td>{item.office}</td>
