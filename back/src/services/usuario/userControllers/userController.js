@@ -1,6 +1,7 @@
 
 require("dotenv").config();
 const {db} =require("../../../../utils/utils.helpers");
+const bcrypt = require('bcrypt');
 
 
 
@@ -66,14 +67,24 @@ loginUsuario: async (req, res) => {
     }
 
     // Consultar en la base de datos para obtener el usuario por nombre y contraseña
-    const sql = `SELECT * FROM usuario WHERE username = ? AND password = ?`;
-    const [user] = await db.promise().query(sql, [username, password]);
+   
+    const sql = `SELECT * FROM usuario WHERE username = ?`;
+    const [user] = await db.promise().query(sql, [username]);
 
     // Si no está en arreglo, el usuario no existe
     if (user.length === 0) {
       return res.status(404).json({
         status: 404,
         error: "Usuario no encontrado",
+      });
+    }
+
+    const passWordVerify = bcrypt.compareSync(password, user[0].password); // devuelve true o false
+
+    if (!passWordVerify) {
+      return res.status(401).json({
+        status: 401,
+        message: "Contraseña incorrecta",
       });
     }
 
@@ -124,9 +135,14 @@ crearUsuario: async(req, res) => {
           await db.promise().beginTransaction();
       
           try {
+            const salt = bcrypt.genSaltSync();
+
+            const passWordEncripted = bcrypt.hashSync(password, salt)
+
+
             // Consulta SQL para insertar un nuevo usuario
             const insertUserQuery = 'INSERT INTO usuario (username, email, rol_id, user_state, password, campus_id) VALUES (?, ?, ?, ?, ?, ?)';
-            const userCreateData = [username, email, rol_id, user_state, password, campus_id];
+            const userCreateData = [username, email, rol_id, user_state, passWordEncripted, campus_id];
       
             // Ejecutar la consulta con los valores proporcionados
             const [resultDB] = await db.promise().query(insertUserQuery, userCreateData);
