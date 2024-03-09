@@ -2,19 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const AgregarArticulo = ({ modalVisible, toggleModal }) => {
-  const [formData, setFormData] = useState({
-    usuario_id: "",
-    anio: "",
-    dimension: "",
-    art_num: "",
-    art_nombre: "",
-    art_codigo: "",
-    art_glosa: "",
-    art_image_path: '',
-    articulo_estado_id: "",
-    categoria_id: "",
-    office_id: "",  
-  });
+  const [formData, setFormData] = useState({});
+
+  const [file, setFile] = useState(null);
 
   const [errors, setErrors] = useState({}); // Estado para manejar los errores de validación
 
@@ -26,24 +16,13 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
     });
   };
 
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      // Una vez que se ha leído completamente el archivo, se convierte a base64
-      const base64String = reader.result.split(",")[1];
-
-      setFormData({
-        ...formData,
-        art_image_path: base64String,
-      });
-    };
-
-    // Comenzar a leer el archivo como base64
-    reader.readAsDataURL(file);
+  const handleUploadFile = (event) => {
+    if (!event.target.files[0]) {
+      alert("Please select a file");
+      return;
+    }
+    setFile(event.target.files[0]);
   };
-
 
   const validateForm = () => {
     let errors = {};
@@ -84,8 +63,8 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
       isValid = false;
     }
 
-    if (!formData.art_image_path) {
-      errors.art_image_path = "El path de la imagen es requerido";
+    if (!formData.img) {
+      errors.img = "El path de la imagen es requerido";
       isValid = false;
     }
 
@@ -99,7 +78,8 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
       isValid = false;
     }
 
-    if (!formData.office_id) {  // Mantenemos 'office_id'
+    if (!formData.office_id) {
+      // Mantenemos 'office_id'
       errors.office_id = "La oficina es requerida";
       isValid = false;
     }
@@ -108,15 +88,39 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
     return isValid;
   };
 
-  const Agregar = async () => {
-    if (validateForm()) {
-      try {
-        console.log("Datos a enviar:", formData); // Verifica los datos que estás enviando
-        const response = await axios.post("http://localhost:8080/api/articulo/income_art", formData);
-        console.log("Artículo agregado correctamente:", response.data);
-        toggleModal(); // Cierra el modal después de agregar el artículo
-      } catch (error) {
-        console.log("Error al agregar el artículo:", error);
+  const Agregar = async (e) => {
+    e.preventDefault();
+    if (validateForm) {
+      if (file) {
+        console.log("Uploading file...");
+
+        const formDataFormat = new FormData();
+        formDataFormat.append("img", file);
+        formDataFormat.append("usuario_id", formData.usuario_id);
+        formDataFormat.append("anio", formData.anio);
+        formDataFormat.append("dimension", formData.dimension);
+        formDataFormat.append("art_num", formData.art_num);
+        formDataFormat.append("art_nombre", formData.art_nombre);
+        formDataFormat.append("art_codigo", formData.art_codigo);
+        formDataFormat.append("art_glosa", formData.art_glosa);
+        formDataFormat.append(
+          "articulo_estado_id",
+          formData.articulo_estado_id
+        );
+        formDataFormat.append("categoria_id", formData.categoria_id);
+        formDataFormat.append("office_id", formData.office_id);
+
+        try {
+          console.log("Datos a enviar:", formDataFormat); // Verifica los datos que estás enviando
+          const response = await axios.post(
+            "http://localhost:8080/api/articulo/income_art",
+            formDataFormat
+          );
+          console.log("Artículo agregado correctamente:", response.data);
+          toggleModal(); // Cierra el modal después de agregar el artículo
+        } catch (error) {
+          console.log("Error al agregar el artículo:", error);
+        }
       }
     }
   };
@@ -155,7 +159,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
               </div>
               <div className="modal-body">
                 {/* Formulario para ingresar datos del artículo */}
-                <form>
+                <form onSubmit={Agregar}>
                   <div className="mb-3">
                     <label className="form-label">Usuario ID</label>
                     <input
@@ -165,7 +169,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.usuario_id}
                       onChange={handleInputChange}
                     />
-                    {errors.usuario_id && <span className="text-danger">{errors.usuario_id}</span>}
+                    {errors.usuario_id && (
+                      <span className="text-danger">{errors.usuario_id}</span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Año</label>
@@ -176,7 +182,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.anio}
                       onChange={handleInputChange}
                     />
-                    {errors.anio && <span className="text-danger">{errors.anio}</span>}
+                    {errors.anio && (
+                      <span className="text-danger">{errors.anio}</span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Dimensión</label>
@@ -187,7 +195,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.dimension}
                       onChange={handleInputChange}
                     />
-                    {errors.dimension && <span className="text-danger">{errors.dimension}</span>}
+                    {errors.dimension && (
+                      <span className="text-danger">{errors.dimension}</span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Número</label>
@@ -198,7 +208,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.art_num}
                       onChange={handleInputChange}
                     />
-                    {errors.art_num && <span className="text-danger">{errors.art_num}</span>}
+                    {errors.art_num && (
+                      <span className="text-danger">{errors.art_num}</span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Nombre</label>
@@ -209,7 +221,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.art_nombre}
                       onChange={handleInputChange}
                     />
-                    {errors.art_nombre && <span className="text-danger">{errors.art_nombre}</span>}
+                    {errors.art_nombre && (
+                      <span className="text-danger">{errors.art_nombre}</span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Código</label>
@@ -220,7 +234,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.art_codigo}
                       onChange={handleInputChange}
                     />
-                    {errors.art_codigo && <span className="text-danger">{errors.art_codigo}</span>}
+                    {errors.art_codigo && (
+                      <span className="text-danger">{errors.art_codigo}</span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Glosa</label>
@@ -231,17 +247,21 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.art_glosa}
                       onChange={handleInputChange}
                     />
-                    {errors.art_glosa && <span className="text-danger">{errors.art_glosa}</span>}
+                    {errors.art_glosa && (
+                      <span className="text-danger">{errors.art_glosa}</span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Imagen Path</label>
                     <input
                       type="file"
                       className="form-control"
-                      name="art_image_path"
-                      onChange={handleFileInputChange}
+                      name="img"
+                      onChange={handleUploadFile}
                     />
-                    {errors.art_image_path && <span className="text-danger">{errors.art_image_path}</span>}
+                    {errors.art_image_path && (
+                      <span className="text-danger">{errors.img}</span>
+                    )}
                   </div>
 
                   <div className="mb-3">
@@ -253,7 +273,11 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.articulo_estado_id}
                       onChange={handleInputChange}
                     />
-                    {errors.articulo_estado_id && <span className="text-danger">{errors.articulo_estado_id}</span>}
+                    {errors.articulo_estado_id && (
+                      <span className="text-danger">
+                        {errors.articulo_estado_id}
+                      </span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Categoría ID</label>
@@ -264,7 +288,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.categoria_id}
                       onChange={handleInputChange}
                     />
-                    {errors.categoria_id && <span className="text-danger">{errors.categoria_id}</span>}
+                    {errors.categoria_id && (
+                      <span className="text-danger">{errors.categoria_id}</span>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Oficina ID</label>
@@ -275,22 +301,25 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       value={formData.office_id}
                       onChange={handleInputChange}
                     />
-                    {errors.office_id && <span className="text-danger">{errors.office_id}</span>}
+                    {errors.office_id && (
+                      <span className="text-danger">{errors.office_id}</span>
+                    )}
+                  </div>
+
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                      onClick={toggleModal}
+                    >
+                      Cancelar
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Agregar
+                    </button>
                   </div>
                 </form>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                  onClick={toggleModal}
-                >
-                  Cancelar
-                </button>
-                <button type="button" className="btn btn-primary" onClick={Agregar}>
-                  Agregar
-                </button>
               </div>
             </div>
           </div>

@@ -238,8 +238,9 @@ const artController = {
 
       const imgArticulo = req.file;
 
+
       // Validación de campos obligatorios para insertar en la tabla articulo
-      if (!articulo_estado_id || !categoria_id || !usuario_id || !office_id) {
+      if (!articulo_estado_id || !categoria_id || !usuario_id || !office_id || !imgArticulo) {
         return res.status(400).json({
           status: 400,
           error:

@@ -105,7 +105,7 @@ function ArticuloComponent() {
               <td>{item.departament}</td>
               <td>{item.office}</td>
               <td>{item.categoria}</td>
-              <td>{item.art_image_path}</td>
+              <td><img src={`http://localhost:8080/` + item.art_image_path}  alt={item.art_nombre}/>    </td>
               <td>{item.articulo_estado}</td>
               <td>
                 <DarDeBaja    modalVisible={modalDarDeBajaVisible} toggleModal={toggleDarDeBajaModal}  item={item.ID} />
