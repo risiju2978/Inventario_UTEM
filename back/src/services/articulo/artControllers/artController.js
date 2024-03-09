@@ -237,6 +237,7 @@ const artController = {
       } = req.body;
 
       const imgArticulo = req.file;
+      console.log(req.file)
 
 
       // Validación de campos obligatorios para insertar en la tabla articulo

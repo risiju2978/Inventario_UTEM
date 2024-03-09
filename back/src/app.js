@@ -8,9 +8,6 @@ const port = process.env.PORT;
 const app = express();
 const cors = require('cors');
 
-
-app.use('/uploads/articulos', express.static(path.join(__dirname, 'uploads/articulos')))
-
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -47,6 +44,7 @@ app.use((req, res, next) => {
 
 
 // // Rutas del servidor
+
 const usuarioRoutes = require('./services/usuario/userRoutes/userRoutes');
 const articuloRoutes = require('./services/articulo/artRoutes/artRoutes');
 const categoriaRoutes = require('./services/categoria/categoriaRoutes/categoriaRutasGeneral');
@@ -60,6 +58,7 @@ const vistaRoutes = require('./services/V_InfoGenerator/V_Routes/V_Routes');
 
 
 // Rutas
+app.use('/uploads/articulos/', express.static(path.join('uploads/articulos/')))
 app.use('/api/vista', vistaRoutes);
 app.use('/api/informe', infGenerator);
 app.use('/api/articulo', articuloRoutes);
@@ -89,25 +88,3 @@ app.listen(port, () => {
 
 
 module.exports = app;
-
-// db.connect((err) => {
-//   if (err) {
-//     console.error('Error de conexión: ', err);
-//     process.exit(1);
-//   }
-//   console.log('Conectado a la base de datos!');
-// });
-
-
-// const express = require('express');
-// const app = express();
-
-// app.get('/', (req, res) => {
-//   res.send('Hello World');
-// }
-// );
-
-// app.listen(3000, () => {
-//   console.log('Server on port 3000');
-// }
-// );
