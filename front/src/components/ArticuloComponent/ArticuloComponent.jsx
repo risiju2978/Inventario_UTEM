@@ -52,8 +52,12 @@ function ArticuloComponent() {
   }, []);
 
   return (
-    <div className="container" >
+    <div className="container mx-0" >
       <h1>Listado de Artículos</h1>
+      <AgregarArticulo
+                modalVisible={modalAgregarVisible}
+                toggleModal={toggleAgregarModal}
+              />
       <table className="table table-striped">
         <thead>
           <tr>
@@ -75,15 +79,11 @@ function ArticuloComponent() {
               style={{ display: "flex", alignItems: "center" }}
             >
               <span style={{ marginRight: "10px" }}>Acciones</span>
-              <AgregarArticulo
-                modalVisible={modalAgregarVisible}
-                toggleModal={toggleAgregarModal}
-              />
             </th>
           </tr>
         </thead>
         <tbody className="fw-lighter">
-          {vistaData.map((item) => (
+          {vistaData.length !== 0 ? vistaData.map((item) => (
             <tr key={item.ID}>
               <td>{item.anio}</td>
               <td>{item.dimension}</td>
@@ -117,7 +117,7 @@ function ArticuloComponent() {
                 />
               </td>
             </tr>
-          ))}
+          )): "Cargando..."}
         </tbody>
       </table>
     </div>
