@@ -3,7 +3,6 @@ import AgregarArticulo from "./AgregarArticulo";
 import EditarArticulo from "./EditarArticulo";
 import DarDeBaja from "./DarDeBaja";
 import axios from "axios";
-import { Api } from "../../api/api";
 
 function ArticuloComponent() {
   const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
