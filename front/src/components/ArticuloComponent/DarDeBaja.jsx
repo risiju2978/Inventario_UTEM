@@ -24,7 +24,7 @@ const DarDeBaja = ({ modalVisible, toggleModal, item }) => {
     }
   };
 
-  return (
+  return (  
     <>
       <button className="btn btn-danger" style={{ marginRight: "20px" }} onClick={toggleModal}>
       <i class="bi bi-file-earmark-x"></i>

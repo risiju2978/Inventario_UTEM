@@ -52,12 +52,12 @@ function ArticuloComponent() {
   }, []);
 
   return (
-    <div className="container mx-0" >
+    <div className="container mx-0">
       <h1>Listado de Artículos</h1>
       <AgregarArticulo
-                modalVisible={modalAgregarVisible}
-                toggleModal={toggleAgregarModal}
-              />
+        modalVisible={modalAgregarVisible}
+        toggleModal={toggleAgregarModal}
+      />
       <table className="table table-striped">
         <thead>
           <tr>
@@ -75,53 +75,55 @@ function ArticuloComponent() {
             <th>imagen articulo</th>
             <th>Articulo estado</th>
             <th
-              className="acciones-header"
-              style={{ display: "flex", alignItems: "center" }}
+            // className="acciones-header"
+            // style={{alignItems: "center" }}
             >
-              <span style={{ marginRight: "10px" }}>Acciones</span>
+              Acciones
             </th>
           </tr>
         </thead>
         <tbody className="fw-lighter">
-          {vistaData.length !== 0 ? vistaData.map((item) => (
-            <tr key={item.ID}>
-              <td>{item.anio}</td>
-              <td>{item.dimension}</td>
-              <td>{item.art_num}</td>
-              <td>{item.art_nombre}</td>
-              <td>{item.art_codigo}</td>
-              <td>{item.art_glosa}</td>
-              <td>{formatDate(item.art_ingreso).toString()}</td>
-              <td>{item.campus}</td>
-              <td>{item.departament}</td>
-              <td>{item.office}</td>
-              <td>{item.categoria}</td>
-              <td>
-                <img
-                  src={`http://localhost:8080/` + item.art_image_path}
-                  alt={item.art_nombre}
-                  width={75}
-                />
-              </td>
-              <td>{item.articulo_estado === 0 ? "Activo": "Inactivo"}</td>
-              <td className="d-flex flex">
-                <div>
-                <DarDeBaja
-                  modalVisible={modalDarDeBajaVisible}
-                  toggleModal={toggleDarDeBajaModal}
-                  item={item.ID}
-                />
-                </div>
-                 <div>
-                <EditarArticulo
-                  modalVisible={modalEditarVisible}
-                  toggleModal={toggleEditarModal}
-                  item={item}
-                />
-                </div>
-              </td>
-            </tr>
-          )): "Cargando..."}
+          {vistaData.length !== 0
+            ? vistaData.map((item) => (
+                <tr key={item.ID}>
+                  <td>{item.anio}</td>
+                  <td>{item.dimension}</td>
+                  <td>{item.art_num}</td>
+                  <td>{item.art_nombre}</td>
+                  <td>{item.art_codigo}</td>
+                  <td>{item.art_glosa}</td>
+                  <td>{formatDate(item.art_ingreso).toString()}</td>
+                  <td>{item.campus}</td>
+                  <td>{item.departament}</td>
+                  <td>{item.office}</td>
+                  <td>{item.categoria}</td>
+                  <td>
+                    <img
+                      src={`http://localhost:8080/` + item.art_image_path}
+                      alt={item.art_nombre}
+                      width={75}
+                    />
+                  </td>
+                  <td>{item.articulo_estado === 0 ? "Activo" : "Inactivo"}</td>
+                  <td className="d-flex flex h-100">
+                    <div>
+                      <EditarArticulo
+                        modalVisible={modalEditarVisible}
+                        toggleModal={toggleEditarModal}
+                        item={item}
+                      />
+                    </div>
+                    <div>
+                      <DarDeBaja
+                        modalVisible={modalDarDeBajaVisible}
+                        toggleModal={toggleDarDeBajaModal}
+                        item={item.ID}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            : "Cargando..."}
         </tbody>
       </table>
     </div>
