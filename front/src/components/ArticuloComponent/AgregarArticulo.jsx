@@ -90,7 +90,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
 
   const Agregar = async (e) => {
     e.preventDefault();
-    if (validateForm) {
+    if (validateForm()) {
       if (file) {
         console.log("Uploading file...");
 
