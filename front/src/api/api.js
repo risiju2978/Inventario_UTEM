@@ -9,7 +9,7 @@ export class Api {
   }
 
   static async getAllOficinas() {
-    const response = await fetch(`${url}/oficina/getAllOficinas`);
+    const response = await axios.get(`${url}/oficina/getAllOficinas`);
     return response.data.data
   }
 }

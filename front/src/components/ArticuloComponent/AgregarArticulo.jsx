@@ -5,7 +5,7 @@ import { Api } from "../../api/api";
 const AgregarArticulo = ({ modalVisible, toggleModal }) => {
   const [formData, setFormData] = useState({});
   const [departamentos, setDepartamentos] = useState([]); // Estado para almacenar los datos de la vista
-
+  const [oficinas, setOficinas] = useState([]); // Estado para almacenar los datos de la vista
 
   const [file, setFile] = useState(null);
 
@@ -93,8 +93,8 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
 
   const Agregar = async (e) => {
     e.preventDefault();
-  
-    if (validateForm()) { 
+
+    if (validateForm()) {
       if (file) {
         const formDataFormat = new FormData();
         formDataFormat.append("img", file);
@@ -119,6 +119,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
             formDataFormat
           );
           console.log("Artículo agregado correctamente:", response.data);
+          setFormData({}); // Limpia el formulario después de agregar el artículo
           toggleModal(); // Cierra el modal después de agregar el artículo
         } catch (error) {
           console.log("Error al agregar el artículo:", error);
@@ -129,19 +130,32 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
 
   useEffect(() => {
     Api.getAllDeparments()
-    .then((response) => {
-      setDepartamentos(response);
-    }
-    )
-    .catch((error) => {
-      console.error("Error fetching data", error);
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+      .then((response) => {
+        setDepartamentos(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching data", error);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(
+    () => {
+      Api.getAllOficinas()
+        .then((response) => {
+          setOficinas(response);
+        })
+        .catch((error) => {
+          console.error("Error fetching data", error);
+        });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <div>
-      <button className="btn btn-success"  onClick={toggleModal}>
+      <button className="btn btn-success" onClick={toggleModal}>
         Agregar Artículo <i class="bi bi-file-earmark-plus-fill"></i>
       </button>
 
@@ -307,14 +321,22 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                     )}
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">Oficina ID</label>
-                    <input
+                    <label className="form-label">Oficina</label>
+                    <select name="office_id" className="form-control" onChange={handleInputChange}>
+                      <option value="">Seleccione una oficina</option>
+                      {oficinas.map((item, index) => (
+                        <option key={index} value={item.office_id}>
+                          {item.office}
+                        </option>
+                      ))}
+                    </select>
+                    {/* <input
                       type="text"
                       className="form-control"
                       name="office_id"
                       value={formData.office_id}
                       onChange={handleInputChange}
-                    />
+                    /> */}
                     {errors.office_id && (
                       <span className="text-danger">{errors.office_id}</span>
                     )}
