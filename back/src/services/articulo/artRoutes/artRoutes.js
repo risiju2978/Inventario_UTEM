@@ -8,7 +8,7 @@ const router = express.Router();
   
 
 // Endpoint para editar articulo
-router.put('/edit_art', artController.editArticulo);
+router.put('/edit_art', upload.single('img'), artController.editArticulo);
 // Endpoint para dar de baja el articulo
 router.post('/baja_art', artController.bajaArticulo);
 // Endpoint para crear articulo
