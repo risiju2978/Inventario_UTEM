@@ -109,7 +109,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
   return (
     <div>
       <button className="btn btn-warning" onClick={toggleModal}>
-        Editar Artículo
+      <i class="bi bi-pencil-square"></i>
       </button>
 
       {modalVisible && (
