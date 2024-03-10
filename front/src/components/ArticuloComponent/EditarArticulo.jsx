@@ -84,6 +84,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
     e.preventDefault();
     if (validateForm()) {
       const formDataFormat = new FormData();
+      formDataFormat.append("id_articulo", item.ID);
       formDataFormat.append("img", file);
       formDataFormat.append("anio", formData.anio);
       formDataFormat.append("dimension", formData.dimension);

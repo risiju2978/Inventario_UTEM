@@ -20,6 +20,7 @@ const artController = {
       } = req.body;
 
       const imgArticulo = req.file;
+      console.log(imgArticulo)
 
       db.beginTransaction((error) => {
         if (error) {
@@ -27,22 +28,22 @@ const artController = {
         }
 
         // Validar campos obligatorios para editar en la tabla articulo
-        if (
-          !id_articulo ||
-          !anio ||
-          !dimension ||
-          !art_num ||
-          !art_nombre ||
-          !art_codigo ||
-          !art_glosa ||
-          !imgArticulo
-        ) {
-          return res.status(400).json({
-            status: 400,
-            error:
-              "Faltan campos obligatorios para editar en la tabla articulo",
-          });
-        }
+        // if (
+        //   !id_articulo ||
+        //   !anio ||
+        //   !dimension ||
+        //   !art_num ||
+        //   !art_nombre ||
+        //   !art_codigo ||
+        //   !art_glosa ||
+        //   !imgArticulo
+        // ) {
+        //   return res.status(400).json({
+        //     status: 400,
+        //     error:
+        //       "Faltan campos obligatorios para editar en la tabla articulo",
+        //   });
+        // }
             // Actualizar en articulo_detalle
             const sqlArticuloDetalle = `
                 UPDATE articulo_detalle
