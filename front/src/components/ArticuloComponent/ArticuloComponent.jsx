@@ -104,17 +104,21 @@ function ArticuloComponent() {
                 />
               </td>
               <td>{item.articulo_estado === 0 ? "Activo": "Inactivo"}</td>
-              <td className="flex flex-row">
+              <td className="d-flex flex">
+                <div>
                 <DarDeBaja
                   modalVisible={modalDarDeBajaVisible}
                   toggleModal={toggleDarDeBajaModal}
                   item={item.ID}
                 />
+                </div>
+                 <div>
                 <EditarArticulo
                   modalVisible={modalEditarVisible}
                   toggleModal={toggleEditarModal}
                   item={item}
                 />
+                </div>
               </td>
             </tr>
           )): "Cargando..."}
