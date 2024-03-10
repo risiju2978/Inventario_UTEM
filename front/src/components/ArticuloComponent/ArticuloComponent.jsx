@@ -52,7 +52,7 @@ function ArticuloComponent() {
   }, []);
 
   return (
-    <div className=" container " >
+    <div className="container" >
       <h1>Listado de Artículos</h1>
       <table className="table table-striped">
         <thead>
@@ -82,7 +82,7 @@ function ArticuloComponent() {
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="fw-lighter">
           {vistaData.map((item) => (
             <tr key={item.ID}>
               <td>{item.anio}</td>
@@ -100,10 +100,11 @@ function ArticuloComponent() {
                 <img
                   src={`http://localhost:8080/` + item.art_image_path}
                   alt={item.art_nombre}
+                  width={75}
                 />
               </td>
-              <td>{item.articulo_estado}</td>
-              <td>
+              <td>{item.articulo_estado === 0 ? "Activo": "Inactivo"}</td>
+              <td className="flex flex-row">
                 <DarDeBaja
                   modalVisible={modalDarDeBajaVisible}
                   toggleModal={toggleDarDeBajaModal}

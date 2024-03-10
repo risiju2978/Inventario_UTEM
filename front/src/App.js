@@ -5,7 +5,7 @@ import { MenuComponent } from "./components/NavBarComponent/Menu";
 import ArticuloComponent from "./components/ArticuloComponent/ArticuloComponent";
 function App() {
   return (
-    <div className="App">
+    <div className="">
       <div className="container-fluid">
         <MenuComponent />
       </div>
