@@ -126,7 +126,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
 
   return (
     <div>
-      <button className="btn btn-success" onClick={toggleModal}>
+      <button className="btn btn-success"  onClick={toggleModal}>
         Agregar Artículo <i class="bi bi-file-earmark-plus-fill"></i>
       </button>
 
