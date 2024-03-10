@@ -3,13 +3,13 @@ import AgregarArticulo from "./AgregarArticulo";
 import EditarArticulo from "./EditarArticulo";
 import DarDeBaja from "./DarDeBaja";
 import axios from "axios";
+import { Api } from "../../api/api";
 
 function ArticuloComponent() {
   const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
   const [modalEditarVisible, setModalEditarVisible] = useState(false); // Estado para controlar la visibilidad del modal de editar artículo
   const [modalDarDeBajaVisible, setModalDarDeBajaVisible] = useState(false); // Estado para controlar la visibilidad del modal de dar de baja artículo
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
-
   const toggleDarDeBajaModal = () => {
     setModalDarDeBajaVisible(!modalDarDeBajaVisible); // Cambia el estado de visibilidad del modal de dar de baja artículo
   };

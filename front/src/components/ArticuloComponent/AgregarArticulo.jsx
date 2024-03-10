@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Api } from "../../api/api";
 
 const AgregarArticulo = ({ modalVisible, toggleModal }) => {
   const [formData, setFormData] = useState({});
+  const [departamentos, setDepartamentos] = useState([]); // Estado para almacenar los datos de la vista
+
 
   const [file, setFile] = useState(null);
 
@@ -123,6 +126,18 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
       }
     }
   };
+
+  useEffect(() => {
+    Api.getAllDeparments()
+    .then((response) => {
+      setDepartamentos(response);
+    }
+    )
+    .catch((error) => {
+      console.error("Error fetching data", error);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
