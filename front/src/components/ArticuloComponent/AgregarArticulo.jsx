@@ -90,12 +90,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
 
   const Agregar = async (e) => {
     e.preventDefault();
-    console.log("Agregando artículo...");
-    console.log(file)
+  
     if (validateForm()) { 
       if (file) {
-        console.log("Uploading file...");
-
         const formDataFormat = new FormData();
         formDataFormat.append("img", file);
         formDataFormat.append("usuario_id", formData.usuario_id);
