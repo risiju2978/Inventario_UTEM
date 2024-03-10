@@ -3,13 +3,14 @@ import { HomeComponent } from "./components/HomeComponet";
 import UserComponent from "./components/UserComponent/UserComponent";
 import { MenuComponent } from "./components/NavBarComponent/Menu";
 import ArticuloComponent from "./components/ArticuloComponent/ArticuloComponent";
+
 function App() {
   return (
-    <div className="">
-      <div className="container-fluid">
+    <div className="container-fluid">
+      <div>
         <MenuComponent />
       </div>
-      <div className="container">
+      <div>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomeComponent />}></Route>
