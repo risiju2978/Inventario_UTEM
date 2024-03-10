@@ -126,6 +126,7 @@ function ArticuloComponent() {
           )): "Cargando..."}
         </tbody>
       </table>
+      
     </div>
   );
 }

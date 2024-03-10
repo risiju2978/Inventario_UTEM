@@ -2,21 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
-  const [formData, setFormData] = useState({
-    anio: item.anio || "",
-    dimension: item.dimension || "",
-    art_num: item.art_num || "",
-    art_nombre: item.art_nombre || "",
-    art_codigo: item.art_codigo || "",
-    art_glosa: item.art_glosa || "",
-  });
+  const [FormDataUpdate, setFormDataUpdate] = useState({});
 
   const [file, setFile] = useState(null);
 
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    setFormData({
+    setFormDataUpdate({
       anio: item.anio || "",
       dimension: item.dimension || "",
       art_num: item.art_num || "",
@@ -28,8 +21,8 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormDataUpdate({
+      ...FormDataUpdate,
       [name]: value,
     });
   };
@@ -46,32 +39,32 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
     let errors = {};
     let isValid = true;
 
-    if (!formData.anio) {
+    if (!FormDataUpdate.anio) {
       errors.anio = "El año es requerido";
       isValid = false;
     }
 
-    if (!formData.dimension) {
+    if (!FormDataUpdate.dimension) {
       errors.dimension = "La dimensión es requerida";
       isValid = false;
     }
 
-    if (!formData.art_num) {
+    if (!FormDataUpdate.art_num) {
       errors.art_num = "El número es requerido";
       isValid = false;
     }
 
-    if (!formData.art_nombre) {
+    if (!FormDataUpdate.art_nombre) {
       errors.art_nombre = "El nombre es requerido";
       isValid = false;
     }
 
-    if (!formData.art_codigo) {
+    if (!FormDataUpdate.art_codigo) {
       errors.art_codigo = "El código es requerido";
       isValid = false;
     }
 
-    if (!formData.art_glosa) {
+    if (!FormDataUpdate.art_glosa) {
       errors.art_glosa = "La glosa es requerida";
       isValid = false;
     }
@@ -83,20 +76,20 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
   const Editar = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const formDataFormat = new FormData();
-      formDataFormat.append("id_articulo", item.ID);
-      formDataFormat.append("img", file);
-      formDataFormat.append("anio", formData.anio);
-      formDataFormat.append("dimension", formData.dimension);
-      formDataFormat.append("art_num", formData.art_num);
-      formDataFormat.append("art_nombre", formData.art_nombre);
-      formDataFormat.append("art_codigo", formData.art_codigo);
-      formDataFormat.append("art_glosa", formData.art_glosa);
+      const FormDataUpdateFormat = new FormData();
+      FormDataUpdateFormat.append("id_articulo", item.ID);
+      FormDataUpdateFormat.append("img", file);
+      FormDataUpdateFormat.append("anio", FormDataUpdate.anio);
+      FormDataUpdateFormat.append("dimension", FormDataUpdate.dimension);
+      FormDataUpdateFormat.append("art_num", FormDataUpdate.art_num);
+      FormDataUpdateFormat.append("art_nombre", FormDataUpdate.art_nombre);
+      FormDataUpdateFormat.append("art_codigo", FormDataUpdate.art_codigo);
+      FormDataUpdateFormat.append("art_glosa", FormDataUpdate.art_glosa);
 
       try {
         const response = await axios.put(
           "http://localhost:8080/api/articulo/edit_art",
-          formDataFormat
+          FormDataUpdateFormat
         );
         console.log("Artículo editado correctamente:", response.data);
         toggleModal();
@@ -148,7 +141,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
                       className="form-control"
                       id="anio"
                       name="anio"
-                      value={formData.anio}
+                      value={FormDataUpdate.anio}
                       onChange={handleInputChange}
                     />
                     {errors.anio && (
@@ -164,7 +157,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
                       className="form-control"
                       id="dimension"
                       name="dimension"
-                      value={formData.dimension}
+                      value={FormDataUpdate.dimension}
                       onChange={handleInputChange}
                     />
                     {errors.dimension && (
@@ -180,7 +173,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
                       className="form-control"
                       id="art_num"
                       name="art_num"
-                      value={formData.art_num}
+                      value={FormDataUpdate.art_num}
                       onChange={handleInputChange}
                     />
                     {errors.art_num && (
@@ -196,7 +189,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
                       className="form-control"
                       id="art_nombre"
                       name="art_nombre"
-                      value={formData.art_nombre}
+                      value={FormDataUpdate.art_nombre}
                       onChange={handleInputChange}
                     />
                     {errors.art_nombre && (
@@ -212,7 +205,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
                       className="form-control"
                       id="art_codigo"
                       name="art_codigo"
-                      value={formData.art_codigo}
+                      value={FormDataUpdate.art_codigo}
                       onChange={handleInputChange}
                     />
                     {errors.art_codigo && (
@@ -228,7 +221,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
                       className="form-control"
                       id="art_glosa"
                       name="art_glosa"
-                      value={formData.art_glosa}
+                      value={FormDataUpdate.art_glosa}
                       onChange={handleInputChange}
                     />
                     {errors.art_glosa && (
