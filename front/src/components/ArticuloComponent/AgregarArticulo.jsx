@@ -63,7 +63,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
       isValid = false;
     }
 
-    if (!formData.img) {
+    if (!file) {
       errors.img = "El path de la imagen es requerido";
       isValid = false;
     }
@@ -90,7 +90,9 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
 
   const Agregar = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    console.log("Agregando artículo...");
+    console.log(file)
+    if (validateForm()) { 
       if (file) {
         console.log("Uploading file...");
 
@@ -259,7 +261,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                       name="img"
                       onChange={handleUploadFile}
                     />
-                    {errors.art_image_path && (
+                    {errors.img && (
                       <span className="text-danger">{errors.img}</span>
                     )}
                   </div>
