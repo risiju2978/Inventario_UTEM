@@ -70,17 +70,17 @@ app.use('/api/articuloEstado', articuloEstadoRoutes);
 app.use('/api/oficina', oficinaRoutes);
 
 // Ruta para errores no especificados
-// app.get("/*", (req, res) => {
-//   res.status(400).json({ status: 400, message: "ruta no especificada" });
-// });
+app.get("/*", (req, res) => {
+  res.status(400).json({ status: 400, message: "ruta no especificada" });
+});
 
-// app.post("/*", (req, res) => {
-//   res.status(400).json({ status: 400, message: "ruta no especificada" });
-// });
+app.post("/*", (req, res) => {
+  res.status(400).json({ status: 400, message: "ruta no especificada" });
+});
 
-// app.put("/*", (req, res) => {
-//   res.status(400).json({ status: 400, message: "ruta no especificada" });
-// });
+app.put("/*", (req, res) => {
+  res.status(400).json({ status: 400, message: "ruta no especificada" });
+});
 
 app.listen(port, () => {
   console.log("inventario application up on port", port);
