@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomeComponent } from "./components/HomeComponet";
-
-import { MenuComponent } from "./components/Menu";
+import UserComponent from "./components/UserComponent/UserComponent";
+import { MenuComponent } from "./components/NavBarComponent/Menu";
 import ArticuloComponent from "./components/ArticuloComponent/ArticuloComponent";
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
             <Route path="/" element={<HomeComponent />}></Route>
             <Route path="/home" element={<HomeComponent />}></Route>
             <Route path="/articulo" element={<ArticuloComponent />}></Route>
+            <Route path="/usuario" element={<UserComponent />}></Route>
           </Routes>
         </BrowserRouter>
       </div>
