@@ -1,25 +1,10 @@
 
-const multer = require('multer');
-const path = require('path');
 
+const upload = require('../../../middlewares/upload-files');
 const artController = require ('../artControllers/artController');
 const express = require("express");
 const router = express.Router();
 
-
- // utilizar multer para implementar la subida de imagenes
- const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/articulos/')
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      const ext = path.extname(file.originalname);
-      cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-    }
-  });
-  
-  const upload = multer({ storage: storage});
   
 
 // Endpoint para editar articulo

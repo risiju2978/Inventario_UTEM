@@ -17,8 +17,9 @@ const artController = {
         art_nombre,
         art_codigo,
         art_glosa,
-        art_image_path,
       } = req.body;
+
+      const imgArticulo = req.file;
 
       db.beginTransaction((error) => {
         if (error) {
@@ -34,7 +35,7 @@ const artController = {
           !art_nombre ||
           !art_codigo ||
           !art_glosa ||
-          !art_image_path
+          !imgArticulo
         ) {
           return res.status(400).json({
             status: 400,
@@ -42,36 +43,6 @@ const artController = {
               "Faltan campos obligatorios para editar en la tabla articulo",
           });
         }
-
-        // Verifica si se proporciona una imagen
-        if (art_image_path) {
-          // Convierte la imagen de base64 a binario
-          const base64Data = art_image_path.split(";base64,").pop();
-          const imageBuffer = Buffer.from(base64Data, "base64");
-
-          // Directorio donde se guardarán las imágenes
-          const directorio = "c:/imagenes";
-
-          // Nombre de archivo único (aquí puedes generar uno único)
-          const nombreArchivo = `imagen_${Date.now()}.jpg`;
-
-          // Ruta completa del archivo
-          const rutaArchivo = path.join(directorio, nombreArchivo);
-
-          // Crea el directorio si no existe
-          if (!fs.existsSync(directorio)) {
-            fs.mkdirSync(directorio, { recursive: true });
-          }
-
-          // Escribe el archivo en el directorio
-          fs.writeFile(rutaArchivo, imageBuffer, async (err) => {
-            if (err) {
-              console.error(err);
-              return res
-                .status(500)
-                .json({ error: "Error al guardar la imagen" });
-            }
-
             // Actualizar en articulo_detalle
             const sqlArticuloDetalle = `
                 UPDATE articulo_detalle
@@ -93,7 +64,7 @@ const artController = {
               art_nombre,
               art_codigo,
               art_glosa,
-              rutaArchivo,
+              imgArticulo.path,
               id_articulo,
             ];
 
@@ -124,8 +95,8 @@ const artController = {
                 });
               }
             );
-          });
-        }
+          
+        
       });
     } catch (error) {
       console.error(error);
