@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Api } from '../../api/api';
-import { AuthContext } from '../../context/AuthContext';
-import { UserContext } from '../../context/UserAppContext';
-UserContext
+import { useAuthContext } from '../../context/AuthContext';
+import { useUserContext } from '../../context/UserAppContext';
 
 const LoginComponent = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const { login } = AuthContext()
-    const { userSetOnSession } = UserContext()
+    const { login } = useAuthContext()
+    const { userSetOnSession } = useUserContext()
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
