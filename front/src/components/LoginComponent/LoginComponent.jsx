@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Api } from '../../api/api';
 import { useAuthContext } from '../../context/AuthContext';
 import { useUserContext } from '../../context/UserAppContext';
+import {useNavigate} from 'react-router-dom';
 
 const LoginComponent = () => {
     const [username, setUsername] = useState('');
@@ -9,6 +10,8 @@ const LoginComponent = () => {
 
     const { login } = useAuthContext()
     const { userSetOnSession } = useUserContext()
+
+    const navigate = useNavigate();
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -31,7 +34,7 @@ const LoginComponent = () => {
                 login();
                 const usuario = response[0];
                 userSetOnSession(usuario.user_id, usuario.username, usuario.email, usuario.rol_id);
-                // window.location.reload();
+               navigate('/articulo');
             })
             .catch((error) => {
                 console.log('Error al loguear usuario', error);

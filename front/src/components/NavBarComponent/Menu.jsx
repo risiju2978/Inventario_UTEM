@@ -8,6 +8,7 @@ export function MenuComponent() {
   const [usuario, setUsuario] = useState(null);
   const [loging, setLoging] = useState(false)
 
+
   useEffect(() => {
     if (user) setUsuario(user);
     if (isAuthenticated)  setLoging(true)
@@ -16,7 +17,7 @@ export function MenuComponent() {
   const handleLogout = () => {
     logout();
     userSetOffSession();
-    window.location.reload()
+   window.location.href = '/login';
   }
 
   return (
