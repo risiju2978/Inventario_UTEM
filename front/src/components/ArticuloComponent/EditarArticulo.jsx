@@ -18,7 +18,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item}) => {
       art_glosa: item.art_glosa || "",
     });
     console.log("item", item)
-  }, [item]);
+  }, [item, toggleModal]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
