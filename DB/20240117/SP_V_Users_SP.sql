@@ -1,0 +1,11 @@
+
+DELIMITER //
+
+CREATE PROCEDURE Read_Users()
+BEGIN
+    SELECT * FROM V_Users;
+END //
+
+DELIMITER ;
+
+CALL Read_Users();
