@@ -20,8 +20,6 @@ function App() {
         setIsLogged(true);
       }
       setRol(userLocal.rol);
-
-      console.log("userLocal", userLocal);
     }
   }, [isLogged, rol, userLocal]);
 
