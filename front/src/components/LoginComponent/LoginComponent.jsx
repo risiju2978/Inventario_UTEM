@@ -43,7 +43,7 @@ const LoginComponent = () => {
 
     return (
         <div className="container">
-            <h1>Registro de Usuarios</h1>
+            <h1>Ingresar al sistema</h1>
             <form>
                 <div className="mb-3">
                     <label htmlFor="username" className="form-label">Username</label>
