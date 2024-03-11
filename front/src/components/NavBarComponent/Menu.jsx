@@ -3,13 +3,21 @@ import { useUserContext } from "../../context/UserAppContext";
 import { useAuthContext } from "../../context/AuthContext";
 
 export function MenuComponent() {
-  const { user } = useUserContext();
-  const { isAuthenticated } = useAuthContext();
+  const { user, userSetOffSession } = useUserContext();
+  const { isAuthenticated, logout } = useAuthContext();
   const [usuario, setUsuario] = useState(null);
+  const [loging, setLoging] = useState(false)
 
   useEffect(() => {
     if (user) setUsuario(user);
-  }, [user]);
+    if (isAuthenticated)  setLoging(true)
+  }, [isAuthenticated, user]);
+
+  const handleLogout = () => {
+    logout();
+    userSetOffSession();
+    window.location.reload()
+  }
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary mb-2 justify-content-center">
@@ -52,6 +60,7 @@ export function MenuComponent() {
             </li>
           </ul>
         </div>
+        <div>{!loging ? null : <button type="button" className="btn -btn-danger" onClick={handleLogout}>Cerrar sesión</button>}</div>
       </div>
     </nav>
   );
