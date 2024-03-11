@@ -7,29 +7,25 @@ import LoginComponent from "./components/LoginComponent/LoginComponent";
 import RegistrarUserComponent from "./components/RegistrarUserComponent/RegistrarUserComponent";
 import { ProtectedRoutes } from "./components/common/ProtectedComponente";
 import { useEffect, useState } from "react";
-import { useUserContext } from "./context/UserAppContext";
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [rol, setRol] = useState(0);
-  const { user } = useUserContext();
+  const userLocal = JSON.parse(localStorage.getItem("USER_APP"));
 
   useEffect(() => {
-    if (user) {
+    if (userLocal) {
       const auth = localStorage.getItem("MY_AUTH_APP")
       if (auth === "true") {
         setIsLogged(true);
       }
-      const userLocal = localStorage.getItem("USER_APP");    
+      
+      console.log("userLocal", userLocal);
       if (userLocal) {
         setRol(userLocal.rol);
       }
     }
-
-  }, [user]);
-
-
-
+  }, [isLogged, rol, userLocal]);
 
   return (
     <div className="container-fluid">
