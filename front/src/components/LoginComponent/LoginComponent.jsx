@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Api } from '../../api/api';
+import { UserContext } from '../../context/UserAppContext';
+import { AuthContext } from '../../context/AuthContext';
 
 const LoginComponent = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const { userSetOnSession } = UserContext();
+    const { login } = AuthContext()
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
     };
@@ -24,6 +27,8 @@ const LoginComponent = () => {
             .then((response) => {
                 console.log('Usuario logueado', response);
                 alert('Usuario logueado con exito');
+                login();
+                userSetOnSession(response.id, response.username, response.email, response.token, response.rol);
                 window.location.reload();
             })
             .catch((error) => {
