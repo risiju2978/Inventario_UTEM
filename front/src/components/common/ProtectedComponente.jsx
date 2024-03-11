@@ -1,0 +1,10 @@
+import { Navigate, Outlet } from 'react-router-dom'
+
+export const  ProtectedRoutes = ({admin, auth, children, redirecTo="/login"}) => {
+
+    if( admin === false ){
+        return <Navigate to={redirecTo} />
+    } 
+        return <Outlet />
+    
+}

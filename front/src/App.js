@@ -5,8 +5,32 @@ import { MenuComponent } from "./components/NavBarComponent/Menu";
 import ArticuloComponent from "./components/ArticuloComponent/ArticuloComponent";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
 import RegistrarUserComponent from "./components/RegistrarUserComponent/RegistrarUserComponent";
+import { ProtectedRoutes } from "./components/common/ProtectedComponente";
+import { useEffect, useState } from "react";
+import { useUserContext } from "./context/UserAppContext";
 
 function App() {
+  const [isLogged, setIsLogged] = useState(false);
+  const [rol, setRol] = useState(0);
+  const { user } = useUserContext();
+
+  useEffect(() => {
+    if (user) {
+      const auth = localStorage.getItem("MY_AUTH_APP")
+      if (auth === "true") {
+        setIsLogged(true);
+      }
+      const userLocal = localStorage.getItem("USER_APP");    
+      if (userLocal) {
+        setRol(userLocal.rol);
+      }
+    }
+
+  }, [user]);
+
+
+
+
   return (
     <div className="container-fluid">
       <div>
@@ -21,7 +45,12 @@ function App() {
             <Route path="/usuario" element={<UserComponent />}></Route>
             <Route path="/login" element={<LoginComponent />}></Route>
             <Route path="*" element={<h1>Not Found</h1>}></Route>
-            <Route path="/admin/registrar" element={<RegistrarUserComponent />}></Route>
+            <Route path="/admin" element={<ProtectedRoutes admin={rol} auth={isLogged}/>}>
+              <Route
+                path="/admin/registrar"
+                element={<RegistrarUserComponent />}
+              ></Route>
+            </Route>
           </Routes>
         </BrowserRouter>
       </div>

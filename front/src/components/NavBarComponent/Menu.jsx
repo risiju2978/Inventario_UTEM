@@ -17,7 +17,7 @@ export function MenuComponent() {
   const handleLogout = () => {
     logout();
     userSetOffSession();
-   window.location.href = '/login';
+   window.location.href = '/';
   }
 
   return (
