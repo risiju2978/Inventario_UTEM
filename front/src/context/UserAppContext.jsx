@@ -17,12 +17,11 @@ import {
     const [user, setUser] = useState(() =>
     JSON.parse(window.localStorage.getItem(USER_APP)));
 
-    const userSetOnSession = useCallback(function (id, name, email, token, rol) {
+    const userSetOnSession = useCallback(function (id, username, email, rol) {
         const user = {
             id: id,
-            username: name,
+            username: username,
             email: email,
-            token: token,
             rol: rol,
           };
           window.localStorage.setItem(USER_APP, JSON.stringify(user));

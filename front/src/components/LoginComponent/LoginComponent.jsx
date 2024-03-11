@@ -29,8 +29,9 @@ const LoginComponent = () => {
                 console.log('Usuario logueado', response);
                 alert('Usuario logueado con exito');
                 login();
-                userSetOnSession(response.id, response.username, response.email, response.token, response.rol);
-                window.location.reload();
+                const usuario = response[0];
+                userSetOnSession(usuario.user_id, usuario.username, usuario.email, usuario.rol_id);
+                // window.location.reload();
             })
             .catch((error) => {
                 console.log('Error al loguear usuario', error);
