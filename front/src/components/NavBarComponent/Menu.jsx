@@ -20,7 +20,7 @@ export function MenuComponent() {
       <ul className="navbar-nav">
         <li className="nav-item">
           <button className="nav-link active" aria-current="page">
-            Home
+            <a href="/login">Login </a>
           </button>
         </li>
         <li className="nav-item">
