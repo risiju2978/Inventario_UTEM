@@ -53,7 +53,8 @@ const RegistrarUserComponent = () => {
     Api.createUser(userDataRegister)
         .then((response) => {
             console.log("Usuario registrado", response);
-            history("/admin/registrar")
+            alert("Usuario registrado con exito");
+            window.location.reload();
         })
         .catch((error) => {
             console.log("Error al registrar usuario", error);
@@ -133,7 +134,7 @@ const RegistrarUserComponent = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-primary" onClick={handleSubmit}>
               Registrar
             </button>
           </form>
