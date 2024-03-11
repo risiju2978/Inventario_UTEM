@@ -15,15 +15,13 @@ function App() {
 
   useEffect(() => {
     if (userLocal) {
-      const auth = localStorage.getItem("MY_AUTH_APP")
+      const auth = localStorage.getItem("MY_AUTH_APP");
       if (auth === "true") {
         setIsLogged(true);
       }
-      
+      setRol(userLocal.rol);
+
       console.log("userLocal", userLocal);
-      if (userLocal) {
-        setRol(userLocal.rol);
-      }
     }
   }, [isLogged, rol, userLocal]);
 
@@ -41,7 +39,10 @@ function App() {
             <Route path="/usuario" element={<UserComponent />}></Route>
             <Route path="/login" element={<LoginComponent />}></Route>
             <Route path="*" element={<h1>Not Found</h1>}></Route>
-            <Route path="/admin" element={<ProtectedRoutes admin={rol} auth={isLogged}/>}>
+            <Route
+              path="/admin"
+              element={<ProtectedRoutes admin={rol} auth={isLogged} />}
+            >
               <Route
                 path="/admin/registrar"
                 element={<RegistrarUserComponent />}
