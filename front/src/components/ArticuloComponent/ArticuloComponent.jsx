@@ -100,7 +100,7 @@ function ArticuloComponent() {
               <td>{item.art_nombre}</td>
               <td>{item.art_codigo}</td>
               <td>{item.art_glosa}</td>
-              <td>{formatDate(item.art_Ingreso)}</td>
+              <td>{formatDate(item.art_ingreso)}</td>
               <td>{item.campus}</td>
               <td>{item.departament}</td>
               <td>{item.office}</td>

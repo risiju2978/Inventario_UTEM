@@ -44,8 +44,9 @@ const articuloEstadoRoutes = require('./services/articulo_estado/articuloEstadoR
 const oficinaRoutes = require('./services/oficina/oficinaRoutes/oficinaRoutes');
 const infGenerator = require('./services/articulo/artRoutes/artGeneratorInfoRoutes');
 const vistaRoutes = require('./services/V_InfoGenerator/V_Routes/V_Routes');
-
+const vistaUsersRoutes = require('./services/V_Users/V_UserRoutes/V_UserRoutes');
 // Rutas
+app.use('/api/vistaUsers', vistaUsersRoutes);
 app.use('/api/vista', vistaRoutes);
 app.use('/api/informe', infGenerator);
 app.use('/api/articulo', articuloRoutes);
