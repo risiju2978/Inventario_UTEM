@@ -4,6 +4,7 @@ import UserComponent from "./components/UserComponent/UserComponent";
 import { MenuComponent } from "./components/NavBarComponent/Menu";
 import ArticuloComponent from "./components/ArticuloComponent/ArticuloComponent";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
+import RegistrarUserComponent from "./components/RegistrarUserComponent/RegistrarUserComponent";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/usuario" element={<UserComponent />}></Route>
             <Route path="/login" element={<LoginComponent />}></Route>
             <Route path="*" element={<h1>Not Found</h1>}></Route>
+            <Route path="/admin/registrar" element={<RegistrarUserComponent />}></Route>
           </Routes>
         </BrowserRouter>
       </div>
