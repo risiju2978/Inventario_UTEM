@@ -1,6 +1,8 @@
 
 require("dotenv").config();
+const { generarJWT } = require("../../../../utils/utils.generar-jwt");
 const {db} =require("../../../../utils/utils.helpers");
+const bcrypt = require('bcrypt');
 
 
 
@@ -66,8 +68,9 @@ loginUsuario: async (req, res) => {
     }
 
     // Consultar en la base de datos para obtener el usuario por nombre y contraseña
-    const sql = `SELECT * FROM usuario WHERE username = ? AND password = ?`;
-    const [user] = await db.promise().query(sql, [username, password]);
+   
+    const sql = `SELECT * FROM usuario WHERE username = ?`;
+    const [user] = await db.promise().query(sql, [username]);
 
     // Si no está en arreglo, el usuario no existe
     if (user.length === 0) {
@@ -77,11 +80,24 @@ loginUsuario: async (req, res) => {
       });
     }
 
+    const passWordVerify = bcrypt.compareSync(password, user[0].password); // devuelve true o false
+
+    if (!passWordVerify) {
+      return res.status(401).json({
+        status: 401,
+        message: "Contraseña incorrecta",
+      });
+    }
+
+    //generar token
+    const token = await generarJWT(user[0].user_id, user[0].username)
+
     // Enviar respuesta exitosa con los datos del usuario
     res.status(200).json({
       status: 200,
       data: user,
       message: "Usuario accedido con exito ",
+      token: token,
     });
   } catch (error) {
     console.error(error);
@@ -124,9 +140,14 @@ crearUsuario: async(req, res) => {
           await db.promise().beginTransaction();
       
           try {
+            const salt = bcrypt.genSaltSync();
+
+            const passWordEncripted = bcrypt.hashSync(password, salt)
+
+
             // Consulta SQL para insertar un nuevo usuario
             const insertUserQuery = 'INSERT INTO usuario (username, email, rol_id, user_state, password, campus_id) VALUES (?, ?, ?, ?, ?, ?)';
-            const userCreateData = [username, email, rol_id, user_state, password, campus_id];
+            const userCreateData = [username, email, rol_id, user_state, passWordEncripted, campus_id];
       
             // Ejecutar la consulta con los valores proporcionados
             const [resultDB] = await db.promise().query(insertUserQuery, userCreateData);
