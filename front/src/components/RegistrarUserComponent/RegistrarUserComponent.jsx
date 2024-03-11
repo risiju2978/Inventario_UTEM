@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Api } from "../../api/api";
 
 const RegistrarUserComponent = () => {
-    const history = useNavigate();
+  const history = useNavigate();
   const [campus, setCampus] = useState([]);
   const [roles, setRoles] = useState([]);
   const [estados, setEstados] = useState([]);
