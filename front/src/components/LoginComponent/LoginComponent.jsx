@@ -74,7 +74,7 @@ const LoginComponent = () => {
               />
             </div>
             <div className="mb-3 form-check"></div>
-            <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+            <button type="button" className="btn btn-primary" onClick={handleSubmit}>
               Ingresar
             </button>
           </form>
