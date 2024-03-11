@@ -12,4 +12,9 @@ export class Api {
     const response = await axios.get(`${url}/oficina/getAllOficinas`);
     return response.data.data
   }
+
+  static async login(username, password) {
+    const response = await axios.post(`${url}/usuario/login`, { username, password });
+    return response.data.data;
+  }
 }
