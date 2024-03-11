@@ -29,12 +29,11 @@ const LoginComponent = () => {
     Api.login(userDataLogin.username, userDataLogin.password)
       .then((res) => {
         console.log(res);
-        if (res.status !== 200) {
-          console.log(res.error);
-          return;
-        }
+        // if (res.status !== 200) {
+        //   console.log(res.error);
+        //   return;
+        // }
         login();
-        history("/");
       })
       .catch((error) => {
         console.log(error);
