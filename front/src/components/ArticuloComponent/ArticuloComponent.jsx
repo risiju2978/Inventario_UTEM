@@ -82,7 +82,7 @@ function ArticuloComponent() {
           </tr>
         </thead>
         <tbody className="fw-lighter">
-          {vistaData.length !== 0 ? vistaData.map((item) => (
+          {vistaData.length !== 0 ? vistaData.map((item, index) => (
             <tr key={item.ID}>
               <td>{item.anio}</td>
               <td>{item.dimension}</td>
@@ -102,7 +102,7 @@ function ArticuloComponent() {
                   width={75}
                 />
               </td>
-              <td>{item.articulo_estado === 0 ? "Activo": "Inactivo"}</td>
+              <td>{item.articulo_estado_id === 1 ? "Inactivo": "Activo"}</td>
               <td>
                 <div className="d-flex flex">
                 <div>

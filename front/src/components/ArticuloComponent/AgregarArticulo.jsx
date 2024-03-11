@@ -71,10 +71,10 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
       isValid = false;
     }
 
-    if (!formData.articulo_estado_id) {
-      errors.articulo_estado_id = "El estado del artículo es requerido";
-      isValid = false;
-    }
+    // if (!formData.articulo_estado_id) {
+    //   errors.articulo_estado_id = "El estado del artículo es requerido";
+    //   isValid = false;
+    // }
 
     if (!formData.categoria_id) {
       errors.categoria_id = "La categoría es requerida";
@@ -107,7 +107,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
         formDataFormat.append("art_glosa", formData.art_glosa);
         formDataFormat.append(
           "articulo_estado_id",
-          formData.articulo_estado_id
+          2
         );
         formDataFormat.append("categoria_id", formData.categoria_id);
         formDataFormat.append("office_id", formData.office_id);
@@ -156,7 +156,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
   return (
     <div>
       <button className="btn btn-success" onClick={toggleModal}>
-        Agregar Artículo <i class="bi bi-file-earmark-plus-fill"></i>
+        Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
       </button>
 
       {/* Modal */}
@@ -292,7 +292,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                     )}
                   </div>
 
-                  <div className="mb-3">
+                  {/* <div className="mb-3">
                     <label className="form-label">Estado del Artículo</label>
                     <input
                       type="text"
@@ -306,7 +306,7 @@ const AgregarArticulo = ({ modalVisible, toggleModal }) => {
                         {errors.articulo_estado_id}
                       </span>
                     )}
-                  </div>
+                  </div> */}
                   <div className="mb-3">
                     <label className="form-label">Categoría ID</label>
                     <input

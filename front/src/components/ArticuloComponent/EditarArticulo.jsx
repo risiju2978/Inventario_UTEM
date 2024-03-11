@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
-  const [FormDataUpdate, setFormDataUpdate] = useState({});
+const EditarArticulo = ({ modalVisible, toggleModal, item}) => {
+  const [FormDataUpdate, setFormDataUpdate] = useState(null);
 
   const [file, setFile] = useState(null);
 
@@ -17,6 +17,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
       art_codigo: item.art_codigo || "",
       art_glosa: item.art_glosa || "",
     });
+    console.log("item", item)
   }, [item]);
 
   const handleInputChange = (e) => {
@@ -92,6 +93,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
           FormDataUpdateFormat
         );
         console.log("Artículo editado correctamente:", response.data);
+        setFormDataUpdate(null);
         toggleModal();
       } catch (error) {
         console.error("Error al editar el artículo:", error);
@@ -102,7 +104,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item }) => {
   return (
     <div>
       <button className="btn btn-warning" onClick={toggleModal}>
-      <i class="bi bi-pencil-square"></i>
+      <i className="bi bi-pencil-square"></i>
       </button>
 
       {modalVisible && (

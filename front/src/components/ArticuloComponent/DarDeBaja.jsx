@@ -27,7 +27,7 @@ const DarDeBaja = ({ modalVisible, toggleModal, item }) => {
   return (  
     <>
       <button className="btn btn-danger" style={{ marginRight: "20px" }} onClick={toggleModal}>
-      <i class="bi bi-file-earmark-x"></i>
+      <i className="bi bi-file-earmark-x"></i>
       </button>
       {modalVisible && (
         <div className="modal fade show" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: "block" }}>
