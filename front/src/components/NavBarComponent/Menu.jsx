@@ -22,7 +22,7 @@ export function MenuComponent() {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary mb-2 justify-content-center">
       <div className="container-fluid">
-        <span className="navbar-brand" href="#">
+        <span className="navbar-brand">
           Inventario UTEM
         </span>
         <button
@@ -47,17 +47,7 @@ export function MenuComponent() {
                 </button>
               </li>
             )}
-            <li className="nav-item">
-              <button className="nav-link">Features</button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-link">Pricing</button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-link disabled" aria-disabled="true">
-                Disabled
-              </button>
-            </li>
+            
           </ul>
         </div>
         <div>{!loging ? null : <button type="button" className="btn -btn-danger" onClick={handleLogout}>Cerrar sesión</button>}</div>
