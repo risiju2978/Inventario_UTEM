@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
-  const [rol, setRol] = useState(0);
+  const [rol, setRol] = useState(false);
   const userLocal = JSON.parse(localStorage.getItem("USER_APP"));
 
   useEffect(() => {
@@ -19,7 +19,9 @@ function App() {
       if (auth === "true") {
         setIsLogged(true);
       }
-      setRol(userLocal.rol);
+      if (userLocal.rol === 1) {
+        setRol(true);
+      }
     }
   }, [isLogged, rol, userLocal]);
 
