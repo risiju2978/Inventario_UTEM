@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Api } from '../../api/api';
 import { useAuthContext } from '../../context/AuthContext';
 import { useUserContext } from '../../context/UserAppContext';
@@ -40,6 +40,12 @@ const LoginComponent = () => {
                 console.log('Error al loguear usuario', error);
             });
     };
+
+    useEffect(() => {
+        if (localStorage.getItem('MY_AUTH_APP') === 'true') {
+            navigate('/articulo');
+        }
+    }, [navigate]);
 
     return (
         <div className="container">
