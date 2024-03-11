@@ -1,59 +1,34 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+
+import React from "react";
+import {useNavigate} from "react-router-dom";
 
 export function HomeComponent() {
-  const [datos, setDatos] = useState([]);
- 
+  const navigate = useNavigate();
 
+  const handleClickLogin = () => {
+   navigate('/login');
+  }
 
-
-
-
-
-
-  useEffect(() => {
-    const getFakeApi = async () => {
-      try {
-        const response = await axios.get("https://fakestoreapi.com/products");
-        setDatos(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getFakeApi();
-  }, []);
+  const handleClickListado = () => {
+    navigate('/articulo');
+  }
 
   return (
-   
-    <div >
-
-
-        <div className="modal" tabIndex="-1" role="dialog">
-          {/* ... (estructura del modal) */}
-          <div className="modal-body">
-            {/* Campos de formulario para editar los datos */}
-            <div className="form-group">
-              <label htmlFor="anio">Año:</label>
-              <input type="number" className="form-control" id="anio" name="anio"  />
-            </div>
-            <div className="form-group">
-              <label htmlFor="dimension">Dimensión:</label>
-              <input type="text" className="form-control" id="dimension" name="dimension"  />
-            </div>
-            {/* Agrega campos de formulario similares para las otras propiedades del producto */}
+    <div className="container">
+      <h1>Bienvenido al sistema de inventarios</h1>
+      <div className="container">
+        <div className="row">
+          <div className="col-6 self-center">
+            <button type="button" className="btn btn-primary mx-4" onClick={handleClickLogin}>Ingresar al sistema</button>
+            <button type="button" className="btn btn-primary" onClick={handleClickListado}>Listado de articulos</button>
           </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-primary" >
-              Guardar Cambios
-            </button>
-            <button type="button" className="btn btn-secondary" data-dismiss="modal" >
-              Cerrar
-            </button>
+          <div className="col-6">
+            
           </div>
         </div>
+      </div>
+    </div>  
     
-    </div>
   );
 
 }
