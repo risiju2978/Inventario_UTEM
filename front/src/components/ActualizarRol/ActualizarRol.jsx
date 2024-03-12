@@ -1,5 +1,3 @@
-//Componente para actualizar rol de usuario, recibira el id del usuario por prps y se le asignara un nuevo rol
-// fomulario sencillo para seleccionar el nuevo rol. utilizar el endpoint de editar rol de usuario para realizar el cambio y boostrap 5 para el formulario
 
 import React, { useEffect, useState } from "react";
 import { Api } from "../../api/api";

@@ -6,20 +6,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function ArticuloComponent() {
+  const [articuloToUpdate, setArticuloToUpdate] = useState(null);
+  const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
   const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
-  const [modalEditarVisible, setModalEditarVisible] = useState(false); // Estado para controlar la visibilidad del modal de editar artículo
-  const [modalDarDeBajaVisible, setModalDarDeBajaVisible] = useState(false); // Estado para controlar la visibilidad del modal de dar de baja artículo
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
-  const toggleDarDeBajaModal = () => {
-    setModalDarDeBajaVisible(!modalDarDeBajaVisible); // Cambia el estado de visibilidad del modal de dar de baja artículo
-  };
+
 
   const toggleAgregarModal = () => {
     setModalAgregarVisible(!modalAgregarVisible); // Cambia el estado de visibilidad del modal de agregar artículo
-  };
-
-  const toggleEditarModal = () => {
-    setModalEditarVisible(!modalEditarVisible); // Cambia el estado de visibilidad del modal de editar artículo
   };
 
   const [user, setUser] = useState(null);
@@ -28,7 +22,7 @@ function ArticuloComponent() {
     if (usuario) {
       setUser(JSON.parse(usuario));
     }
-    console.log(usuario)
+    console.log(usuario);
   }, [usuario]);
 
   const formatDate = (dateString) => {
@@ -71,11 +65,12 @@ function ArticuloComponent() {
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
-      {user && user.rol === 3 ? null :
-      <AgregarArticulo
-        modalVisible={modalAgregarVisible}
-        toggleModal={toggleAgregarModal}
-      />}
+      {user && user.rol === 3 ? null : (
+        <AgregarArticulo
+          modalVisible={modalAgregarVisible}
+          toggleModal={toggleAgregarModal}
+        />
+      )}
       <table className="table table-striped">
         <thead>
           <tr>
@@ -128,18 +123,26 @@ function ArticuloComponent() {
                   <td>
                     <div className="d-flex flex">
                       <div>
-                        <DarDeBaja
-                          modalVisible={modalDarDeBajaVisible}
-                          toggleModal={toggleDarDeBajaModal}
-                          item={item.ID}
-                        />
+                         <button
+                          className="btn btn-danger mx-2"
+                          onClick={() => setIdArticuloToBajar(item.ID)}
+                          data-bs-toggle="modal"
+                          data-bs-target="#bajarlModal"
+                          title="Dar de baja"
+                        >
+                         <i className="bi bi-file-earmark-x"></i>
+                        </button>
                       </div>
                       <div>
-                        <EditarArticulo
-                          modalVisible={modalEditarVisible}
-                          toggleModal={toggleEditarModal}
-                          item={item}
-                        />
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => setArticuloToUpdate(item)}
+                          data-bs-toggle="modal"
+                          data-bs-target="#editarlModal"
+                          title="Editar"
+                        >
+                          <i className="bi bi-pencil-square"></i>
+                        </button>
                       </div>
                     </div>
                   </td>
@@ -148,6 +151,72 @@ function ArticuloComponent() {
             : "Cargando..."}
         </tbody>
       </table>
+      {/* <!-- Modal editar articulo --> */}
+      <div
+        class="modal fade"
+        id="editarlModal"
+        tabindex="-1"
+        aria-labelledby="editarLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <EditarArticulo articulo={articuloToUpdate} />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+         {/* <!-- Modal bajar articulo --> */}
+         <div
+        class="modal fade"
+        id="bajarlModal"
+        tabindex="-1"
+        aria-labelledby="bajarLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <DarDeBaja articulo={idArticuloToBajar} />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
