@@ -15,7 +15,7 @@ export function HomeComponent() {
 
   return (
     <div className="container">
-      <h1>Bienvenido al sistema de inventarios</h1>
+      <h1>Sistema de gestión de inventarios</h1>
       <div className="container">
         <div className="row">
           <div className="col-6 self-center">
