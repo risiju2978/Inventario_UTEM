@@ -36,17 +36,17 @@ function App() {
             <Route path="/" element={<HomeComponent />}></Route>
             <Route path="/home" element={<HomeComponent />}></Route>
             <Route path="/articulo" element={<ArticuloComponent />}></Route>
-            <Route path="/usuario" element={<UserComponent />}></Route>
             <Route path="/login" element={<LoginComponent />}></Route>
             <Route path="*" element={<h1>Not Found</h1>}></Route>
             <Route
               path="/admin"
-              element={<ProtectedRoutes admin={rol} auth={isLogged} redirecTo={"/login"} />}
+              element={<ProtectedRoutes admin={rol} auth={isLogged} />}
             >
               <Route
                 path="/admin/registrar"
                 element={<RegistrarUserComponent />}
               ></Route>
+              <Route path="/admin/usuario" element={<UserComponent />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
