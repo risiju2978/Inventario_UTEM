@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
+  const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
   const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
   const [modalEditarVisible, setModalEditarVisible] = useState(false); // Estado para controlar la visibilidad del modal de editar artículo
   const [modalDarDeBajaVisible, setModalDarDeBajaVisible] = useState(false); // Estado para controlar la visibilidad del modal de dar de baja artículo
@@ -135,6 +136,14 @@ function ArticuloComponent() {
                           toggleModal={toggleDarDeBajaModal}
                           item={item.ID}
                         /> */}
+                         <button
+                          className="btn btn-danger mx-2"
+                          onClick={() => setIdArticuloToBajar(item.ID)}
+                          data-bs-toggle="modal"
+                          data-bs-target="#bajarlModal"
+                        >
+                         <i className="bi bi-file-earmark-x"></i>
+                        </button>
                       </div>
                       <div>
                         <button
@@ -153,7 +162,7 @@ function ArticuloComponent() {
             : "Cargando..."}
         </tbody>
       </table>
-      {/* <!-- Modal actualizar rol de usuario --> */}
+      {/* <!-- Modal editar articulo --> */}
       <div
         class="modal fade"
         id="editarlModal"
@@ -173,6 +182,39 @@ function ArticuloComponent() {
             </div>
             <div class="modal-body">
               <EditarArticulo articulo={articuloToUpdate} />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+         {/* <!-- Modal bajar articulo --> */}
+         <div
+        class="modal fade"
+        id="bajarlModal"
+        tabindex="-1"
+        aria-labelledby="bajarLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <DarDeBaja articulo={idArticuloToBajar} />
             </div>
             <div class="modal-footer">
               <button
