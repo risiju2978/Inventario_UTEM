@@ -171,10 +171,7 @@ function UserComponent() {
         <div className="col-6 mx-0"></div>
         {/* TABLA EDITAR ROLES*/}
         <div className="col-6">
-          <h2>Editar roles</h2>
-          <table className="table table-bordered">
-            {/* Sin contenido por ahora */}
-          </table>
+         
         </div>
       </div>
       {/* <!-- Modal registrar usuario --> */}
