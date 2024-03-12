@@ -113,6 +113,11 @@ const RegistrarUserComponent = () => {
               </label>
               <select className="form-select" id="campus" name="campus">
                 <option selected>Selecciona un campus</option>
+                {campus && campus.map((campus) => (
+                  <option key={campus.campus_id} value={campus.campus_id}>
+                    {campus.campus}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="mb-3">
