@@ -241,7 +241,7 @@ const userController = {
 
           sep = data.length > 0 ? "," : "";
           //buscar funcion NaN para verificar si es numericoen mozzilla
-          if (user_state !== undefined || !NaN(user_state)) {
+          if (user_state !== undefined || parseInt(user_state)) {
             sqlUpdate += `${sep} user_state = ?`;
             data.push(user_state);
           }
