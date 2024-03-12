@@ -20,6 +20,10 @@ export function MenuComponent() {
    window.location.href = '/';
   }
 
+  const handleClickAdmin = () => {
+    window.location.href = '/admin/usuario';
+  }
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary mb-2 justify-content-center">
       <div className="container-fluid">
@@ -40,7 +44,7 @@ export function MenuComponent() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             {isAuthenticated && usuario !== null ? (
-              <button className="nav-link active" >Hola, {usuario.username}</button>
+              <button className="nav-link active" >Hola, {usuario && usuario.username}</button>
             ) : (
               <li className="nav-item">
                 <button className="nav-link active" aria-current="page">
@@ -51,7 +55,8 @@ export function MenuComponent() {
             
           </ul>
         </div>
-        <div>{!loging ? null : <button type="button" className="btn -btn-danger" onClick={handleLogout}>Cerrar sesión</button>}</div>
+        <div>{usuario && usuario.rol === 1 ? <button type="button" className="btn btn-info mx-3" onClick={handleClickAdmin}>Administrar sistema</button>: null}</div>
+        <div>{!loging ? null : <button type="button" className="btn btn-danger" onClick={handleLogout}>Cerrar sesión</button>}</div>
       </div>
     </nav>
   );
