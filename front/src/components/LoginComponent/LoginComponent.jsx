@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Api } from '../../api/api';
 import { useAuthContext } from '../../context/AuthContext';
 import { useUserContext } from '../../context/UserAppContext';
@@ -30,20 +30,31 @@ const LoginComponent = () => {
         Api.login(username, password)
             .then((response) => {
                 console.log('Usuario logueado', response);
+                const usuario = response[0];
+                if(usuario.user_state === 0){
+                    alert('Usuario bloqueado, contacte al administrador del sistema.');
+                    return;
+                }
                 alert('Usuario logueado con exito');
                 login();
-                const usuario = response[0];
                 userSetOnSession(usuario.user_id, usuario.username, usuario.email, usuario.rol_id);
                navigate('/articulo');
             })
             .catch((error) => {
-                console.log('Error al loguear usuario', error);
+                console.log('Error al loguear usuario:', error.response.data.message);
+                alert(`Error al loguear usuario: ${error.response.data.message}`)
             });
     };
 
+    useEffect(() => {
+        if (localStorage.getItem('MY_AUTH_APP') === 'true') {
+            navigate('/articulo');
+        }
+    }, [navigate]);
+
     return (
         <div className="container">
-            <h1>Registro de Usuarios</h1>
+            <h1>Ingresar al sistema</h1>
             <form>
                 <div className="mb-3">
                     <label htmlFor="username" className="form-label">Username</label>

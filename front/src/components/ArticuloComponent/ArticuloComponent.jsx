@@ -3,6 +3,7 @@ import AgregarArticulo from "./AgregarArticulo";
 import EditarArticulo from "./EditarArticulo";
 import DarDeBaja from "./DarDeBaja";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function ArticuloComponent() {
   const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
@@ -20,6 +21,16 @@ function ArticuloComponent() {
   const toggleEditarModal = () => {
     setModalEditarVisible(!modalEditarVisible); // Cambia el estado de visibilidad del modal de editar artículo
   };
+
+  const [user, setUser] = useState(null);
+  const usuario = window.localStorage.getItem("USER_APP");
+  useEffect(() => {
+    if (usuario) {
+      setUser(JSON.parse(usuario));
+    }
+    console.log(usuario)
+  }, [usuario]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
@@ -50,13 +61,21 @@ function ArticuloComponent() {
     fetchData();
   }, []);
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem("MY_AUTH_APP") !== "true") {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   return (
-    <div className="container mx-0" >
+    <div className="container mx-0">
       <h1>Listado de Artículos</h1>
+      {user && user.rol === 3 ? null :
       <AgregarArticulo
-                modalVisible={modalAgregarVisible}
-                toggleModal={toggleAgregarModal}
-              />
+        modalVisible={modalAgregarVisible}
+        toggleModal={toggleAgregarModal}
+      />}
       <table className="table table-striped">
         <thead>
           <tr>
@@ -69,63 +88,66 @@ function ArticuloComponent() {
             <th>Fecha ingreso</th>
             <th>Campus</th>
             <th>Departamento</th>
-            <th>Oficina</th>  
+            <th>Oficina</th>
             <th>Categoria</th>
             <th>imagen articulo</th>
             <th>Articulo estado</th>
             <th
-              // className="acciones-header"
-              // style={{alignItems: "center" }}
+            // className="acciones-header"
+            // style={{alignItems: "center" }}
             >
               Acciones
             </th>
           </tr>
         </thead>
         <tbody className="fw-lighter">
-          {vistaData.length !== 0 ? vistaData.map((item, index) => (
-            <tr key={item.ID}>
-              <td>{item.anio}</td>
-              <td>{item.dimension}</td>
-              <td>{item.art_num}</td>
-              <td>{item.art_nombre}</td>
-              <td>{item.art_codigo}</td>
-              <td>{item.art_glosa}</td>
-              <td>{formatDate(item.art_ingreso).toString()}</td>
-              <td>{item.campus}</td>
-              <td>{item.departament}</td>
-              <td>{item.office}</td>
-              <td>{item.categoria}</td>
-              <td>
-                <img
-                  src={`http://localhost:8080/` + item.art_image_path}
-                  alt={item.art_nombre}
-                  width={75}
-                />
-              </td>
-              <td>{item.articulo_estado_id === 1 ? "Inactivo": "Activo"}</td>
-              <td>
-                <div className="d-flex flex">
-                <div>
-                <DarDeBaja
-                  modalVisible={modalDarDeBajaVisible}
-                  toggleModal={toggleDarDeBajaModal}
-                  item={item.ID}
-                />
-                </div>
-                 <div>
-                <EditarArticulo
-                  modalVisible={modalEditarVisible}
-                  toggleModal={toggleEditarModal}
-                  item={item}
-                />
-                </div>
-                </div>
-              </td>
-            </tr>
-          )): "Cargando..."}
+          {vistaData.length !== 0
+            ? vistaData.map((item, index) => (
+                <tr key={item.ID}>
+                  <td>{item.anio}</td>
+                  <td>{item.dimension}</td>
+                  <td>{item.art_num}</td>
+                  <td>{item.art_nombre}</td>
+                  <td>{item.art_codigo}</td>
+                  <td>{item.art_glosa}</td>
+                  <td>{formatDate(item.art_ingreso).toString()}</td>
+                  <td>{item.campus}</td>
+                  <td>{item.departament}</td>
+                  <td>{item.office}</td>
+                  <td>{item.categoria}</td>
+                  <td>
+                    <img
+                      src={`http://localhost:8080/` + item.art_image_path}
+                      alt={item.art_nombre}
+                      width={75}
+                    />
+                  </td>
+                  <td>
+                    {item.articulo_estado_id === 1 ? "Inactivo" : "Activo"}
+                  </td>
+                  <td>
+                    <div className="d-flex flex">
+                      <div>
+                        <DarDeBaja
+                          modalVisible={modalDarDeBajaVisible}
+                          toggleModal={toggleDarDeBajaModal}
+                          item={item.ID}
+                        />
+                      </div>
+                      <div>
+                        <EditarArticulo
+                          modalVisible={modalEditarVisible}
+                          toggleModal={toggleEditarModal}
+                          item={item}
+                        />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            : "Cargando..."}
         </tbody>
       </table>
-      
     </div>
   );
 }
