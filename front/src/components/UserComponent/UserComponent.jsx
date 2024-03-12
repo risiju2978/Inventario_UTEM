@@ -64,9 +64,7 @@ function UserComponent() {
               <th>Email</th>
               <th>Estado</th>
               <th>Rol</th>
-              <th>Estado del Rol</th>
               <th>Campus</th>
-              <th>ID Campus</th>
               <th>Departamento</th>
               <th>Oficina</th>
               <th>Acciones</th>
@@ -81,9 +79,7 @@ function UserComponent() {
                   <td>{usuario.email}</td>
                   <td>{usuario.user_state === 0 ? "Baneado" : "Activo"}</td>
                   <td>{usuario.rol}</td>
-                  <td>{usuario.rol_state}</td>
                   <td>{usuario.campus}</td>
-                  <td>{usuario.campus_id}</td>
                   <td>{usuario.departament}</td>
                   <td>{usuario.office}</td>
                   <td>
