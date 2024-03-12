@@ -14,7 +14,7 @@ export class Api {
   }
 
   static async getAllCampus() {
-    const response = await axios.get(`${url}/sedes/getAllSedes`);
+    const response = await axios.get(`${url}/sede/getAllSedes`);
     return response.data.data
   }
 

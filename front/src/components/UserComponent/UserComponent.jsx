@@ -47,8 +47,9 @@ function UserComponent() {
         </div>
       </div>
       <div className="col-6">
-        <button type="button" class="btn btn-primary mx-4" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar usuario</button>
-        <button type="button" class="btn btn-primary" onClick={handleClickVerListado}>Ver inventario</button>
+        <h5>Acciones</h5>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar usuario</button>
+        <button type="button" class="btn btn-primary mx-4" onClick={handleClickVerListado}>Ver inventario</button>
       </div>
       </div>
       <hr />
