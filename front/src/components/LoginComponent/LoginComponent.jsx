@@ -30,9 +30,13 @@ const LoginComponent = () => {
         Api.login(username, password)
             .then((response) => {
                 console.log('Usuario logueado', response);
+                const usuario = response[0];
+                if(usuario.user_state === 0){
+                    alert('Usuario bloqueado, contacte al administrador del sistema.');
+                    return;
+                }
                 alert('Usuario logueado con exito');
                 login();
-                const usuario = response[0];
                 userSetOnSession(usuario.user_id, usuario.username, usuario.email, usuario.rol_id);
                navigate('/articulo');
             })
