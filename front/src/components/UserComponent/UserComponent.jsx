@@ -90,6 +90,9 @@ function UserComponent() {
                     <button type="button" className="btn btn-danger mx-2">
                     <i className="bi bi-file-earmark-x"></i>
                     </button>
+                    <button type="button" className="btn btn-warning">
+                    <i className="bi bi-eye"></i>
+                    </button>
                     </div>
                   </td>
                 </tr>
