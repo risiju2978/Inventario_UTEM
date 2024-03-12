@@ -56,7 +56,7 @@ function UserComponent() {
       <div className="row">
       <div className="col-12">
         <h3>Tabla de Usuarios</h3>
-        <table className="table table-striped">
+        <table className="table table-striped rounded">
           <thead>
             <tr>
               <th>ID</th>
@@ -69,6 +69,7 @@ function UserComponent() {
               <th>ID Campus</th>
               <th>Departamento</th>
               <th>Oficina</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -85,6 +86,16 @@ function UserComponent() {
                   <td>{usuario.campus_id}</td>
                   <td>{usuario.departament}</td>
                   <td>{usuario.office}</td>
+                  <td>
+                    <div className="d-flex">
+                    <button type="button" className="btn btn-primary">
+                    <i className="bi bi-pencil-square"></i>
+                    </button>
+                    <button type="button" className="btn btn-danger mx-2">
+                    <i className="bi bi-file-earmark-x"></i>
+                    </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
           </tbody>
