@@ -12,8 +12,8 @@ const RegistrarUserComponent = () => {
     username: "",
     email: "",
     campus_id: 1,
-    rol_id: 1,
-    user_state: 1,
+    rol_id: "",
+    user_state: "",
     password: "",
   });
 
@@ -36,10 +36,13 @@ const RegistrarUserComponent = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(userDataRegister)
     if (
       userDataRegister.username === "" ||
       userDataRegister.email === "" ||
-      userDataRegister.password === ""
+      userDataRegister.password === "" ||
+      userDataRegister.rol_id === "" ||
+      userDataRegister.user_state === ""
     ) {
       alert("Todos los campos son requeridos");
       return;
@@ -97,23 +100,29 @@ const RegistrarUserComponent = () => {
               </select>
             </div>
             <div className="mb-3">
-              <label htmlFor="rol" className="form-label">
+              <label htmlFor="rol_id" className="form-label">
                 Rol
               </label>
-              <select className="form-select" id="rol" name="rol">
+              <select className="form-select" id="rol_id" name="rol_id" onChange={handleInputChange}>
                 <option selected>Selecciona un rol</option>
+                <option value="1">Super administrador</option>
+                <option value="2">Administrador</option>
+                <option value="3">Usuario</option>
               </select>
             </div>
             <div className="mb-3">
-              <label htmlFor="estado_user" className="form-label">
+              <label htmlFor="user_state" className="form-label">
                 Estado de usuario
               </label>
               <select
                 className="form-select"
-                id="estado_user"
-                name="estado_user"
+                id="user_state"
+                name="user_state"
+                onChange={handleInputChange}
               >
                 <option selected>Selecciona un estado</option>
+                <option value="1">Activo</option>
+                <option value="0">Baneado</option>
               </select>
             </div>
             <div className="mb-3">
