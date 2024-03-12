@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const EditarArticulo = ({ modalVisible, toggleModal, item}) => {
+const EditarArticulo = ({ articulo }) => {
   const [FormDataUpdate, setFormDataUpdate] = useState(null);
 
   const [file, setFile] = useState(null);
@@ -9,16 +9,18 @@ const EditarArticulo = ({ modalVisible, toggleModal, item}) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    setFormDataUpdate({
-      anio: item.anio || "",
-      dimension: item.dimension || "",
-      art_num: item.art_num || "",
-      art_nombre: item.art_nombre || "",
-      art_codigo: item.art_codigo || "",
-      art_glosa: item.art_glosa || "",
-    });
-    console.log("item", item)
-  }, [item, toggleModal]);
+    if (articulo) {
+      setFormDataUpdate({
+        anio: articulo.anio || "",
+        dimension: articulo.dimension || "",
+        art_num: articulo.art_num || "",
+        art_nombre: articulo.art_nombre || "",
+        art_codigo: articulo.art_codigo || "",
+        art_glosa: articulo.art_glosa || "",
+      });
+    }
+    console.log("articulo", articulo);
+  }, [articulo]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -78,7 +80,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item}) => {
     e.preventDefault();
     if (validateForm()) {
       const FormDataUpdateFormat = new FormData();
-      FormDataUpdateFormat.append("id_articulo", item.ID);
+      FormDataUpdateFormat.append("id_articulo", articulo.ID);
       FormDataUpdateFormat.append("img", file);
       FormDataUpdateFormat.append("anio", FormDataUpdate.anio);
       FormDataUpdateFormat.append("dimension", FormDataUpdate.dimension);
@@ -94,7 +96,7 @@ const EditarArticulo = ({ modalVisible, toggleModal, item}) => {
         );
         console.log("Artículo editado correctamente:", response.data);
         setFormDataUpdate(null);
-        toggleModal();
+        window.location.reload();
       } catch (error) {
         console.error("Error al editar el artículo:", error);
       }
@@ -103,165 +105,124 @@ const EditarArticulo = ({ modalVisible, toggleModal, item}) => {
 
   return (
     <div>
-      <button className="btn btn-warning" onClick={toggleModal}>
-      <i className="bi bi-pencil-square"></i>
-      </button>
-
-      {modalVisible && (
-        <div
-          className="modal fade show"
-          id="staticBackdrop"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabIndex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-          style={{ display: "block" }}
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="staticBackdropLabel">
-                  Editar Artículo
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={toggleModal}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <form onSubmit={Editar}>
-                  <div className="mb-3">
-                    <label htmlFor="anio" className="form-label">
-                      Año
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="anio"
-                      name="anio"
-                      value={FormDataUpdate.anio}
-                      onChange={handleInputChange}
-                    />
-                    {errors.anio && (
-                      <div className="text-danger">{errors.anio}</div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="dimension" className="form-label">
-                      Dimensión
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="dimension"
-                      name="dimension"
-                      value={FormDataUpdate.dimension}
-                      onChange={handleInputChange}
-                    />
-                    {errors.dimension && (
-                      <div className="text-danger">{errors.dimension}</div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="art_num" className="form-label">
-                      Número
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="art_num"
-                      name="art_num"
-                      value={FormDataUpdate.art_num}
-                      onChange={handleInputChange}
-                    />
-                    {errors.art_num && (
-                      <div className="text-danger">{errors.art_num}</div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="art_nombre" className="form-label">
-                      Nombre
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="art_nombre"
-                      name="art_nombre"
-                      value={FormDataUpdate.art_nombre}
-                      onChange={handleInputChange}
-                    />
-                    {errors.art_nombre && (
-                      <div className="text-danger">{errors.art_nombre}</div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="art_codigo" className="form-label">
-                      Código
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="art_codigo"
-                      name="art_codigo"
-                      value={FormDataUpdate.art_codigo}
-                      onChange={handleInputChange}
-                    />
-                    {errors.art_codigo && (
-                      <div className="text-danger">{errors.art_codigo}</div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="art_glosa" className="form-label">
-                      Glosa
-                    </label>
-
-                    <textarea
-                      className="form-control"
-                      id="art_glosa"
-                      name="art_glosa"
-                      value={FormDataUpdate.art_glosa}
-                      onChange={handleInputChange}
-                    />
-                    {errors.art_glosa && (
-                      <div className="text-danger">{errors.art_glosa}</div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="art_image_path" className="form-label">
-                      Imagen
-                    </label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      id="art_image_path"
-                      name="img"
-                      onChange={handleUploadFile}
-                    />
-                    {errors.art_image_path && (
-                      <div className="text-danger">{errors.art_image_path}</div>
-                    )}
-                  </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                      onClick={toggleModal}
-                    >
-                      Cancelar
-                    </button>
-                    <button type="submit" className="btn btn-primary">
-                      Guardar Cambios
-                    </button>
-                  </div>
-                </form>
-              </div>
+      {FormDataUpdate && (
+        <div>
+          <form onSubmit={Editar}>
+            <div className="mb-3">
+              <label htmlFor="anio" className="form-label">
+                Año
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="anio"
+                name="anio"
+                value={FormDataUpdate.anio}
+                onChange={handleInputChange}
+              />
+              {errors.anio && <div className="text-danger">{errors.anio}</div>}
             </div>
-          </div>
+            <div className="mb-3">
+              <label htmlFor="dimension" className="form-label">
+                Dimensión
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="dimension"
+                name="dimension"
+                value={FormDataUpdate.dimension}
+                onChange={handleInputChange}
+              />
+              {errors.dimension && (
+                <div className="text-danger">{errors.dimension}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="art_num" className="form-label">
+                Número
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="art_num"
+                name="art_num"
+                value={FormDataUpdate.art_num}
+                onChange={handleInputChange}
+              />
+              {errors.art_num && (
+                <div className="text-danger">{errors.art_num}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="art_nombre" className="form-label">
+                Nombre
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="art_nombre"
+                name="art_nombre"
+                value={FormDataUpdate.art_nombre}
+                onChange={handleInputChange}
+              />
+              {errors.art_nombre && (
+                <div className="text-danger">{errors.art_nombre}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="art_codigo" className="form-label">
+                Código
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="art_codigo"
+                name="art_codigo"
+                value={FormDataUpdate.art_codigo}
+                onChange={handleInputChange}
+              />
+              {errors.art_codigo && (
+                <div className="text-danger">{errors.art_codigo}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="art_glosa" className="form-label">
+                Glosa
+              </label>
+
+              <textarea
+                className="form-control"
+                id="art_glosa"
+                name="art_glosa"
+                value={FormDataUpdate.art_glosa}
+                onChange={handleInputChange}
+              />
+              {errors.art_glosa && (
+                <div className="text-danger">{errors.art_glosa}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="art_image_path" className="form-label">
+                Imagen
+              </label>
+              <input
+                type="file"
+                className="form-control"
+                id="art_image_path"
+                name="img"
+                onChange={handleUploadFile}
+              />
+              {errors.art_image_path && (
+                <div className="text-danger">{errors.art_image_path}</div>
+              )}
+            </div>
+            <div className="">
+              <button type="submit" className="btn btn-primary">
+                Guardar Cambios
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>
