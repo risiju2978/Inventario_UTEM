@@ -9,19 +9,11 @@ function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
   const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
   const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
-  const [modalEditarVisible, setModalEditarVisible] = useState(false); // Estado para controlar la visibilidad del modal de editar artículo
-  const [modalDarDeBajaVisible, setModalDarDeBajaVisible] = useState(false); // Estado para controlar la visibilidad del modal de dar de baja artículo
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
-  const toggleDarDeBajaModal = () => {
-    setModalDarDeBajaVisible(!modalDarDeBajaVisible); // Cambia el estado de visibilidad del modal de dar de baja artículo
-  };
+
 
   const toggleAgregarModal = () => {
     setModalAgregarVisible(!modalAgregarVisible); // Cambia el estado de visibilidad del modal de agregar artículo
-  };
-
-  const toggleEditarModal = () => {
-    setModalEditarVisible(!modalEditarVisible); // Cambia el estado de visibilidad del modal de editar artículo
   };
 
   const [user, setUser] = useState(null);
@@ -131,11 +123,6 @@ function ArticuloComponent() {
                   <td>
                     <div className="d-flex flex">
                       <div>
-                        {/* <DarDeBaja
-                          modalVisible={modalDarDeBajaVisible}
-                          toggleModal={toggleDarDeBajaModal}
-                          item={item.ID}
-                        /> */}
                          <button
                           className="btn btn-danger mx-2"
                           onClick={() => setIdArticuloToBajar(item.ID)}
