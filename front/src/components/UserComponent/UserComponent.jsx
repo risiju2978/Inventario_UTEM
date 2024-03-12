@@ -102,9 +102,9 @@ function UserComponent() {
                     <button type="button" className="btn btn-primary">
                     <i className="bi bi-pencil-square"></i>
                     </button>
-                    {usuario.user_state === 1 ? <button type="button" className="btn btn-danger mx-2" onClick={() => banearUsuario(usuario.user_id, 1)}><i className="bi bi-file-earmark-x"></i></button> : <button type="button" className="btn btn-success mx-2" onClick={() => banearUsuario(usuario.user_id, 0)}>
+                    {<> <button type="button" className="btn btn-danger mx-2" onClick={() => banearUsuario(usuario.user_id, 1)}><i className="bi bi-file-earmark-x"></i></button> <button type="button" className="btn btn-success mx-2" onClick={() => banearUsuario(usuario.user_id, 0)}>
                     <i className="bi bi-check"></i>
-                    </button>}
+                    </button></>}
                     <button type="button" className="btn btn-warning">
                     <i className="bi bi-eye"></i>
                     </button>
