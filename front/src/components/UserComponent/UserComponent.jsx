@@ -33,6 +33,8 @@ function UserComponent() {
     window.location.href = "/articulo";
   }
 
+  // crear función para banear usuario utilizando la propiedad user_state
+
   return (
     <div className="container">
       <div className="row mt-4">

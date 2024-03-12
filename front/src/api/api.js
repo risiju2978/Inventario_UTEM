@@ -17,7 +17,7 @@ export class Api {
     const response = await axios.get(`${url}/sede/getAllSedes`);
     return response.data.data
   }
-  
+
   static async login(username, password) {
     const response = await axios.post(`${url}/usuario/login`, { username, password });
     return response.data.data;
@@ -25,6 +25,11 @@ export class Api {
 
   static async createUser(userData) {
     const response = await axios.post(`${url}/usuario/crear_usuario`, userData);
+    return response.data.data;
+  }
+
+  static async banearUser(id, user_state) {
+    const response = await axios.put(`${url}/usuario/banear_usuario`, { id, user_state });
     return response.data.data;
   }
 }
