@@ -3,6 +3,7 @@ import AgregarArticulo from "./AgregarArticulo";
 import EditarArticulo from "./EditarArticulo";
 import DarDeBaja from "./DarDeBaja";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function ArticuloComponent() {
   const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
@@ -49,6 +50,13 @@ function ArticuloComponent() {
 
     fetchData();
   }, []);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem('MY_AUTH_APP') !== 'true') {
+        navigate('/login');
+    }
+}, [navigate]);
 
   return (
     <div className="container mx-0" >
