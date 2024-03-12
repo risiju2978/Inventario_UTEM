@@ -29,7 +29,7 @@ export class Api {
   }
 
   static async banearUser(id, user_state) {
-    const response = await axios.put(`${url}/usuario/banear_usuario`, { id, user_state });
+    const response = await axios.put(`${url}/usuario/editar_rol`, {  user_id: id, user_state: user_state });
     return response.data.data;
   }
 }

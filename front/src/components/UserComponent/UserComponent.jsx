@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import RegistrarUserComponent from "../RegistrarUserComponent/RegistrarUserComponent";
+import { Api } from "../../api/api";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
@@ -12,13 +13,13 @@ function UserComponent() {
     if (user !== null) {
       setUserPerfil(user);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/vistaUsers/readVistaUsers"
+          "http://localhost:8080/api/usuario/listar"
         );
         setUsuarios(response.data.data);
       } catch (error) {
@@ -34,6 +35,18 @@ function UserComponent() {
   }
 
   // crear función para banear usuario utilizando la propiedad user_state
+  const banearUsuario = async (id, user_state) => {
+    Api.banearUser(id, user_state)
+    .then((response) => {
+      console.log("Estado del usuario actualizado con exito", response);
+      alert("Estado actualizado con exito");
+      window.location.reload();
+    })
+    .catch((error) => {
+      console.log("Error al banear usuario", error);
+    });
+  }
+
 
   return (
     <div className="container">
@@ -80,7 +93,7 @@ function UserComponent() {
                   <td>{usuario.username}</td>
                   <td>{usuario.email}</td>
                   <td>{usuario.user_state === 0 ? "Baneado" : "Activo"}</td>
-                  <td>{usuario.rol}</td>
+                  <td>{usuario.rol_id === 1 ? "SuperAdmin" : usuario.rol_id === 2 ? "Administrador" : "Usuario"}</td>
                   <td>{usuario.campus}</td>
                   <td>{usuario.departament}</td>
                   <td>{usuario.office}</td>
@@ -89,9 +102,9 @@ function UserComponent() {
                     <button type="button" className="btn btn-primary">
                     <i className="bi bi-pencil-square"></i>
                     </button>
-                    <button type="button" className="btn btn-danger mx-2">
-                    <i className="bi bi-file-earmark-x"></i>
-                    </button>
+                    {usuario.user_state === 1 ? <button type="button" className="btn btn-danger mx-2" onClick={() => banearUsuario(usuario.user_id, 1)}><i className="bi bi-file-earmark-x"></i></button> : <button type="button" className="btn btn-success mx-2" onClick={() => banearUsuario(usuario.user_id, 0)}>
+                    <i className="bi bi-check"></i>
+                    </button>}
                     <button type="button" className="btn btn-warning">
                     <i className="bi bi-eye"></i>
                     </button>
