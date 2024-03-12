@@ -62,9 +62,11 @@ const RegistrarUserComponent = () => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-md-6 offset-md-3">
+        <div className="col-md-12">
           <h1>Registrar Usuario</h1>
           <form>
+            <div className="row">
+              <div className="col-md-6">
             <div className="mb-3">
               <label htmlFor="username" className="form-label">
                 Nombre de usuario
@@ -91,6 +93,20 @@ const RegistrarUserComponent = () => {
                 onChange={handleInputChange}
               />
             </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+                Contraseña
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                onChange={handleInputChange}
+              />
+            </div>
+            </div>
+            <div className="col-md-6">
             <div className="mb-3">
               <label htmlFor="campus" className="form-label">
                 Campus
@@ -125,17 +141,7 @@ const RegistrarUserComponent = () => {
                 <option value="0">Baneado</option>
               </select>
             </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                name="password"
-                onChange={handleInputChange}
-              />
+            </div>
             </div>
             <button type="button" className="btn btn-primary" onClick={handleSubmit}>
               Registrar
