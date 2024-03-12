@@ -128,6 +128,7 @@ function ArticuloComponent() {
                           onClick={() => setIdArticuloToBajar(item.ID)}
                           data-bs-toggle="modal"
                           data-bs-target="#bajarlModal"
+                          title="Dar de baja"
                         >
                          <i className="bi bi-file-earmark-x"></i>
                         </button>
@@ -138,6 +139,7 @@ function ArticuloComponent() {
                           onClick={() => setArticuloToUpdate(item)}
                           data-bs-toggle="modal"
                           data-bs-target="#editarlModal"
+                          title="Editar"
                         >
                           <i className="bi bi-pencil-square"></i>
                         </button>
