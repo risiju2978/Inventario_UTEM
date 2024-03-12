@@ -37,7 +37,8 @@ const LoginComponent = () => {
                navigate('/articulo');
             })
             .catch((error) => {
-                console.log('Error al loguear usuario', error);
+                console.log('Error al loguear usuario:', error.response.data.message);
+                alert(`Error al loguear usuario: ${error.response.data.message}`)
             });
     };
 
