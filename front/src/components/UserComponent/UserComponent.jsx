@@ -29,6 +29,10 @@ function UserComponent() {
     fetchUsuarios();
   }, []);
 
+  const handleClickVerListado = () => {
+    window.location.href = "/articulo";
+  }
+
   return (
     <div className="container">
       <div className="row mt-4">
@@ -43,7 +47,8 @@ function UserComponent() {
         </div>
       </div>
       <div className="col-6">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar usuario</button>
+        <button type="button" class="btn btn-primary mx-4" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar usuario</button>
+        <button type="button" class="btn btn-primary" onClick={handleClickVerListado}>Ver inventario</button>
       </div>
       </div>
       <hr />
