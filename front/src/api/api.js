@@ -46,4 +46,9 @@ export class Api {
     });
     return response.data.data;
   }
+
+  static async editUser(userData) {
+    const response = await axios.put(`${url}/usuario/editar_usuario`, userData);
+    return response.data.data;
+  }
 }

@@ -305,7 +305,7 @@ const userController = {
       if (user_id == undefined || user_id == 0) {
         return res
           .status(405)
-          .json({ status: 404, error: "Usuario no encontrado" });
+          .json({ status: 404, error: "No se proporciona id de usuario" });
       }
 
       // Verificar si el usuario existe
