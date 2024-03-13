@@ -15,25 +15,19 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
     setUserIdToCreate(idUser);
   }, [idUser]);
 
-  useEffect(() => {
-    const clearInputs = () => {
-      document.getElementsByName("img").value = "";
-      document.getElementsByName("office_id").value = "";
-      document.getElementsByName("categoria_id").value = "";
-      document.getElementsByName("articulo_estado_id").value = "";
-      document.getElementsByName("anio").value = "";
-      document.getElementsByName("dimension").value = "";
-      document.getElementsByName("art_num").value = "";
-      document.getElementsByName("art_nombre").value = "";
-      document.getElementsByName("art_codigo").value = "";
-      document.getElementsByName("art_glosa").value = "";
-    };
-    clearInputs();
-
-    return () => {
-      clearInputs();
-    };
-  }, [limpiar]);
+ const limpiarForm = () => {
+    
+      document.getElementById("img").value = "";
+      // document.getElementById("office_id").value = "";
+      document.getElementById("categoria_id").value = "";
+      // document.getElementById("articulo_estado_id").value = "";
+      document.getElementById("anio").value = "";
+      document.getElementById("dimension").value = "";
+      document.getElementById("art_num").value = "";
+      document.getElementById("art_nombre").value = "";
+      document.getElementById("art_codigo").value = "";
+      document.getElementById("art_glosa").value = "";
+    }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -194,6 +188,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 name="anio"
                 value={formData.anio}
                 onChange={handleInputChange}
+                id="anio"
               />
               {errors.anio && (
                 <span className="text-danger">{errors.anio}</span>
@@ -207,6 +202,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 name="dimension"
                 value={formData.dimension}
                 onChange={handleInputChange}
+                id="dimension"
               />
               {errors.dimension && (
                 <span className="text-danger">{errors.dimension}</span>
@@ -220,6 +216,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 name="art_num"
                 value={formData.art_num}
                 onChange={handleInputChange}
+                id="art_num"
               />
               {errors.art_num && (
                 <span className="text-danger">{errors.art_num}</span>
@@ -233,6 +230,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 name="art_nombre"
                 value={formData.art_nombre}
                 onChange={handleInputChange}
+                id="art_nombre"
               />
               {errors.art_nombre && (
                 <span className="text-danger">{errors.art_nombre}</span>
@@ -249,6 +247,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 name="art_codigo"
                 value={formData.art_codigo}
                 onChange={handleInputChange}
+                id="art_codigo"
               />
               {errors.art_codigo && (
                 <span className="text-danger">{errors.art_codigo}</span>
@@ -277,6 +276,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 name="categoria_id"
                 value={formData.categoria_id}
                 onChange={handleInputChange}
+                id="categoria_id"
               />
               {errors.categoria_id && (
                 <span className="text-danger">{errors.categoria_id}</span>
@@ -288,6 +288,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 name="office_id"
                 className="form-control"
                 onChange={handleInputChange}
+                id="office_id"
               >
                 <option value="">Seleccione una oficina</option>
                 {oficinas.map((item, index) => (
@@ -297,15 +298,15 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 ))}
               </select>
               {/* <input
-                      type="text"
-                      className="form-control"
-                      name="office_id"
-                      value={formData.office_id}
-                      onChange={handleInputChange}
-                    /> */}
+                type="text"
+                className="form-control"
+                name="office_id"
+                value={formData.office_id}
+                onChange={handleInputChange}
+              />
               {errors.office_id && (
                 <span className="text-danger">{errors.office_id}</span>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -320,6 +321,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 name="art_glosa"
                 value={formData.art_glosa}
                 onChange={handleInputChange}
+                id="art_glosa"
               />
               {errors.art_glosa && (
                 <span className="text-danger">{errors.art_glosa}</span>
@@ -332,6 +334,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                 className="form-control"
                 name="img"
                 onChange={handleUploadFile}
+                id="img"
               />
               {errors.img && <span className="text-danger">{errors.img}</span>}
             </div>
@@ -343,6 +346,11 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
           </button>
         </div>
       </form>
+      <div class="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={limpiarForm}>
+          Cerrar
+        </button>
+      </div>
     </div>
   );
 };

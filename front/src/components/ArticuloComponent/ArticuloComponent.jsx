@@ -223,30 +223,24 @@ function ArticuloComponent() {
         tabindex="-1"
         aria-labelledby="ingresarLabel"
         aria-hidden="true"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false" 
       >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h3>Ingresar nuevo artículo</h3>
-              <button
+              {/* <button
                 type="button"
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-              ></button>
+              ></button> */}
             </div>
             <div class="modal-body">
               <AgregarArticulo idUser={idUserToCrearteArticulo} limpiar={true}/>
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cerrar
-              </button>
-            </div>
+            
           </div>
         </div>
       </div>
