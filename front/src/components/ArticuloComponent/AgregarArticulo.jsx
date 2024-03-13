@@ -4,7 +4,7 @@ import { Api } from "../../api/api";
 
 const AgregarArticulo = ({ idUser, limpiar }) => {
   const [formData, setFormData] = useState({});
-  const [departamentos, setDepartamentos] = useState([]); // Estado para almacenar los datos de la vista
+  const [categories, setCategories] = useState([]); // Estado para almacenar los datos de la vista
   const [oficinas, setOficinas] = useState([]); // Estado para almacenar los datos de la vista
   const [userIdToCreate, setUserIdToCreate] = useState(null);
 
@@ -131,11 +131,8 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
       try {
         console.log("Datos a enviar:", formDataFormat); // Verifica los datos que estás enviando
         console.log("id", userIdToCreate); // Verifica el id del usuario que estás enviando
-        const response = await axios.post(
-          "http://localhost:8080/api/articulo/income_art",
-          formDataFormat
-        );
-        console.log("Artículo agregado correctamente:", response.data);
+        const response = Api.createArticulo(formDataFormat);
+        console.log("Artículo agregado correctamente:", response);
         setFormData({}); // Limpia el formulario después de agregar el artículo
         alert("Artículo agregado correctamente");
         window.location.reload();
@@ -146,9 +143,9 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
   };
 
   useEffect(() => {
-    Api.getAllDeparments()
+    Api.getAllCategories()
       .then((response) => {
-        setDepartamentos(response);
+        setCategories(response);
       })
       .catch((error) => {
         console.error("Error fetching data", error);
@@ -270,14 +267,20 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                   </div> */}
             <div className="mb-3">
               <label className="form-label">Categoría ID</label>
-              <input
+              <select
                 type="text"
                 className="form-control"
                 name="categoria_id"
                 value={formData.categoria_id}
                 onChange={handleInputChange}
                 id="categoria_id"
-              />
+              >
+                <option defaultValue>Seleccione una categoría</option>
+                {categories.map((item, index) => (
+                  <option key={index} value={item.categoria_id}>
+                    {item.categoria}
+                  </option>
+                ))}</select>
               {errors.categoria_id && (
                 <span className="text-danger">{errors.categoria_id}</span>
               )}

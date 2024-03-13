@@ -5,6 +5,7 @@ import { Api } from "../../api/api";
 import ActualizarRol from "../ActualizarRol/ActualizarRol";
 import AgregarArticulo from "../ArticuloComponent/AgregarArticulo";
 import ButtonDescargar from "../common/buttonDescargar";
+import { variables } from "../../config/const";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
@@ -114,12 +115,12 @@ function UserComponent() {
             <div className="col-6 align-center">
               <ButtonDescargar
                 tipo="XLS"
-                url="http://localhost:8080/api/informe/generar-reporte-general-xls"
+                url={variables.urlReporteExcel}
                 margenTop="10px"
               />
               <ButtonDescargar
                 tipo="PDF"
-                url="http://localhost:8080/api/informe/generar-reporte-general-pdf"
+                url={variables.urlReportePdf}
                 margenTop="20px"
               />
             </div>

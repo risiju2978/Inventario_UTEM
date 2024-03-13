@@ -63,7 +63,7 @@ app.use('/api/vista', vistaRoutes);
 app.use('/api/informe', infGenerator);
 app.use('/api/articulo', articuloRoutes);
 app.use('/api/usuario', usuarioRoutes);
-app.use('/api/categoria', categoriaRoutes);
+app.use('/api/categoria', categoriaRoutes); 
 app.use('/api/departamento', departamentoRoutes);
 app.use('/api/sede', sedeRoutes);
 app.use('/api/articuloEstado', articuloEstadoRoutes);

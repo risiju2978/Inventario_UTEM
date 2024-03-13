@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
+import { Api } from "../../api/api";
 
-const DarDeBaja = ({ articulo }) => {
+const DarDeBaja = ({ articulo, usuario }) => {
   const [motivoBaja, setMotivoBaja] = useState("");
   const [autorizacion, setAutorizacion] = useState("");
   const [error, setError] = useState("");
@@ -9,16 +10,13 @@ const DarDeBaja = ({ articulo }) => {
   const darDeBaja = async () => {
     try {
       const fechaBaja = new Date().toISOString().slice(0, 19).replace("T", " ");
-      const response = await axios.post(
-        "http://localhost:8080/api/articulo/baja_art",
-        {
-          id_articulo: articulo,
-          motivo_baja: motivoBaja,
-          autorizacion: autorizacion,
-          articulo_estado_id: 1,
-          fecha_baja: fechaBaja,
-        }
-      );
+      const response = await Api.darBajaArticulo({
+        id_articulo: articulo,
+        motivo_baja: motivoBaja,
+        autorizacion: autorizacion,
+        articulo_estado_id: 1,
+        fecha_baja: fechaBaja,
+      });
       console.log("Artículo dado de baja correctamente:", response.data);
       alert("Artículo dado de baja correctamente");
       window.location.reload();
@@ -27,6 +25,13 @@ const DarDeBaja = ({ articulo }) => {
       console.error("Error al dar de baja el artículo:", error);
     }
   };
+
+  useEffect(() => {
+    if (usuario) {
+      setAutorizacion(usuario);
+    }
+  }
+  , [usuario]);
 
   return (
     <>
@@ -47,13 +52,7 @@ const DarDeBaja = ({ articulo }) => {
           <label htmlFor="autorizacion" className="form-label">
             Autorización:
           </label>
-          <input
-            type="text"
-            className="form-control"
-            id="autorizacion"
-            value={autorizacion}
-            onChange={(e) => setAutorizacion(e.target.value)}
-          />
+          <p>Uuario activo: <strong>{usuario}</strong></p>
         </div>
         {error && <div className="text-danger">{error}</div>}
         <button type="button" className="btn btn-danger" onClick={darDeBaja}>

@@ -1,6 +1,7 @@
 import axios from "axios";
+import { variables } from "../config/const";
 
-const url = "http://localhost:8080/api";
+const url = variables.urlBaseBack;
 
 export class Api {
   static async getAllDeparments() {
@@ -56,4 +57,25 @@ export class Api {
     const response = await axios.get(`${url}/informe/generator_inf`, data);
     return response.data.data;
   }
+
+  static async getAllCategories() {
+    const response = await axios.get(`${url}/categoria/getAllCategories`);
+    return response.data.data;
+  }
+
+  static async getReadVista() {
+    const response = await axios.get(`${url}/vista/readVista`);
+    return response.data.data;
+  }
+
+  static async createArticulo(articuloData) {
+    const response = await axios.post(`${url}/articulo/createArticulo`, articuloData);
+    return response.data;
+  }
+
+  static async darBajaArticulo(data) {
+    const response = await axios.post(`${url}/articulo/baja_art`, data);
+    return response.data;
+  }
+
 }
