@@ -1,18 +1,18 @@
 import React from 'react'
 
-const ButtonDescargar = () => {
+const ButtonDescargar = ({url, tipo}) => {
   return (
     <button
             type="button"
             class="btn btn-info"
             onClick={() => {
               window.open(
-                "http://localhost:8080/api/informe/generator_inf",
+                url,
                 "_blank"
               );
             }}
           >
-            Descargar reporte PDF
+            Descargar reporte {tipo}
           </button>
   )
 }
