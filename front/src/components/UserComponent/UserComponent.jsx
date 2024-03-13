@@ -139,9 +139,6 @@ function UserComponent() {
                 <th>Email</th>
                 <th>Estado</th>
                 <th>Rol</th>
-                <th>Campus</th>
-                <th>Departamento</th>
-                <th>Oficina</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -160,14 +157,11 @@ function UserComponent() {
                         ? "Administrador"
                         : "Usuario"}
                     </td>
-                    <td>{usuario.campus}</td>
-                    <td>{usuario.departament}</td>
-                    <td>{usuario.office}</td>
                     <td>
                       <div className="d-flex">
-                        <button type="button" className="btn btn-primary">
+                        {/* <button type="button" className="btn btn-primary">
                           <i className="bi bi-pencil-square"></i>
-                        </button>
+                        </button> */}
                         {usuario.user_state === 1 ? (
                           <button
                             type="button"
