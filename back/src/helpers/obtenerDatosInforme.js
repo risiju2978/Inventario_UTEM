@@ -34,10 +34,12 @@ async function obtenerDatosInforme(
   const [vistaData] = await db.promise().query('CALL Read_v_infogenerator()');
   const [rows] = await db.promise().query(sql, combo);
 
-  if (vistaData.length === 0) {
-    return false;
-  } else {
+  if (vistaData.length !== 0) {
     return vistaData;
+  } else if (rows.length !== 0) {
+    return rows;
+  } else {
+    return false;
   }
 }
 
