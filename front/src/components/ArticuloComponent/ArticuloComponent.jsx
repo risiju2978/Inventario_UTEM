@@ -86,12 +86,10 @@ function ArticuloComponent() {
             <th>Categoria</th>
             <th>imagen articulo</th>
             <th>Articulo estado</th>
-            <th
-            // className="acciones-header"
-            // style={{alignItems: "center" }}
-            >
+            {user && user.rol === 3 ? <th></th> :
+            <th>
               Acciones
-            </th>
+            </th>}
           </tr>
         </thead>
         <tbody className="fw-lighter">
@@ -121,6 +119,8 @@ function ArticuloComponent() {
                   </td>
                   <td>
                     <div className="d-flex flex">
+                      {user && user.rol === 3 ? null :
+                      <>
                       <div>
                         <button
                           className="btn btn-danger mx-2"
@@ -143,6 +143,8 @@ function ArticuloComponent() {
                           <i className="bi bi-pencil-square"></i>
                         </button>
                       </div>
+                      </>
+                      }
                     </div>
                   </td>
                 </tr>
