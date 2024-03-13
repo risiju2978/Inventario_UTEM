@@ -131,11 +131,8 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
       try {
         console.log("Datos a enviar:", formDataFormat); // Verifica los datos que estás enviando
         console.log("id", userIdToCreate); // Verifica el id del usuario que estás enviando
-        const response = await axios.post(
-          "http://localhost:8080/api/articulo/income_art",
-          formDataFormat
-        );
-        console.log("Artículo agregado correctamente:", response.data);
+        const response = Api.createArticulo(formDataFormat);
+        console.log("Artículo agregado correctamente:", response);
         setFormData({}); // Limpia el formulario después de agregar el artículo
         alert("Artículo agregado correctamente");
         window.location.reload();

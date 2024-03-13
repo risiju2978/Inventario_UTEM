@@ -68,5 +68,10 @@ export class Api {
     return response.data.data;
   }
 
+  static async createArticulo(articuloData) {
+    const response = await axios.post(`${url}/articulo/createArticulo`, articuloData);
+    return response.data;
+  }
+
 
 }
