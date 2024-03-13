@@ -3,13 +3,17 @@ import axios from "axios";
 import RegistrarUserComponent from "../RegistrarUserComponent/RegistrarUserComponent";
 import { Api } from "../../api/api";
 import ActualizarRol from "../ActualizarRol/ActualizarRol";
+import AgregarArticulo from "../ArticuloComponent/AgregarArticulo";
+import ButtonDescargar from "../common/buttonDescargar";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
   const [userPerfil, setUserPerfil] = useState(null);
   const [idUser, setIdUser] = useState(null);
+  const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
 
   const user = JSON.parse(window.localStorage.getItem("USER_APP"));
+  console.log(user.id);
 
   useEffect(() => {
     if (user !== null) {
@@ -70,25 +74,56 @@ function UserComponent() {
                 Email: {userPerfil && userPerfil.email}
               </p>
             </div>
+            <hr />
+            <button
+              type="button"
+              className="btn btn-primary w-50 mx-auto mb-3"
+              data-bs-toggle="modal"
+              data-bs-target="#registrarModal"
+            >
+              Agregar nuevo usuario
+            </button>
           </div>
         </div>
         <div className="col-6">
           <h5>Acciones</h5>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#registrarModal"
-          >
-            Agregar usuario
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary mx-4"
-            onClick={handleClickVerListado}
-          >
-            Ver inventario
-          </button>
+          <hr />
+          <div className="row">
+            <div className="col-6">
+              {" "}
+              <button
+                type="button"
+                className="btn btn-primary mt-3"
+                onClick={handleClickVerListado}
+              >
+                Ver inventario
+              </button>
+              <button
+                className="btn btn-success mt-3"
+                data-bs-toggle="modal"
+                data-bs-target="#ingresarModal"
+                title="Agregar artículo"
+                onClick={() => {
+                  setIdUserToCrearteArticulo(user.id);
+                }}
+              >
+                Agregar Artículo{" "}
+                <i className="bi bi-file-earmark-plus-fill"></i>
+              </button>
+            </div>
+            <div className="col-6 align-center">
+              <ButtonDescargar
+                tipo="XLS"
+                url="http://localhost:8080/api/informe/generar-reporte-general-xls"
+                margenTop="10px"
+              />
+              <ButtonDescargar
+                tipo="PDF"
+                url="http://localhost:8080/api/informe/generar-reporte-general-pdf"
+                margenTop="20px"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <hr />
@@ -170,12 +205,7 @@ function UserComponent() {
         {/* TABLA AGREGAR USUARIOS*/}
         <div className="col-6 mx-0"></div>
         {/* TABLA EDITAR ROLES*/}
-        <div className="col-6">
-          <h2>Editar roles</h2>
-          <table className="table table-bordered">
-            {/* Sin contenido por ahora */}
-          </table>
-        </div>
+        <div className="col-6"></div>
       </div>
       {/* <!-- Modal registrar usuario --> */}
       <div
@@ -242,6 +272,30 @@ function UserComponent() {
               >
                 Cerrar
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <!-- Modal ingresar nuevo articulo --> */}
+      <div
+        class="modal fade"
+        id="ingresarModal"
+        tabindex="-1"
+        aria-labelledby="ingresarLabel"
+        aria-hidden="true"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Ingresar nuevo artículo</h3>
+            </div>
+            <div class="modal-body">
+              <AgregarArticulo
+                idUser={idUserToCrearteArticulo}
+                limpiar={true}
+              />
             </div>
           </div>
         </div>

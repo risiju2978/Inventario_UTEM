@@ -4,17 +4,14 @@ import EditarArticulo from "./EditarArticulo";
 import DarDeBaja from "./DarDeBaja";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ButtonDescargar from "../common/buttonDescargar";
 
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
   const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
-  const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
+  const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
 
-
-  const toggleAgregarModal = () => {
-    setModalAgregarVisible(!modalAgregarVisible); // Cambia el estado de visibilidad del modal de agregar artículo
-  };
 
   const [user, setUser] = useState(null);
   const usuario = window.localStorage.getItem("USER_APP");
@@ -22,7 +19,6 @@ function ArticuloComponent() {
     if (usuario) {
       setUser(JSON.parse(usuario));
     }
-    console.log(usuario);
   }, [usuario]);
 
   const formatDate = (dateString) => {
@@ -62,15 +58,21 @@ function ArticuloComponent() {
     }
   }, [navigate]);
 
+  
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
       {user && user.rol === 3 ? null : (
-        <AgregarArticulo
-          modalVisible={modalAgregarVisible}
-          toggleModal={toggleAgregarModal}
-        />
+        <button className="btn btn-success mx-3" data-bs-toggle="modal"
+        data-bs-target="#ingresarModal"
+        title="Agregar artículo"  onClick={() => {
+          setIdUserToCrearteArticulo(user.id)
+          }}>
+        Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
+      </button>
       )}
+      <ButtonDescargar tipo="XLS" url="http://localhost:8080/api/informe/generar-reporte-general-xls"  />
+      <ButtonDescargar tipo="PDF" url="http://localhost:8080/api/informe/generar-reporte-general-pdf" marginLeft="10px"  />
       <table className="table table-striped">
         <thead>
           <tr>
@@ -87,12 +89,10 @@ function ArticuloComponent() {
             <th>Categoria</th>
             <th>imagen articulo</th>
             <th>Articulo estado</th>
-            <th
-            // className="acciones-header"
-            // style={{alignItems: "center" }}
-            >
+            {user && user.rol === 3 ? <th></th> :
+            <th>
               Acciones
-            </th>
+            </th>}
           </tr>
         </thead>
         <tbody className="fw-lighter">
@@ -122,15 +122,17 @@ function ArticuloComponent() {
                   </td>
                   <td>
                     <div className="d-flex flex">
+                      {user && user.rol === 3 ? null :
+                      <>
                       <div>
-                         <button
+                        <button
                           className="btn btn-danger mx-2"
                           onClick={() => setIdArticuloToBajar(item.ID)}
                           data-bs-toggle="modal"
                           data-bs-target="#bajarlModal"
                           title="Dar de baja"
                         >
-                         <i className="bi bi-file-earmark-x"></i>
+                          <i className="bi bi-file-earmark-x"></i>
                         </button>
                       </div>
                       <div>
@@ -144,6 +146,8 @@ function ArticuloComponent() {
                           <i className="bi bi-pencil-square"></i>
                         </button>
                       </div>
+                      </>
+                      }
                     </div>
                   </td>
                 </tr>
@@ -184,8 +188,8 @@ function ArticuloComponent() {
           </div>
         </div>
       </div>
-         {/* <!-- Modal bajar articulo --> */}
-         <div
+      {/* <!-- Modal bajar articulo --> */}
+      <div
         class="modal fade"
         id="bajarlModal"
         tabindex="-1"
@@ -214,6 +218,34 @@ function ArticuloComponent() {
                 Cerrar
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+      {/* <!-- Modal ingresar nuevo articulo --> */}
+      <div
+        class="modal fade"
+        id="ingresarModal"
+        tabindex="-1"
+        aria-labelledby="ingresarLabel"
+        aria-hidden="true"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false" 
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Ingresar nuevo artículo</h3>
+              {/* <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button> */}
+            </div>
+            <div class="modal-body">
+              <AgregarArticulo idUser={idUserToCrearteArticulo} limpiar={true}/>
+            </div>
+            
           </div>
         </div>
       </div>
