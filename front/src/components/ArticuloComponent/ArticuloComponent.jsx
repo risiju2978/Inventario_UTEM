@@ -71,7 +71,8 @@ function ArticuloComponent() {
         Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
       </button>
       )}
-      <ButtonDescargar  />
+      <ButtonDescargar tipo="XLS" url="http://localhost:8080/api/informe/generar-reporte-general-xls"  />
+      <ButtonDescargar tipo="PDF" url="http://localhost:8080/api/informe/generar-reporte-general-pdf"  />
       <table className="table table-striped">
         <thead>
           <tr>
