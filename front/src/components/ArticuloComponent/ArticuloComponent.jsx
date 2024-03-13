@@ -5,6 +5,7 @@ import DarDeBaja from "./DarDeBaja";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ButtonDescargar from "../common/buttonDescargar";
+import { variables } from "../../config/const";
 
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
@@ -71,8 +72,8 @@ function ArticuloComponent() {
         Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
       </button>
       )}
-      <ButtonDescargar tipo="XLS" url="http://localhost:8080/api/informe/generar-reporte-general-xls"  />
-      <ButtonDescargar tipo="PDF" url="http://localhost:8080/api/informe/generar-reporte-general-pdf" marginLeft="10px"  />
+      <ButtonDescargar tipo="XLS" url={variables.urlReporteExcel} />
+      <ButtonDescargar tipo="PDF" url={variables.urlReportePdf} marginLeft="10px"  />
       <table className="table table-striped">
         <thead>
           <tr>
