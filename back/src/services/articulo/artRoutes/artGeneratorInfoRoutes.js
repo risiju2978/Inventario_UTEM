@@ -3,7 +3,7 @@ const GeneratorInfoController = require ('../artControllers/artGeneratorInfoCont
 const express = require("express")
 const router = express.Router();
 
-router.post('/generator_inf', GeneratorInfoController.generarInforme);
+router.get('/generator_inf', GeneratorInfoController.generarInforme);
 
 module.exports =router;
 

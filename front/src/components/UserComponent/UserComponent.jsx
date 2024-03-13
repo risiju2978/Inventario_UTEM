@@ -4,6 +4,7 @@ import RegistrarUserComponent from "../RegistrarUserComponent/RegistrarUserCompo
 import { Api } from "../../api/api";
 import ActualizarRol from "../ActualizarRol/ActualizarRol";
 import AgregarArticulo from "../ArticuloComponent/AgregarArticulo";
+import ButtonDescargar from "../common/buttonDescargar";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
@@ -77,32 +78,42 @@ function UserComponent() {
         </div>
         <div className="col-6">
           <h5>Acciones</h5>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#registrarModal"
-          >
-            Agregar usuario
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary mx-4"
-            onClick={handleClickVerListado}
-          >
-            Ver inventario
-          </button>
-          <button
-            className="btn btn-success"
-            data-bs-toggle="modal"
-            data-bs-target="#ingresarModal"
-            title="Agregar artículo"
-            onClick={() => {
-              setIdUserToCrearteArticulo(user.id)
-              }}
-          >
-            Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
-          </button>
+          <hr />
+          <div className="row">
+            <div className="col-6">
+              {" "}
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#registrarModal"
+              >
+                Agregar usuario
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary mt-3"
+                onClick={handleClickVerListado}
+              >
+                Ver inventario
+              </button>
+            </div>
+            <div className="col-6 align-center">
+              <button
+                className="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#ingresarModal"
+                title="Agregar artículo"
+                onClick={() => {
+                  setIdUserToCrearteArticulo(user.id);
+                }}
+              >
+                Agregar Artículo{" "}
+                <i className="bi bi-file-earmark-plus-fill"></i>
+              </button>
+              <ButtonDescargar />
+            </div>
+          </div>
         </div>
       </div>
       <hr />
@@ -255,15 +266,15 @@ function UserComponent() {
           </div>
         </div>
       </div>
-        {/* <!-- Modal ingresar nuevo articulo --> */}
-        <div
+      {/* <!-- Modal ingresar nuevo articulo --> */}
+      <div
         class="modal fade"
         id="ingresarModal"
         tabindex="-1"
         aria-labelledby="ingresarLabel"
         aria-hidden="true"
         data-bs-backdrop="static"
-        data-bs-keyboard="false" 
+        data-bs-keyboard="false"
       >
         <div class="modal-dialog">
           <div class="modal-content">
@@ -271,9 +282,11 @@ function UserComponent() {
               <h3>Ingresar nuevo artículo</h3>
             </div>
             <div class="modal-body">
-              <AgregarArticulo idUser={idUserToCrearteArticulo} limpiar={true}/>
+              <AgregarArticulo
+                idUser={idUserToCrearteArticulo}
+                limpiar={true}
+              />
             </div>
-            
           </div>
         </div>
       </div>

@@ -26,59 +26,59 @@ const infGeneratorController = {
       // VALIDACIONES
 
 
-      if (!fecha_inicio || !fecha_fin || fecha_inicio > fecha_fin) {
-        return res.status(400).json({
-          status: 400,
-          error: "Rango de fechas de art_ingreso no válido",
-        });
-      }
+      // if (!fecha_inicio || !fecha_fin || fecha_inicio > fecha_fin) {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: "Rango de fechas de art_ingreso no válido",
+      //   });
+      // }
 
-      if (categoria_id === undefined || isNaN(categoria_id)) {
-        return res.status(400).json({
-          status: 400,
-          error: "categoria_id no puede ser nulo y debe ser un número",
-        });
-      }
+      // if (categoria_id === undefined || isNaN(categoria_id)) {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: "categoria_id no puede ser nulo y debe ser un número",
+      //   });
+      // }
 
-      if (office_id === undefined || isNaN(office_id)) {
-        return res.status(400).json({
-          status: 400,
-          error: "office_id no puede ser nulo y debe ser un número",
-        });
-      }
+      // if (office_id === undefined || isNaN(office_id)) {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: "office_id no puede ser nulo y debe ser un número",
+      //   });
+      // }
 
-      if (campus_id === undefined || isNaN(campus_id)) {
-        return res.status(400).json({
-          status: 400,
-          error: "campus_id no puede ser nulo y debe ser un número",
-        });
-      }
+      // if (campus_id === undefined || isNaN(campus_id)) {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: "campus_id no puede ser nulo y debe ser un número",
+      //   });
+      // }
 
-      if (departament_id === undefined || isNaN(departament_id)) {
-        return res.status(400).json({
-          status: 400,
-          error: "departament_id no puede ser nulo y debe ser un número",
-        });
-      }
+      // if (departament_id === undefined || isNaN(departament_id)) {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: "departament_id no puede ser nulo y debe ser un número",
+      //   });
+      // }
 
-      if (tipo_formato !== "PDF" && tipo_formato !== "XLS") {
-        return res.status(400).json({
-          status: 400,
-          error: 'El tipo de formato debe ser "PDF" o "XLS"',
-        });
-      }
+      // if (tipo_formato !== "PDF" && tipo_formato !== "XLS") {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: 'El tipo de formato debe ser "PDF" o "XLS"',
+      //   });
+      // }
 
-      if (id_articulo_baja === undefined || isNaN(id_articulo_baja)) {
-        return res.status(400).json({
-          status: 400,
-          error: "id_articulo_baja debe ser un número ",
-        });
-      }
+      // if (id_articulo_baja === undefined || isNaN(id_articulo_baja)) {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: "id_articulo_baja debe ser un número ",
+      //   });
+      // }
 
       const wb = tipo_formato === "XLS" ? new Excel.Workbook() : null;
       const ws = wb ? wb.addWorksheet("Informe") : null;
 
-      const fileName = `documento-${new Date().toISOString()}.${tipo_formato.toLowerCase()}`;
+      // const fileName = `documento-${new Date().toISOString()}.${tipo_formato.toLowerCase()}`;
 
       const datos = await obtenerDatosInforme(fecha_inicio,
         fecha_fin,
@@ -89,7 +89,8 @@ const infGeneratorController = {
         id_articulo_baja,)
 
     try {
-      if (tipo_formato === "PDF") {
+      // if (tipo_formato.toLowerCase() === "pdf") {
+        if (true) {
         const stream = res.writeHead(200, {
           "Content-Type": "application/pdf",
           "Content-Disposition": "attachment; filename=invoice.pdf",
@@ -122,15 +123,6 @@ const infGeneratorController = {
       // });
 
       // Finalizar el documento y guardar en disco
-      if (doc) {
-      
-        
-      } else {
-        return res.status(400).json({
-          status: 400,
-          error: 'Tipo de formato no compatible. Se espera "PDF" o "XLS".',
-        });
-      }
 
       // // Guardar el archivo XLS en disco
       // if (wb) {
