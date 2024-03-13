@@ -9,12 +9,8 @@ function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
   const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
-  const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
 
-  const toggleAgregarModal = () => {
-    setModalAgregarVisible(!modalAgregarVisible); // Cambia el estado de visibilidad del modal de agregar artículo
-  };
 
   const [user, setUser] = useState(null);
   const usuario = window.localStorage.getItem("USER_APP");
@@ -22,7 +18,6 @@ function ArticuloComponent() {
     if (usuario) {
       setUser(JSON.parse(usuario));
     }
-    console.log(usuario);
   }, [usuario]);
 
   const formatDate = (dateString) => {
@@ -61,15 +56,17 @@ function ArticuloComponent() {
       navigate("/login");
     }
   }, [navigate]);
-  
 
+  
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
       {user && user.rol === 3 ? null : (
         <button className="btn btn-success" data-bs-toggle="modal"
         data-bs-target="#ingresarModal"
-        title="Dar de baja"  onClick={() => setIdUserToCrearteArticulo(user.user_id)}>
+        title="Agregar artículo"  onClick={() => {
+          setIdUserToCrearteArticulo(user.id)
+          }}>
         Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
       </button>
       )}
@@ -230,6 +227,7 @@ function ArticuloComponent() {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
+              <h3>Ingresar nuevo artículo</h3>
               <button
                 type="button"
                 class="btn-close"
@@ -238,7 +236,7 @@ function ArticuloComponent() {
               ></button>
             </div>
             <div class="modal-body">
-              <AgregarArticulo articulo={idUserToCrearteArticulo} />
+              <AgregarArticulo idUser={idUserToCrearteArticulo} limpiar={true}/>
             </div>
             <div class="modal-footer">
               <button

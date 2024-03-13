@@ -2,14 +2,38 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Api } from "../../api/api";
 
-const AgregarArticulo = ({ idUser }) => {
+const AgregarArticulo = ({ idUser, limpiar }) => {
   const [formData, setFormData] = useState({});
   const [departamentos, setDepartamentos] = useState([]); // Estado para almacenar los datos de la vista
   const [oficinas, setOficinas] = useState([]); // Estado para almacenar los datos de la vista
+  const [userIdToCreate, setUserIdToCreate] = useState(null);
 
   const [file, setFile] = useState(null);
-
   const [errors, setErrors] = useState({}); // Estado para manejar los errores de validación
+
+  useEffect(() => {
+    setUserIdToCreate(idUser);
+  }, [idUser]);
+
+  useEffect(() => {
+    const clearInputs = () => {
+      document.getElementsByName("img").value = "";
+      document.getElementsByName("office_id").value = "";
+      document.getElementsByName("categoria_id").value = "";
+      document.getElementsByName("articulo_estado_id").value = "";
+      document.getElementsByName("anio").value = "";
+      document.getElementsByName("dimension").value = "";
+      document.getElementsByName("art_num").value = "";
+      document.getElementsByName("art_nombre").value = "";
+      document.getElementsByName("art_codigo").value = "";
+      document.getElementsByName("art_glosa").value = "";
+    };
+    clearInputs();
+
+    return () => {
+      clearInputs();
+    };
+  }, [limpiar]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,11 +54,6 @@ const AgregarArticulo = ({ idUser }) => {
   const validateForm = () => {
     let errors = {};
     let isValid = true;
-
-    if (!formData.usuario_id) {
-      errors.usuario_id = "El usuario es requerido";
-      isValid = false;
-    }
 
     if (!formData.anio) {
       errors.anio = "El año es requerido";
@@ -95,31 +114,39 @@ const AgregarArticulo = ({ idUser }) => {
     e.preventDefault();
 
     if (validateForm()) {
-      if (file) {
-        const formDataFormat = new FormData();
-        formDataFormat.append("img", file);
-        formDataFormat.append("usuario_id", idUser);
-        formDataFormat.append("anio", formData.anio);
-        formDataFormat.append("dimension", formData.dimension);
-        formDataFormat.append("art_num", formData.art_num);
-        formDataFormat.append("art_nombre", formData.art_nombre);
-        formDataFormat.append("art_codigo", formData.art_codigo);
-        formDataFormat.append("art_glosa", formData.art_glosa);
-        formDataFormat.append("articulo_estado_id", 2);
-        formDataFormat.append("categoria_id", formData.categoria_id);
-        formDataFormat.append("office_id", formData.office_id);
+      if (!file) {
+        return alert("Por favor seleccione un archivo");
+      }
+      if (userIdToCreate === null) {
+        return alert("Por favor seleccione un usuario");
+      }
 
-        try {
-          console.log("Datos a enviar:", formDataFormat); // Verifica los datos que estás enviando
-          const response = await axios.post(
-            "http://localhost:8080/api/articulo/income_art",
-            formDataFormat
-          );
-          console.log("Artículo agregado correctamente:", response.data);
-          setFormData({}); // Limpia el formulario después de agregar el artículo
-        } catch (error) {
-          console.log("Error al agregar el artículo:", error);
-        }
+      const formDataFormat = new FormData();
+      formDataFormat.append("img", file);
+      formDataFormat.append("usuario_id", userIdToCreate);
+      formDataFormat.append("anio", formData.anio);
+      formDataFormat.append("dimension", formData.dimension);
+      formDataFormat.append("art_num", formData.art_num);
+      formDataFormat.append("art_nombre", formData.art_nombre);
+      formDataFormat.append("art_codigo", formData.art_codigo);
+      formDataFormat.append("art_glosa", formData.art_glosa);
+      formDataFormat.append("articulo_estado_id", 2);
+      formDataFormat.append("categoria_id", formData.categoria_id);
+      formDataFormat.append("office_id", formData.office_id);
+
+      try {
+        console.log("Datos a enviar:", formDataFormat); // Verifica los datos que estás enviando
+        console.log("id", userIdToCreate); // Verifica el id del usuario que estás enviando
+        const response = await axios.post(
+          "http://localhost:8080/api/articulo/income_art",
+          formDataFormat
+        );
+        console.log("Artículo agregado correctamente:", response.data);
+        setFormData({}); // Limpia el formulario después de agregar el artículo
+        alert("Artículo agregado correctamente");
+        window.location.reload();
+      } catch (error) {
+        console.log("Error al agregar el artículo:", error);
       }
     }
   };
@@ -159,7 +186,10 @@ const AgregarArticulo = ({ idUser }) => {
             <div className="mb-3">
               <label className="form-label">Año</label>
               <input
-                type="text"
+                type="number"
+                placeholder="YYYY"
+                min="2017"
+                max="2100"
                 className="form-control"
                 name="anio"
                 value={formData.anio}
@@ -307,7 +337,7 @@ const AgregarArticulo = ({ idUser }) => {
             </div>
           </div>
         </div>
-        <div className="modal-footer">
+        <div>
           <button type="submit" className="btn btn-primary">
             Agregar
           </button>
