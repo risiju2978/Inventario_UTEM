@@ -3,13 +3,16 @@ import axios from "axios";
 import RegistrarUserComponent from "../RegistrarUserComponent/RegistrarUserComponent";
 import { Api } from "../../api/api";
 import ActualizarRol from "../ActualizarRol/ActualizarRol";
+import AgregarArticulo from "../ArticuloComponent/AgregarArticulo";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
   const [userPerfil, setUserPerfil] = useState(null);
   const [idUser, setIdUser] = useState(null);
+  const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
 
   const user = JSON.parse(window.localStorage.getItem("USER_APP"));
+  console.log(user.id);
 
   useEffect(() => {
     if (user !== null) {
@@ -88,6 +91,17 @@ function UserComponent() {
             onClick={handleClickVerListado}
           >
             Ver inventario
+          </button>
+          <button
+            className="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#ingresarModal"
+            title="Agregar artículo"
+            onClick={() => {
+              setIdUserToCrearteArticulo(user.id)
+              }}
+          >
+            Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
           </button>
         </div>
       </div>
@@ -170,9 +184,7 @@ function UserComponent() {
         {/* TABLA AGREGAR USUARIOS*/}
         <div className="col-6 mx-0"></div>
         {/* TABLA EDITAR ROLES*/}
-        <div className="col-6">
-         
-        </div>
+        <div className="col-6"></div>
       </div>
       {/* <!-- Modal registrar usuario --> */}
       <div
@@ -240,6 +252,34 @@ function UserComponent() {
                 Cerrar
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+        {/* <!-- Modal ingresar nuevo articulo --> */}
+        <div
+        class="modal fade"
+        id="ingresarModal"
+        tabindex="-1"
+        aria-labelledby="ingresarLabel"
+        aria-hidden="true"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false" 
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Ingresar nuevo artículo</h3>
+              {/* <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button> */}
+            </div>
+            <div class="modal-body">
+              <AgregarArticulo idUser={idUserToCrearteArticulo} limpiar={true}/>
+            </div>
+            
           </div>
         </div>
       </div>
