@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
-const DarDeBaja = ({ articulo }) => {
+const DarDeBaja = ({ articulo, usuario }) => {
   const [motivoBaja, setMotivoBaja] = useState("");
   const [autorizacion, setAutorizacion] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +29,13 @@ const DarDeBaja = ({ articulo }) => {
     }
   };
 
+  useEffect(() => {
+    if (usuario) {
+      setAutorizacion(usuario);
+    }
+  }
+  , [usuario]);
+
   return (
     <>
       <form>
@@ -47,13 +55,7 @@ const DarDeBaja = ({ articulo }) => {
           <label htmlFor="autorizacion" className="form-label">
             Autorización:
           </label>
-          <input
-            type="text"
-            className="form-control"
-            id="autorizacion"
-            value={autorizacion}
-            onChange={(e) => setAutorizacion(e.target.value)}
-          />
+          <p>Uuario activo: <strong>{usuario}</strong></p>
         </div>
         {error && <div className="text-danger">{error}</div>}
         <button type="button" className="btn btn-danger" onClick={darDeBaja}>

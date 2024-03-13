@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import AgregarArticulo from "./AgregarArticulo";
 import EditarArticulo from "./EditarArticulo";
 import DarDeBaja from "./DarDeBaja";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
@@ -13,7 +12,7 @@ function ArticuloComponent() {
   const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
-
+  const [nombreUsuario, setNombreUsuario] = useState("");
 
   const [user, setUser] = useState(null);
   const usuario = window.localStorage.getItem("USER_APP");
@@ -57,7 +56,11 @@ function ArticuloComponent() {
     }
   }, [navigate]);
 
-  
+  const handleBaja = async (event) => {
+    setIdArticuloToBajar(event.target.value);
+    setNombreUsuario(user.username);
+  }
+
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
@@ -126,10 +129,11 @@ function ArticuloComponent() {
                       <div>
                         <button
                           className="btn btn-danger mx-2"
-                          onClick={() => setIdArticuloToBajar(item.ID)}
+                          onClick={handleBaja}
                           data-bs-toggle="modal"
                           data-bs-target="#bajarlModal"
                           title="Dar de baja"
+                          value={item.ID}
                         >
                           <i className="bi bi-file-earmark-x"></i>
                         </button>
@@ -206,7 +210,7 @@ function ArticuloComponent() {
               ></button>
             </div>
             <div class="modal-body">
-              <DarDeBaja articulo={idArticuloToBajar} />
+              <DarDeBaja articulo={idArticuloToBajar} usuario={nombreUsuario} />
             </div>
             <div class="modal-footer">
               <button
