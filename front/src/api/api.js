@@ -1,6 +1,7 @@
 import axios from "axios";
+import { variables } from "../config/const";
 
-const url = "http://localhost:8080/api";
+const url = variables.urlBaseBack;
 
 export class Api {
   static async getAllDeparments() {
