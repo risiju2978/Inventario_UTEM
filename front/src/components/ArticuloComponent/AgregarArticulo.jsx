@@ -328,7 +328,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
               )}
             </div>
             <div className="mb-3">
-              <label className="form-label">Imagen Path</label>
+              <label className="form-label">Adjunta una imagen</label>
               <input
                 type="file"
                 className="form-control"
