@@ -56,4 +56,9 @@ export class Api {
     const response = await axios.get(`${url}/informe/generator_inf`, data);
     return response.data.data;
   }
+
+  static async getAllCategories() {
+    const response = await axios.get(`${url}/categoria/getAllCategories`);
+    return response.data.data;
+  }
 }
