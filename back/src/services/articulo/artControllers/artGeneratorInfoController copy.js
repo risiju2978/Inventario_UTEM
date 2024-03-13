@@ -78,7 +78,35 @@ const infGeneratorController = {
       const fechaInicio = null;
       const fechaFin = null;
 
-     
+      //reemplazar asterisco por los cmpos en concreto
+      // Lógica para construir la consulta SQL
+      const sql = `
+        SELECT * FROM v_infogenerator
+        WHERE
+          art_ingreso >= ? AND art_ingreso <= ?
+          AND (categoria_id = ?)
+          AND (office_id = ? )
+          AND (campus_id = ? )
+          AND (departament_id = ? )
+          
+          AND ( id_articulo_baja = ?)
+      `;
+      const combo = [
+        fechaInicio,
+        fechaFin,
+        categoria_id,
+        office_id,
+        campus_id,
+        departament_id,
+
+        id_articulo_baja,
+      ];
+
+      //hacer validacion del rows y ver qwue tenga contenido  con su largo
+      // Ejecutar la consulta
+      const [rows] = await db.promise().query(sql, combo);
+
+      console.log("rows:", rows);
 
       //  código para generar el informe
       const doc = tipo_formato === "PDF" ? new PDFDocument() : null;
@@ -86,7 +114,7 @@ const infGeneratorController = {
       const ws = wb ? wb.addWorksheet("Informe") : null;
       const fileName = `documento-${new Date().toISOString()}.${tipo_formato.toLowerCase()}`;
 
-    try {
+      let stream = null;
       if (doc) {
         const stream = res.writeHead(200, {
           "Content-Type": "application/pdf",
@@ -97,11 +125,15 @@ const infGeneratorController = {
           (data) => stream.write(data),
           () => stream.end()
         );
+
+        // stream = new require("stream").PassThrough();
+        // doc.pipe(stream);
       }
-    } catch (error) {
-      throw new Error("Error al generar el informe");
-    }
-      
+      // Agregar contenido al documento según los datos obtenidos
+      // completar el codigo para el contenido del documento desde
+
+      //todo esto debe estar dentro de la vista en la base de datos
+      //codigo en caso pdf
       rows.forEach((row) => {
         if (doc) {
           doc.text(`ID: ${row.id_articulo_detalle}`);
@@ -143,7 +175,16 @@ const infGeneratorController = {
         doc.end();
 
         // Esperar a que la escritura del archivo PDF se complete
-        
+        res.status(200).json({
+          status: 200,
+          data: {
+            binary: doc ? stream : "",
+
+            file_name: fileName,
+            "content-type": "application/pdf",
+          },
+          message: "Documento PDF generado y guardado con éxito",
+        });
       } else {
         return res.status(400).json({
           status: 400,
