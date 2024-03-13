@@ -73,5 +73,9 @@ export class Api {
     return response.data;
   }
 
+  static async darBajaArticulo(data) {
+    const response = await axios.post(`${url}/articulo/baja_art`, data);
+    return response.data;
+  }
 
 }

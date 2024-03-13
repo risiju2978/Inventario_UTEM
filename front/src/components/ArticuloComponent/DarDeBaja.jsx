@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useEffect } from "react";
+import { Api } from "../../api/api";
 
 const DarDeBaja = ({ articulo, usuario }) => {
   const [motivoBaja, setMotivoBaja] = useState("");
@@ -10,16 +10,13 @@ const DarDeBaja = ({ articulo, usuario }) => {
   const darDeBaja = async () => {
     try {
       const fechaBaja = new Date().toISOString().slice(0, 19).replace("T", " ");
-      const response = await axios.post(
-        "http://localhost:8080/api/articulo/baja_art",
-        {
-          id_articulo: articulo,
-          motivo_baja: motivoBaja,
-          autorizacion: autorizacion,
-          articulo_estado_id: 1,
-          fecha_baja: fechaBaja,
-        }
-      );
+      const response = await Api.darBajaArticulo({
+        id_articulo: articulo,
+        motivo_baja: motivoBaja,
+        autorizacion: autorizacion,
+        articulo_estado_id: 1,
+        fecha_baja: fechaBaja,
+      });
       console.log("Artículo dado de baja correctamente:", response.data);
       alert("Artículo dado de baja correctamente");
       window.location.reload();
