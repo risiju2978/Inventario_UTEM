@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
   const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
+  const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
   const [modalAgregarVisible, setModalAgregarVisible] = useState(false); // Estado para controlar la visibilidad del modal de agregar artículo
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
-
 
   const toggleAgregarModal = () => {
     setModalAgregarVisible(!modalAgregarVisible); // Cambia el estado de visibilidad del modal de agregar artículo
@@ -61,15 +61,17 @@ function ArticuloComponent() {
       navigate("/login");
     }
   }, [navigate]);
+  
 
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
       {user && user.rol === 3 ? null : (
-        <AgregarArticulo
-          modalVisible={modalAgregarVisible}
-          toggleModal={toggleAgregarModal}
-        />
+        <button className="btn btn-success" data-bs-toggle="modal"
+        data-bs-target="#ingresarModal"
+        title="Dar de baja"  onClick={() => setIdUserToCrearteArticulo(user.user_id)}>
+        Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
+      </button>
       )}
       <table className="table table-striped">
         <thead>
@@ -123,14 +125,14 @@ function ArticuloComponent() {
                   <td>
                     <div className="d-flex flex">
                       <div>
-                         <button
+                        <button
                           className="btn btn-danger mx-2"
                           onClick={() => setIdArticuloToBajar(item.ID)}
                           data-bs-toggle="modal"
                           data-bs-target="#bajarlModal"
                           title="Dar de baja"
                         >
-                         <i className="bi bi-file-earmark-x"></i>
+                          <i className="bi bi-file-earmark-x"></i>
                         </button>
                       </div>
                       <div>
@@ -184,8 +186,8 @@ function ArticuloComponent() {
           </div>
         </div>
       </div>
-         {/* <!-- Modal bajar articulo --> */}
-         <div
+      {/* <!-- Modal bajar articulo --> */}
+      <div
         class="modal fade"
         id="bajarlModal"
         tabindex="-1"
@@ -204,6 +206,39 @@ function ArticuloComponent() {
             </div>
             <div class="modal-body">
               <DarDeBaja articulo={idArticuloToBajar} />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <!-- Modal ingresar nuevo articulo --> */}
+      <div
+        class="modal fade"
+        id="ingresarModal"
+        tabindex="-1"
+        aria-labelledby="ingresarLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <AgregarArticulo articulo={idUserToCrearteArticulo} />
             </div>
             <div class="modal-footer">
               <button
