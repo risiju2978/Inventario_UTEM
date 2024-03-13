@@ -62,4 +62,11 @@ export class Api {
     const response = await axios.get(`${url}/categoria/getAllCategories`);
     return response.data.data;
   }
+
+  static async getReadVista() {
+    const response = await axios.get(`${url}/vista/readVista`);
+    return response.data.data;
+  }
+
+
 }

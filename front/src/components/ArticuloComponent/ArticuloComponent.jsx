@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
+import { Api } from "../../api/api";
 
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
@@ -39,11 +40,8 @@ function ArticuloComponent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/vista/readVista"
-        );
-        setVistaData(response.data.data); // Aquí asumimos que los datos están en response.data.data
-        console.log(response.data.data);
+        const response = await Api.getReadVista();
+        setVistaData(response); // Aquí asumimos que los datos están en response.data.data
       } catch (error) {
         console.error("Error al obtener datos de la vista:", error);
       }
