@@ -4,7 +4,7 @@ const ButtonDescargar = () => {
   return (
     <button
             type="button"
-            class="btn btn-info mt-3"
+            class="btn btn-info"
             onClick={() => {
               window.open(
                 "http://localhost:8080/api/informe/generator_inf",

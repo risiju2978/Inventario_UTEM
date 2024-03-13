@@ -4,6 +4,7 @@ import EditarArticulo from "./EditarArticulo";
 import DarDeBaja from "./DarDeBaja";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ButtonDescargar from "../common/buttonDescargar";
 
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
@@ -62,7 +63,7 @@ function ArticuloComponent() {
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
       {user && user.rol === 3 ? null : (
-        <button className="btn btn-success" data-bs-toggle="modal"
+        <button className="btn btn-success mx-3" data-bs-toggle="modal"
         data-bs-target="#ingresarModal"
         title="Agregar artículo"  onClick={() => {
           setIdUserToCrearteArticulo(user.id)
@@ -70,6 +71,7 @@ function ArticuloComponent() {
         Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
       </button>
       )}
+      <ButtonDescargar  />
       <table className="table table-striped">
         <thead>
           <tr>

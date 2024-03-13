@@ -100,7 +100,7 @@ function UserComponent() {
             </div>
             <div className="col-6 align-center">
               <button
-                className="btn btn-success"
+                className="btn btn-success mb-3"
                 data-bs-toggle="modal"
                 data-bs-target="#ingresarModal"
                 title="Agregar artículo"
