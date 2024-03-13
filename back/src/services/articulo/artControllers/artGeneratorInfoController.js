@@ -6,34 +6,33 @@ const Excel = require("excel4node");
 const fs = require("fs");
 const path = require("path");
 const  buildPDF  = require("../../../../utils/utils.pdfBuild");
+const obtenerDatosInforme = require("../../../helpers/obtenerDatosInforme");
 
 const infGeneratorController = {
   generarInforme: async (req, res) => {
     try {
       const {
-        art_ingreso,
+        tipo_formato,
+        fecha_inicio,
+        fecha_fin,
         categoria_id,
         office_id,
         campus_id,
         departament_id,
-        tipo_formato,
         id_articulo_baja,
       } = req.body;
       console.log(req.body);
+
       // VALIDACIONES
 
-      //las fechas se manejan como new Date(art_ingreso)
-      // Validación de art_ingreso como rango de fechas válido
-      /*const [fechaInicio, fechaFin] = art_ingreso;
-      
-      if (!fechaInicio || !fechaFin || fechaInicio > fechaFin) {
+
+      if (!fecha_inicio || !fecha_fin || fecha_inicio > fecha_fin) {
         return res.status(400).json({
           status: 400,
           error: "Rango de fechas de art_ingreso no válido",
         });
       }
 
-     */
       if (categoria_id === undefined || isNaN(categoria_id)) {
         return res.status(400).json({
           status: 400,
@@ -75,19 +74,22 @@ const infGeneratorController = {
           error: "id_articulo_baja debe ser un número ",
         });
       }
-      const fechaInicio = null;
-      const fechaFin = null;
 
-     
-
-      //  código para generar el informe
-      const doc = tipo_formato === "PDF" ? new PDFDocument() : null;
       const wb = tipo_formato === "XLS" ? new Excel.Workbook() : null;
       const ws = wb ? wb.addWorksheet("Informe") : null;
+
       const fileName = `documento-${new Date().toISOString()}.${tipo_formato.toLowerCase()}`;
 
+      const datos = await obtenerDatosInforme(fecha_inicio,
+        fecha_fin,
+        categoria_id,
+        office_id,
+        campus_id,
+        departament_id,
+        id_articulo_baja,)
+
     try {
-      if (doc) {
+      if (tipo_formato === "PDF") {
         const stream = res.writeHead(200, {
           "Content-Type": "application/pdf",
           "Content-Disposition": "attachment; filename=invoice.pdf",
@@ -95,33 +97,36 @@ const infGeneratorController = {
       
         buildPDF(
           (data) => stream.write(data),
-          () => stream.end()
+          () => stream.end(),
+          datos
         );
+        return;
       }
     } catch (error) {
+      console.error(error);
       throw new Error("Error al generar el informe");
     }
       
-      rows.forEach((row) => {
-        if (doc) {
-          doc.text(`ID: ${row.id_articulo_detalle}`);
-          doc.text(`Nombre: ${row.art_nombre}`);
-          doc.text(`Código: ${row.art_codigo}`);
-          doc.moveDown();
-        }
-        //codigo en caso sea xls
-        if (ws) {
-          ws.cell(row.id_articulo_detalle + 1, 1).string(
-            `ID: ${row.id_articulo_detalle}`
-          );
-          ws.cell(row.id_articulo_detalle + 1, 2).string(
-            `Nombre: ${row.art_nombre}`
-          );
-          ws.cell(row.id_articulo_detalle + 1, 3).string(
-            `Código: ${row.art_codigo}`
-          );
-        }
-      });
+      // rows.forEach((row) => {
+      //   if (doc) {
+      //     doc.text(`ID: ${row.id_articulo_detalle}`);
+      //     doc.text(`Nombre: ${row.art_nombre}`);
+      //     doc.text(`Código: ${row.art_codigo}`);
+      //     doc.moveDown();
+      //   }
+      //   //codigo en caso sea xls
+      //   if (ws) {
+      //     ws.cell(row.id_articulo_detalle + 1, 1).string(
+      //       `ID: ${row.id_articulo_detalle}`
+      //     );
+      //     ws.cell(row.id_articulo_detalle + 1, 2).string(
+      //       `Nombre: ${row.art_nombre}`
+      //     );
+      //     ws.cell(row.id_articulo_detalle + 1, 3).string(
+      //       `Código: ${row.art_codigo}`
+      //     );
+      //   }
+      // });
 
       // Finalizar el documento y guardar en disco
       if (doc) {
@@ -137,12 +142,7 @@ const infGeneratorController = {
 
         pdfStream.on("error", (err) => {
           console.error("Error al escribir en el archivo:", err);
-        });
-
-        doc.pipe(pdfStream);
-        doc.end();
-
-        // Esperar a que la escritura del archivo PDF se complete
+        })
         
       } else {
         return res.status(400).json({
@@ -151,23 +151,20 @@ const infGeneratorController = {
         });
       }
 
-      // Guardar el archivo XLS en disco
-      if (wb) {
-        const xlsFilePath = `./${fileName}`;
-        await wb.write(xlsFilePath);
-        res.status(200).json({
-          status: 200,
-          data: {
-            file_path: xlsFilePath,
-            file_name: fileName,
-            "content-type": "application/vnd.ms-excel",
-          },
-          message: "Documento XLS generado con éxito",
-        });
-      }
-
-      // Cerrar la conexión a la base de datos
-      await db.end();
+      // // Guardar el archivo XLS en disco
+      // if (wb) {
+      //   const xlsFilePath = `./${fileName}`;
+      //   await wb.write(xlsFilePath);
+      //   res.status(200).json({
+      //     status: 200,
+      //     data: {
+      //       file_path: xlsFilePath,
+      //       file_name: fileName,
+      //       "content-type": "application/vnd.ms-excel",
+      //     },
+      //     message: "Documento XLS generado con éxito",
+      //   });
+      // }
     } catch (error) {
       console.error(error);
       res.status(500).json({
