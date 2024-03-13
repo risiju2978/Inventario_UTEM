@@ -106,14 +106,7 @@ const infGeneratorController = {
       console.error(error);
       throw new Error("Error al generar el informe");
     }
-      
-      // rows.forEach((row) => {
-      //   if (doc) {
-      //     doc.text(`ID: ${row.id_articulo_detalle}`);
-      //     doc.text(`Nombre: ${row.art_nombre}`);
-      //     doc.text(`Código: ${row.art_codigo}`);
-      //     doc.moveDown();
-      //   }
+
       //   //codigo en caso sea xls
       //   if (ws) {
       //     ws.cell(row.id_articulo_detalle + 1, 1).string(
@@ -130,19 +123,7 @@ const infGeneratorController = {
 
       // Finalizar el documento y guardar en disco
       if (doc) {
-        const dirPath = path.join(process.cwd(), "/uploads/pdf/");
-        console.log("dirPath:", dirPath);
-
-        if (!fs.existsSync(dirPath)) {
-          fs.mkdirSync(dirPath, { recursive: true });
-        }
-
-        const pdfFilePath = `${dirPath}/${fileName}`;
-        const pdfStream = fs.createWriteStream(pdfFilePath);
-
-        pdfStream.on("error", (err) => {
-          console.error("Error al escribir en el archivo:", err);
-        })
+      
         
       } else {
         return res.status(400).json({
