@@ -74,6 +74,15 @@ function UserComponent() {
                 Email: {userPerfil && userPerfil.email}
               </p>
             </div>
+            <hr />
+            <button
+              type="button"
+              className="btn btn-primary w-50 mx-auto mb-3"
+              data-bs-toggle="modal"
+              data-bs-target="#registrarModal"
+            >
+              Agregar nuevo usuario
+            </button>
           </div>
         </div>
         <div className="col-6">
@@ -84,23 +93,13 @@ function UserComponent() {
               {" "}
               <button
                 type="button"
-                className="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#registrarModal"
-              >
-                Agregar usuario
-              </button>
-              <button
-                type="button"
                 className="btn btn-primary mt-3"
                 onClick={handleClickVerListado}
               >
                 Ver inventario
               </button>
-            </div>
-            <div className="col-6 align-center">
               <button
-                className="btn btn-success mb-3"
+                className="btn btn-success mt-3"
                 data-bs-toggle="modal"
                 data-bs-target="#ingresarModal"
                 title="Agregar artículo"
@@ -111,7 +110,18 @@ function UserComponent() {
                 Agregar Artículo{" "}
                 <i className="bi bi-file-earmark-plus-fill"></i>
               </button>
-              <ButtonDescargar />
+            </div>
+            <div className="col-6 align-center">
+              <ButtonDescargar
+                tipo="XLS"
+                url="http://localhost:8080/api/informe/generar-reporte-general-xls"
+                margenTop="10px"
+              />
+              <ButtonDescargar
+                tipo="PDF"
+                url="http://localhost:8080/api/informe/generar-reporte-general-pdf"
+                margenTop="20px"
+              />
             </div>
           </div>
         </div>

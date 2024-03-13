@@ -1,10 +1,11 @@
 import React from 'react'
 
-const ButtonDescargar = ({url, tipo}) => {
+const ButtonDescargar = ({url, tipo, margenTop}) => {
   return (
     <button
             type="button"
-            class="btn btn-info"
+            style={{ marginTop: margenTop }}
+            className={"btn btn-info"}
             onClick={() => {
               window.open(
                 url,
