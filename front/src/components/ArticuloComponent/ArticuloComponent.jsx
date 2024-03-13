@@ -72,7 +72,7 @@ function ArticuloComponent() {
       </button>
       )}
       <ButtonDescargar tipo="XLS" url="http://localhost:8080/api/informe/generar-reporte-general-xls"  />
-      <ButtonDescargar tipo="PDF" url="http://localhost:8080/api/informe/generar-reporte-general-pdf"  />
+      <ButtonDescargar tipo="PDF" url="http://localhost:8080/api/informe/generar-reporte-general-pdf" marginLeft="10px"  />
       <table className="table table-striped">
         <thead>
           <tr>
