@@ -6,158 +6,70 @@ const path = require("path");
 const bodyParser = require("body-parser"); 
 const port = process.env.PORT;
 const app = express();
+const cors = require('cors');
 
-// 1. crear las rutas ( routes & controllers )
-// 2. configurar cabeceras y CORS (estudiar)
-// 3. interceptores
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '500mb' }));
+app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
-app.post("/api/usuario/listar", (req, res) => {
-  // consulta por parametos enviados mi DB
-  // la respuesta de la BD puede ser TRUE o FALSE
-  res.status(200).json({
-    status: 200,
-    data: [
-      // esta data debe venir de mi base datos
-      {usuario_id:1,
-        usuario_username:"malcom",
-        password:"$2b$10$nCwcoVdwHy8yL0ElvwPkCOsPCkclYU23dasPDqjQlxpWfYboTbfnO",
-        correo:"garridopfernando@gmail.com",
-        usuario_tipo:1,
-        rol:SuperAdmin,
-        estado:1},
-        
-        {usuario_id:2,
-          usuario_username:"mendez",
-          password:"$2b$10$nCwcoVdwHy8yL0ElvwPkCOsPCkclYU23dasPDqjQlxpWfYboTbf23",
-          correo:"algo@gmail.com",
-        usuario_tipo:2,
-        rol:"Admin",
-        estado:1},
-    ],
-    mensage: "",
-  });
+
+// Configuración CORS
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, DELETE'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method'
+  );
+  res.setHeader('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
 });
+// app.use(cors, 
+//   function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+//   }
+// );
+
+// // Configura body-parser con un límite de tamaño de carga de 50MB
 
 
-//url para login  de usuario
-app.post("/api/usuario/login", (req, res) => {
- 
-  //try donde deberia cotejarse los valores ingresados con la base de datos 
-  // para saber si existe el usuario
-  try {
-    if (username === true && password === true) {
-      res.status(200).json({
-        status: 200,
-        data: {
-          "id_usuario": 1,
-          "id_usuario_tipo": 1,
-          "id_bodega": 1,
-          "nombres": "Fernando",
-          "apellidos": "Garrido",
-          "usuario": "fgarrido",
-          "clave": "$2b$10$nCwcoVdwHy8yL0ElvwPkCOsPCkclYU23dasPDqjQlxpWfYboTbfnO",
-          "correo": "garridopfernando@gmail.com",
-          "create_at": "2023-10-09T16:49:35.000Z",
-          "update_at": "2023-10-09T16:49:35.000Z",
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTk5MTk3MTAsImV4cCI6MTY5OTkyMzMxMH0.MS8BcZXqkuHv5XezkGmOi2jKifbICJd44Mgxr4BiQV8",
-          message: "ha accedido con éxito",
-        },
-      });
-    }
-  } catch (error) {
-    res.status(400).json({
-      status: 400,
-      error: "error en consulta",
-    });
-  }
-})
+// // Rutas del servidor
 
+const usuarioRoutes = require('./services/usuario/userRoutes/userRoutes');
+const articuloRoutes = require('./services/articulo/artRoutes/artRoutes');
+const categoriaRoutes = require('./services/categoria/categoriaRoutes/categoriaRutasGeneral');
+const departamentoRoutes = require('./services/departamento/departamentoRoutes/departamentoRoutes');
+const sedeRoutes = require('./services/sede/sedeRoutes/sedeRoutes');
+const articuloEstadoRoutes = require('./services/articulo_estado/articuloEstadoRoutes/articuloEstadoRoutes');
+const oficinaRoutes = require('./services/oficina/oficinaRoutes/oficinaRoutes');
+const infGenerator = require('./services/articulo/artRoutes/artGeneratorInfoRoutes');
+const vistaRoutes = require('./services/V_InfoGenerator/V_Routes/V_Routes');
+const vistaUsersRoutes = require('./services/V_Users/V_UserRoutes/V_UserRoutes');
 
+// Rutas
+app.use('/uploads/articulos/', express.static(path.join('uploads/articulos/')))
+app.use('/api/vistaUsers', vistaUsersRoutes);
+app.use('/api/vista', vistaRoutes);
+app.use('/api/informe', infGenerator);
+app.use('/api/articulo', articuloRoutes);
+app.use('/api/usuario', usuarioRoutes);
+app.use('/api/categoria', categoriaRoutes); 
+app.use('/api/departamento', departamentoRoutes);
+app.use('/api/sede', sedeRoutes);
+app.use('/api/articuloEstado', articuloEstadoRoutes);
+app.use('/api/oficina', oficinaRoutes);
 
-//url para crear usuario
-app.post("/api/usuario/crear_usuario", (req, res) => {
- 
-  //try donde deberia cotejarse los valores ingresados con la base de datos 
-  // para saber si existe el usuario
-  try {
-    if ( rol === 1 && estado === 1 ) 
-       // Pedir al usuario que ingrese un elemento necesario para agregar
-        var username = prompt('Ingrese un nombre:');
-        var correo =prompt('Ingrese un correo:');
-        var rol =prompt('Ingrese un rol:');
-        var estado =prompt('Ingrese un estado:');
-        var password =prompt('Ingrese una contraseña:');
-
-      // Verificar si el usuario ingresó algo
-       if (username !== null && correo !== null && rol !== null && estado !== null &&  password !== null ) {
-      res.status(200).json({
-        status: 200,
-        
-        data: {
-         
-          message: "ha agregado con éxito",
-        },
-      });
-    }
-  } catch (error) {
-    res.status(400).json({
-      status: 400,
-      error: "error al agregar usuario",
-    });
-  }
-})
-
-
-
-
-// Endpoint para editar roles
-app.put("/api/usuario/editar_rol", (req, res) => {
-
-
-
-
-// Extraer los  campos relacionados con roles, nombre usuario y correo electrónico 
-const { new_rol, new_name, new_email,usuario_id } = req;
-
-  try {
-    // Encontrar el usuario por ID
-    const usuarioIndex = usuario.findIndex(user => user.usuario_id === usuario_id);
-
-    if (usuarioIndex !== -1) {
-      // Actualizar roles, nombre de usuario y correo electrónico
-      usuarios[usuarioIndex].rol_usuario = new_rol;
-      usuarios[usuarioIndex].username = new_name;
-      usuarios[usuarioIndex].correo = new_email;
-
-      res.status(200).json({
-        status: 200,
-        data: {
-          //data actualizada 
-          ...usuarios[usuarioIndex],
-          message: "Roles  actualizados con éxito",
-        },
-      });
-    } else {
-      res.status(404).json({
-        status: 404,
-        error: "Usuario no encontrado",
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      status: 500,
-      error: "Error en el servidor",
-    });
-  }
-});
-
-
-
-
-
-
-
-
+// Ruta para errores no especificados
 app.get("/*", (req, res) => {
   res.status(400).json({ status: 400, message: "ruta no especificada" });
 });
@@ -173,3 +85,6 @@ app.put("/*", (req, res) => {
 app.listen(port, () => {
   console.log("inventario application up on port", port);
 });
+
+
+module.exports = app;
