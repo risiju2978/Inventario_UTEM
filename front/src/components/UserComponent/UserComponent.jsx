@@ -7,6 +7,7 @@ import AgregarArticulo from "../ArticuloComponent/AgregarArticulo";
 import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
 import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
+import DatosDashComponent from "../DatosDashBoard/DatosDashComponent";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
@@ -86,6 +87,8 @@ function UserComponent() {
               Agregar nuevo usuario
             </button>
           </div>
+          <hr />
+          <DatosDashComponent />
         </div>
         <div className="col-6">
           <h5>Acciones</h5>

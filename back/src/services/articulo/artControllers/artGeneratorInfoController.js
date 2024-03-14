@@ -25,7 +25,7 @@ const infGeneratorController = {
         buildPDF(
           (data) => stream.write(data),
           () => stream.end(),
-          datos
+          datos[0]
         );
         return;
       

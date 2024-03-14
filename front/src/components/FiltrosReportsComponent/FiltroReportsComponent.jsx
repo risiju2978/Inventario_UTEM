@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Api } from '../../api/api';
 
 const FiltroReportsComponent = () => {
     const [fechasFin, setFechasFin] = useState([]);
@@ -10,19 +11,18 @@ const FiltroReportsComponent = () => {
 
     useEffect(() => {
         // Llamadas a los endpoints para obtener los datos necesarios
-        // Ejemplo:
-        fetch('/api/fechasFin')
-            .then(response => response.json())
-            .then(data => setFechasFin(data));
+        Api.getAllDeparments().then(data => setDepartamentos(data))
+        Api.getAllOficinas().then(data => setOficinas(data))
+        Api.getAllCampus().then(data => setCampus(data))
+        Api.getAllCategories().then(data => setCategorias(data))
 
-        fetch('/api/categorias')
-            .then(response => response.json())
-            .then(data => setCategorias(data));
-
+        console.log(departamentos, oficinas, campus, categorias)
+       
         // Repite el proceso para los demás endpoints
     }, []);
 // utiliza bootstrap 5 para darle estilo a los campos select
     return (
+        <form>
         <div className="container">
             <div className="row">
                 <div className="col">
@@ -39,7 +39,7 @@ const FiltroReportsComponent = () => {
                     <select id="categoria" className="form-select">
                         <option value="">Seleccione una categoría</option>
                         {categorias.map((categoria, index) => {
-                            return <option key={index} value={categoria.id}>{categoria.nombre}</option>
+                            return <option key={index} value={categoria.categoria_id}>{categoria.categoria}</option>
                         })}
                     </select>
                 </div>
@@ -50,7 +50,7 @@ const FiltroReportsComponent = () => {
                     <select id="oficina" className="form-select">
                         <option value="">Seleccione una oficina</option>
                         {oficinas.map((oficina, index) => {
-                            return <option key={index} value={oficina.id}>{oficina.nombre}</option>
+                            return <option key={index} value={oficina.office_id}>{oficina.office}</option>
                         })}
                     </select>
                 </div>
@@ -59,7 +59,7 @@ const FiltroReportsComponent = () => {
                     <select id="campus" className="form-select">
                         <option value="">Seleccione un campus</option>
                         {campus.map((campus, index) => {
-                            return <option key={index} value={campus.id}>{campus.nombre}</option>
+                            return <option key={index} value={campus.campus_id}>{campus.campus}</option>
                         })}
                     </select>
                 </div>
@@ -70,7 +70,7 @@ const FiltroReportsComponent = () => {
                     <select id="departamento" className="form-select">
                         <option value="">Seleccione un departamento</option>
                         {departamentos.map((departamento, index) => {
-                            return <option key={index} value={departamento.id}>{departamento.nombre}</option>
+                            return <option key={index} value={departamento.departament_id}>{departamento.departament}</option>
                         })}
                     </select>
                 </div>
@@ -85,6 +85,10 @@ const FiltroReportsComponent = () => {
                 </div>
             </div>
         </div>
+        <div className="d-grid gap-2 pt-3 pb-3">
+            <button className="btn btn-primary w-50 mx-auto" type="submit">Generar reporte</button>
+        </div>
+    </form>
     );
 };
 
