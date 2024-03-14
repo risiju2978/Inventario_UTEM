@@ -40,10 +40,7 @@ app.use((req, res, next) => {
 //   }
 // );
 
-// // Configura body-parser con un límite de tamaño de carga de 50MB
 
-
-// // Rutas del servidor
 
 const usuarioRoutes = require('./services/usuario/userRoutes/userRoutes');
 const articuloRoutes = require('./services/articulo/artRoutes/artRoutes');
