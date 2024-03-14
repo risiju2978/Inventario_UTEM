@@ -11,7 +11,7 @@ async function obtenerDatosInforme(
 ) {
 
 
-  const sql = 'SELECT * FROM `v_infogenerator` WHERE `categoria_id` = ? AND `office_id` = ? AND `campus_id` = ?';
+  const sql = 'SELECT * FROM `v_infogenerator` WHERE `categoria_id` = ? AND `office_id` = ? AND `campus_id` = ? AND `departament_id` = ? AND `id_articulo_baja` = ?';
 
   const combo = [
     categoria_id,
@@ -23,8 +23,10 @@ async function obtenerDatosInforme(
 
   //hacer validacion del rows y ver qwue tenga contenido  con su largo
   // Ejecutar la consulta
-  // const [vistaData] = await db.promise().query('CALL Read_v_infogenerator()');
-  const [rows, fields] = await db.promise().execute(sql, [categoria_id,office_id,campus_id]);
+  const [rows, fields] = await db.promise().execute(sql, combo);
+
+  console.log("rows:", rows);
+  console.log("fields:", fields);
 
   // if (vistaData.length !== 0) {
   //   return vistaData;

@@ -12,10 +12,10 @@ const buildExcel = require("../../../../utils/utils.excelBuild");
 const infGeneratorController = {
   generarReporteGeneralPDF: async (req, res) => {
     try {
-      const datos = await obtenerDatosInforme();
+      [datos] = await db.promise().query('CALL Read_v_infogenerator()');
+      // const datos = await obtenerDatosInforme();
 
     try {
-        if (true) {
         const fileName = `documento-${Math.random().toString(36).substring(7)}`
         const stream = res.writeHead(200, {
           "Content-Type": "application/pdf",
@@ -28,7 +28,7 @@ const infGeneratorController = {
           datos
         );
         return;
-      }
+      
     } catch (error) {
       console.error(error);
       throw new Error("Error al generar el informe");
@@ -44,7 +44,8 @@ const infGeneratorController = {
 
   generarReporteGeneralXLS: async (req, res) => {
     try {
-      const data = await obtenerDatosInforme();
+      [data] = await db.promise().query('CALL Read_v_infogenerator()');
+      // const data = await obtenerDatosInforme();
       const wb = new excel.Workbook();
       const ws = wb.addWorksheet('Reporte inventario');
       ws.cell(1, 1).string('ID');
@@ -98,17 +99,16 @@ const infGeneratorController = {
         departament_id,
         id_articulo_baja,
       } = req.body;
-      console.log(req.body);
 
       // VALIDACIONES
 
 
-      if (!fecha_inicio || !fecha_fin || fecha_inicio > fecha_fin) {
-        return res.status(400).json({
-          status: 400,
-          error: "Rango de fechas de art_ingreso no válido",
-        });
-      }
+      // if (!fecha_inicio || !fecha_fin || fecha_inicio > fecha_fin) {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: "Rango de fechas de art_ingreso no válido",
+      //   });
+      // }
 
       if (categoria_id === undefined || isNaN(categoria_id)) {
         return res.status(400).json({
