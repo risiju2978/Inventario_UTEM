@@ -100,6 +100,8 @@ const infGeneratorController = {
         id_articulo_baja,
       } = req.body;
 
+      console.log('req.body:', req.body);
+
       // VALIDACIONES
 
 

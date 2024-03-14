@@ -78,4 +78,9 @@ export class Api {
     return response.data;
   }
 
+  static async postReporteCustom(data) {
+    const response = await axios.post(`${url}/informe/generator_inf`, data);
+    return response.data;
+  }
+
 }
