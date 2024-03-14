@@ -94,6 +94,7 @@ const FiltroReportsComponent = () => {
     Api.getAllCategories().then((data) => setCategorias(data));
   }, []);
   return (
+    <>
     <form>
       <div className="container">
         <div className="row">
@@ -203,6 +204,7 @@ const FiltroReportsComponent = () => {
         </button>
       </div>
     </form>
+    </>
   );
 };
 
