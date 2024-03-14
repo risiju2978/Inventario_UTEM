@@ -152,12 +152,8 @@ const infGeneratorController = {
       //   });
       // }
 
-      const wb = tipo_formato === "XLS" ? new Excel.Workbook() : null;
-      const ws = wb ? wb.addWorksheet("Informe") : null;
-
-      // const fileName = `documento-${new Date().toISOString()}.${tipo_formato.toLowerCase()}`;
-
-      const datos = await obtenerDatosInforme(fecha_inicio,
+      const datos = await obtenerDatosInforme(
+        fecha_inicio,
         fecha_fin,
         categoria_id,
         office_id,
@@ -167,7 +163,7 @@ const infGeneratorController = {
 
     try {
         if (tipo_formato.toLowerCase() === "pdf" && datos.length !== false) {
-          const fileName = `documento-${new Date().toISOString()}`;
+        const fileName = `documento-${new Date().toISOString()}`;
         const stream = res.writeHead(200, {
           "Content-Type": "application/pdf",
           "Content-Disposition":`attachment; filename=${fileName}.pdf`,

@@ -26,25 +26,14 @@ const FiltroReportsComponent = () => {
         <div className="container">
             <div className="row">
                 <div className="col">
-                    <label htmlFor="fechaFin" className="form-label">Fecha de fin</label>
-                    <select id="fechaFin" className="form-select">
-                        <option value="">Seleccione una fecha</option>
-                        {fechasFin.map((fecha, index) => {
-                            return <option key={index} value={fecha}>{fecha}</option>
-                        })}
-                    </select>
-                </div>
-                <div className="col">
-                    <label htmlFor="categoria" className="form-label">Categoría</label>
+                  <label htmlFor="categoria" className="form-label">Categoría</label>
                     <select id="categoria" className="form-select">
                         <option value="">Seleccione una categoría</option>
                         {categorias.map((categoria, index) => {
                             return <option key={index} value={categoria.categoria_id}>{categoria.categoria}</option>
                         })}
                     </select>
-                </div>
-            </div>
-            <div className="row">
+                    </div>
                 <div className="col">
                     <label htmlFor="oficina" className="form-label">Oficina</label>
                     <select id="oficina" className="form-select">
@@ -54,6 +43,8 @@ const FiltroReportsComponent = () => {
                         })}
                     </select>
                 </div>
+            </div>
+            <div className="row">
                 <div className="col">
                     <label htmlFor="campus" className="form-label">Campus</label>
                     <select id="campus" className="form-select">
@@ -63,10 +54,8 @@ const FiltroReportsComponent = () => {
                         })}
                     </select>
                 </div>
-            </div>
-            <div className="row">
                 <div className="col">
-                    <label htmlFor="departamento" className="form-label">Departamento</label>
+                     <label htmlFor="departamento" className="form-label">Departamento</label>
                     <select id="departamento" className="form-select">
                         <option value="">Seleccione un departamento</option>
                         {departamentos.map((departamento, index) => {
@@ -74,14 +63,9 @@ const FiltroReportsComponent = () => {
                         })}
                     </select>
                 </div>
+            </div>
+            <div className="row">
                 <div className="col">
-                    <label htmlFor="articuloBaja" className="form-label">Artículo dado de baja</label>
-                    <select id="articuloBaja" className="form-select">
-                        <option value="">Seleccione un artículo</option>
-                        {articulosBaja.map((articulo, index) => {
-                            return <option key={index} value={articulo.id}>{articulo.nombre}</option>
-                        })}
-                    </select>
                 </div>
             </div>
         </div>

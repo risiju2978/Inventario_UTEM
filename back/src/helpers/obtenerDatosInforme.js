@@ -11,14 +11,13 @@ async function obtenerDatosInforme(
 ) {
 
 
-  const sql = 'SELECT * FROM `v_infogenerator` WHERE `categoria_id` = ? AND `office_id` = ? AND `campus_id` = ? AND `departament_id` = ? AND `id_articulo_baja` = ?';
+  const sql = 'SELECT * FROM `v_infogenerator` WHERE `categoria_id` = ? AND `office_id` = ? AND `campus_id` = ? AND `departament_id` = ?';
 
   const combo = [
     categoria_id,
     office_id,
     campus_id,
     departament_id,
-    id_articulo_baja,
   ];
 
   //hacer validacion del rows y ver qwue tenga contenido  con su largo
