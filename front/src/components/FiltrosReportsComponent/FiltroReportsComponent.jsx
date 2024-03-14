@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Api } from '../../api/api';
 
 const FiltroReportsComponent = () => {
-    const [fechasFin, setFechasFin] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const [oficinas, setOficinas] = useState([]);
     const [campus, setCampus] = useState([]);
     const [departamentos, setDepartamentos] = useState([]);
-    const [articulosBaja, setArticulosBaja] = useState([]);
 
     useEffect(() => {
         // Llamadas a los endpoints para obtener los datos necesarios
