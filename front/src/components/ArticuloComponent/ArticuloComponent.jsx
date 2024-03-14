@@ -79,7 +79,7 @@ function ArticuloComponent() {
       <button className="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#filtroModal">
         Reporte personalizado <i className="bi bi-funnel-fill"></i>
       </button>
-      <table className="table table-striped">
+      <table className="table table-striped overflow-auto">
         <thead>
           <tr>
             <th>Año</th>
