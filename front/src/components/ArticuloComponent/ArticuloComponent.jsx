@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
 import { Api } from "../../api/api";
+import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
 
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
@@ -75,7 +76,10 @@ function ArticuloComponent() {
       )}
       <ButtonDescargar tipo="XLS" url={variables.urlReporteExcel} />
       <ButtonDescargar tipo="PDF" url={variables.urlReportePdf} marginLeft="10px"  />
-      <table className="table table-striped">
+      <button className="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#filtroModal">
+        Reporte personalizado <i className="bi bi-funnel-fill"></i>
+      </button>
+      <table className="table table-striped overflow-auto">
         <thead>
           <tr>
             <th>Año</th>
@@ -249,6 +253,39 @@ function ArticuloComponent() {
               <AgregarArticulo idUser={idUserToCrearteArticulo} limpiar={true}/>
             </div>
             
+          </div>
+        </div>
+      </div>
+      {/* <!-- Modal reporte personalizado --> */}
+      <div
+        class="modal fade"
+        id="filtroModal"
+        tabindex="-1"
+        aria-labelledby="filtroLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <FiltroReportsComponent />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
         </div>
       </div>
