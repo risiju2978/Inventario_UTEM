@@ -13,12 +13,8 @@ const FiltroReportsComponent = () => {
         Api.getAllOficinas().then(data => setOficinas(data))
         Api.getAllCampus().then(data => setCampus(data))
         Api.getAllCategories().then(data => setCategorias(data))
-
-        console.log(departamentos, oficinas, campus, categorias)
        
-        // Repite el proceso para los demás endpoints
     }, []);
-// utiliza bootstrap 5 para darle estilo a los campos select
     return (
         <form>
         <div className="container">
