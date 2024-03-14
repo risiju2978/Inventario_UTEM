@@ -16,9 +16,15 @@ function buildPDF(dataCallback, endCallback, data) {
     doc.fontSize(12).text("Solicitado por: Usuario", { align: "center" });
     doc.moveDown();
 
+    if(!data){
+        doc.fontSize(12).text("No hay datos para mostrar");
+        doc.end();
+        return;
+    }
+
     const table = {
         headers: ["ID", "Nombre", "Código", "Departamento", "Categoria"],
-        rows: data[0].map((row) => [row.ID, row.art_nombre, row.art_codigo, row.departament, row.categoria]),
+        rows: data.map((row) => [row.ID, row.art_nombre, row.art_codigo, row.departament, row.categoria]),
     };
     doc.table(table, {
         prepareHeader: () => doc.font("Helvetica-Bold"),
