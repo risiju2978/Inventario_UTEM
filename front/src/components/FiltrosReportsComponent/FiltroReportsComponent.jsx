@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Api } from "../../api/api";
 import axios from "axios";
+import FileSaver from 'file-saver';
 import { variables } from "../../config/const";
 
 const FiltroReportsComponent = () => {
@@ -63,7 +64,18 @@ const FiltroReportsComponent = () => {
         console.log(error);
       });
     } else {
-        alert("Formato no soportado");
+        axios({
+            url:`${variables.urlBaseBack}/informe/generator_inf`,
+            method: 'POST',
+            responseType: 'blob', // Indica que la respuesta será un Blob
+            data: dataFormat,
+          }).then((response) => {
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+            FileSaver.saveAs(blob, 'reporte.xlsx');
+          }).catch((error) => {
+            alert('Error al generar el reporte, intente nuevamente.');
+            console.log(error);
+          });
     }
 
     setDataParaReporte({});
