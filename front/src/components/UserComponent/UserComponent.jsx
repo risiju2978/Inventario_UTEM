@@ -6,6 +6,8 @@ import ActualizarRol from "../ActualizarRol/ActualizarRol";
 import AgregarArticulo from "../ArticuloComponent/AgregarArticulo";
 import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
+import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
+import DatosDashComponent from "../DatosDashBoard/DatosDashComponent";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
@@ -85,6 +87,8 @@ function UserComponent() {
               Agregar nuevo usuario
             </button>
           </div>
+          <hr />
+          <DatosDashComponent />
         </div>
         <div className="col-6">
           <h5>Acciones</h5>
@@ -123,7 +127,14 @@ function UserComponent() {
                 url={variables.urlReportePdf}
                 margenTop="20px"
               />
+              
             </div>
+          </div>
+          <hr />
+          <div className="row">
+            <div className="col-12">
+              <h5>Reporte personalizado</h5>
+              <FiltroReportsComponent />
           </div>
         </div>
       </div>
@@ -296,6 +307,7 @@ function UserComponent() {
         </div>
       </div>
     </div>
+  </div>
   );
 }
 

@@ -266,7 +266,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
                     )}
                   </div> */}
             <div className="mb-3">
-              <label className="form-label">Categoría ID</label>
+              <label className="form-label">Categoría</label>
               <select
                 type="text"
                 className="form-control"
