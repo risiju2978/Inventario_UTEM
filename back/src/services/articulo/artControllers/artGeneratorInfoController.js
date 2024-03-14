@@ -145,12 +145,12 @@ const infGeneratorController = {
         });
       }
 
-      if (id_articulo_baja === undefined || isNaN(id_articulo_baja)) {
-        return res.status(400).json({
-          status: 400,
-          error: "id_articulo_baja debe ser un número",
-        });
-      }
+      // if (id_articulo_baja === undefined || isNaN(id_articulo_baja)) {
+      //   return res.status(400).json({
+      //     status: 400,
+      //     error: "id_articulo_baja debe ser un número",
+      //   });
+      // }
 
       const wb = tipo_formato === "XLS" ? new Excel.Workbook() : null;
       const ws = wb ? wb.addWorksheet("Informe") : null;
@@ -166,7 +166,6 @@ const infGeneratorController = {
         id_articulo_baja)
 
     try {
-      // if (tipo_formato.toLowerCase() === "pdf") {
         if (tipo_formato.toLowerCase() === "pdf" && datos.length !== false) {
           const fileName = `documento-${new Date().toISOString()}`;
         const stream = res.writeHead(200, {
@@ -181,6 +180,20 @@ const infGeneratorController = {
           datos
         );
         return;
+      } else if (tipo_formato.toLowerCase() === "xls" && datos.length !== false) {
+        const fileName = `documento-${new Date().toISOString()}`;
+        const dirPath = path.join(process.cwd(), "/uploads/xls/", fileName);
+        buildExcel(datos, dirPath);
+        function downloadFile(){
+          res.download(dirPath)
+      }
+      downloadFile()
+      return false;
+      } else {
+        return res.status(400).json({
+          status: 400,
+          error: "No hay datos para mostrar",
+        });
       }
     } catch (error) {
       console.error(error);
