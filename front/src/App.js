@@ -19,7 +19,7 @@ function App() {
       if (auth === "true") {
         setIsLogged(true);
       }
-      if (userLocal.rol === 1) {
+      if (userLocal.rol === 1 || userLocal.rol === 2 ) {
         setRol(true);
       }
     }
