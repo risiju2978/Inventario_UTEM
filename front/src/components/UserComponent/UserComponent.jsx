@@ -6,6 +6,7 @@ import ActualizarRol from "../ActualizarRol/ActualizarRol";
 import AgregarArticulo from "../ArticuloComponent/AgregarArticulo";
 import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
+import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
@@ -123,7 +124,14 @@ function UserComponent() {
                 url={variables.urlReportePdf}
                 margenTop="20px"
               />
+              
             </div>
+          </div>
+          <hr />
+          <div className="row">
+            <div className="col-12">
+              <h5>Reporte personalizado</h5>
+              <FiltroReportsComponent />
           </div>
         </div>
       </div>
@@ -296,6 +304,7 @@ function UserComponent() {
         </div>
       </div>
     </div>
+  </div>
   );
 }
 
