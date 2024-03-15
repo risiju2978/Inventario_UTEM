@@ -12,10 +12,6 @@ export function HomeComponent() {
     navigate("/articulo");
   };
 
-<<<<<<< HEAD
-  return ;
-
-=======
   return (
     <div className="container">
       <div className="row my-5">  
@@ -46,5 +42,4 @@ export function HomeComponent() {
       </div>
     </div>
   );
->>>>>>> origin2/develop
 }
