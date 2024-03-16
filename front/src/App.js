@@ -39,9 +39,7 @@ function App() {
             <Route path="/articulo" element={<ArticuloComponent />}></Route>
             <Route path="/login" element={<LoginComponent />}></Route>
             <Route path="*" element={<h1>Not Found</h1>}></Route>
-            <Route
-              path="/admin"
-              element={<ProtectedRoutes admin={rol} auth={isLogged} />}
+            <Route element={<ProtectedRoutes admin={rol} auth={isLogged} redirecTo={"/"} />}
             >
               <Route
                 path="/admin/registrar"
