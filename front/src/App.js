@@ -8,24 +8,23 @@ import RegistrarUserComponent from "./components/RegistrarUserComponent/Registra
 import { ProtectedRoutes } from "./components/common/ProtectedComponente";
 import { useEffect, useState } from "react";
 import { useUserContext } from "./context/UserAppContext";
+import { useAuthContext } from "./context/AuthContext";
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [rol, setRol] = useState(false);
   const {user}  = useUserContext();
+  const {isAuthenticated} = useAuthContext()
   // const userLocal = JSON.parse(localStorage.getItem("USER_APP"));
 
   useEffect(() => {
-    if (user) {
-      const auth = localStorage.getItem("MY_AUTH_APP");
-      if (auth === "true") {
+    if (user && isAuthenticated) {
         setIsLogged(true);
-      }
       if (user.rol === 1 || user.rol === 2) {
         setRol(true);
       }
     }
-  }, [isLogged, rol, user]);
+  }, [isAuthenticated, isLogged, rol, user]);
 
   return (
     <div className="container-fluid">
