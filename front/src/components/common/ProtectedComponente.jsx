@@ -1,11 +1,22 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+import { useUserContext } from "../../context/UserAppContext";
 
-//TODO Pendiente revisar 
-export const  ProtectedRoutes = ({admin, auth, children, redirecTo}) => {
+//TODO Pendiente revisar
+export const ProtectedRoutes = ({ redirecTo }) => {
+   const {isAuthenticated} = useAuthContext();
+   const {user} = useUserContext();
 
-    if(admin === false && auth === false){
-        return <Navigate to={redirecTo} />
-    } 
-        return <Outlet />
-    
-}
+   console.log(user)
+   console.log(isAuthenticated)
+   
+  if ( user === null) {
+    return <Navigate to={redirecTo} />;
+  } else if (user.rol === 1 && isAuthenticated) {
+    return <Outlet />;
+  } else if (user.rol === 2 && isAuthenticated) {
+    return <Outlet />;
+  } else {
+    return <Navigate to={redirecTo} />;
+  }
+};
