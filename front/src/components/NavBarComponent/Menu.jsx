@@ -27,9 +27,11 @@ export function MenuComponent() {
   return (<>
     <nav className="navbar navbar-expand-lg bg-body-tertiary mb-2 justify-content-center">
       <div className="container-fluid">
+        <Link to="/" className="text-decoration-none">
         <span className="navbar-brand">
           Inventario UTEM
         </span>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
