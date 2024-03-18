@@ -8,12 +8,67 @@ import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
 import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
 import DatosDashComponent from "../DatosDashBoard/DatosDashComponent";
+import MantenedorCategoriaComponent from "../mantenedores/MantenedorCategoria";
+import MantenedorOficinaComponent from "../mantenedores/MantenedorOficina";
+import MantenedorDepartamentoComponent from "../mantenedores/MantenedorDepartamento";
+import MantenedorCampusComponent from "../mantenedores/MantenedorCampus";
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
   const [userPerfil, setUserPerfil] = useState(null);
   const [idUser, setIdUser] = useState(null);
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
+//ADICIONAL
+  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+
+  const [selectedUser, setSelectedUser] = useState(null);
+
+
+  const handleShowUpdatePasswordModal = (userId) => {
+    const user = usuarios.find((user) => user.user_id === userId);
+    if (user) {
+      setSelectedUser(user);
+      setShowUpdatePasswordModal(true);
+    }
+  };
+  
+  
+  const handleCloseUpdatePasswordModal = () => {
+    setShowUpdatePasswordModal(false);
+    setNewPassword('');
+  };
+  
+  const handleUpdatePassword = async () => {
+    if (!newPassword) {
+      alert("Por favor, ingresa un nuevo password.");
+      return;
+    }
+  
+    if (!selectedUser) {
+      alert("No se ha seleccionado ningún usuario.");
+      return;
+    }
+  
+    const userData = {
+      user_id: selectedUser.user_id,
+      username: selectedUser.username,
+      email: selectedUser.email,
+      password: newPassword,
+    };
+  
+    try {
+      const response = await Api.editUser(userData);
+      console.log("Usuario actualizado con éxito", response);
+      alert("Usuario actualizado con éxito");
+      handleCloseUpdatePasswordModal();
+    } catch (error) {
+      console.error("Error al actualizar el usuario", error);
+      alert("Error al actualizar el usuario");
+    }
+  };
+  
+  //FIN DE ADICIONAL
 
   const user = JSON.parse(window.localStorage.getItem("USER_APP"));
   console.log(user.id);
@@ -61,6 +116,8 @@ function UserComponent() {
     setIdUser(userToUpdate);
   };
 
+
+
   return (
     <div className="container">
       <div className="row mt-4">
@@ -89,6 +146,15 @@ function UserComponent() {
           </div>
           <hr />
           <DatosDashComponent />
+          <hr/>
+          <MantenedorCategoriaComponent/>
+          <hr/>
+          <MantenedorOficinaComponent/>
+          <hr/>
+        
+      
+          <hr/>
+          <MantenedorCampusComponent/>
         </div>
         <div className="col-6">
           <h5>Acciones</h5>
@@ -160,7 +226,7 @@ function UserComponent() {
                     <td>{usuario.user_id}</td>
                     <td>{usuario.username}</td>
                     <td>{usuario.email}</td>
-                    <td>{usuario.user_state === 0 ? "Baneado" : "Activo"}</td>
+                    <td>{usuario.user_state === 0 ? "Inactivo" : "Activo"}</td>
                     <td>
                       {usuario.rol_id === 1
                         ? "SuperAdmin"
@@ -199,6 +265,9 @@ function UserComponent() {
                         >
                           <i className="bi bi-eye"></i>
                         </button>
+                      {/*ADICIONAL BOTON PASSWORD */}
+                    <button onClick={() => handleShowUpdatePasswordModal(usuario.user_id)}>Actualizar Password</button>
+    
                       </div>
                     </td>
                   </tr>
@@ -306,6 +375,23 @@ function UserComponent() {
           </div>
         </div>
       </div>
+{/* MODAL CAMBIAR PASSWORD */}
+{showUpdatePasswordModal && (
+  <div className="modal">
+    <div className="modal-content">
+      <span className="close" onClick={handleCloseUpdatePasswordModal}>&times;</span>
+      <h4>Actualizar Password</h4>
+      <input
+        type="password"
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
+        placeholder="Ingresa el nuevo password"
+      />
+      <button onClick={handleUpdatePassword}>Actualizar</button>
+    </div>
+  </div>
+)}
+
     </div>
   </div>
   );

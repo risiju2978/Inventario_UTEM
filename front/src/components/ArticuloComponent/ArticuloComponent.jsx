@@ -7,6 +7,7 @@ import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
 import { Api } from "../../api/api";
 import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
+import '../../App.css';
 
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
@@ -14,6 +15,9 @@ function ArticuloComponent() {
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
   const [nombreUsuario, setNombreUsuario] = useState("");
+  const [currentPage, setCurrentPage] = useState(1); // Añadido para paginación
+  const [itemsPerPage] = useState(15); // Añadido para paginación, 30 artículos por página
+
 
   const [user, setUser] = useState(null);
   const usuario = window.localStorage.getItem("USER_APP");
@@ -62,6 +66,19 @@ function ArticuloComponent() {
     setNombreUsuario(user.username);
   }
 
+//AÑADIDO ADICIONAL
+ // Añadido para paginación
+ const lastItemIndex = currentPage * itemsPerPage;
+ const firstItemIndex = lastItemIndex - itemsPerPage;
+ const currentItems = vistaData.slice(firstItemIndex, lastItemIndex);
+
+ // Añadido para paginación - Cambio de página
+ const totalPages = Math.ceil(vistaData.length / itemsPerPage);
+ const changePage = (newPage) => {
+   setCurrentPage(newPage);
+ }
+
+
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
@@ -79,7 +96,7 @@ function ArticuloComponent() {
       <button className="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#filtroModal">
         Reporte personalizado <i className="bi bi-funnel-fill"></i>
       </button>
-      <table className="table table-striped overflow-auto">
+      <table className="table table-striped  " >
         <thead>
           <tr>
             <th>Año</th>
@@ -101,10 +118,11 @@ function ArticuloComponent() {
             </th>}
           </tr>
         </thead>
-        <tbody className="fw-lighter">
-          {vistaData.length !== 0
-            ? vistaData.map((item, index) => (
-                <tr key={item.ID}>
+     <tbody className="fw-lighter " >
+          {/* CAMBIO EN LEER LA VISTA    fw-lighter*/ }
+        {currentItems.length !== 0
+          ? currentItems.map((item, index) => (
+              <tr key={item.ID}>
                   <td>{item.anio}</td>
                   <td>{item.dimension}</td>
                   <td>{item.art_num}</td>
@@ -162,6 +180,19 @@ function ArticuloComponent() {
             : "Cargando..."}
         </tbody>
       </table>
+ {/* Controles de paginación */}
+ <nav>
+      <ul className="pagination">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+          <li key={page} className={`page-item ${currentPage === page ? "active" : ""}`}>
+            <button onClick={() => changePage(page)} className="page-link">
+              {page}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
       {/* <!-- Modal editar articulo --> */}
       <div
         class="modal fade"

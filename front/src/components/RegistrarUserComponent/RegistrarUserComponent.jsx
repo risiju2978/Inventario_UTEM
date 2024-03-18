@@ -143,7 +143,7 @@ const RegistrarUserComponent = () => {
               >
                 <option selected>Selecciona un estado</option>
                 <option value="1">Activo</option>
-                <option value="0">Baneado</option>
+                <option value="0">Inactivo</option>
               </select> 
             </div>
             </div>

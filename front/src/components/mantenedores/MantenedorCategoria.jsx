@@ -5,25 +5,17 @@ const MantenedorCategoriaComponent = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // Handlers para abrir/cerrar modales
-  const handleShowCreateModal = () => setShowCreateModal(true);
-  const handleCloseCreateModal = () => setShowCreateModal(false);
-  const handleShowUpdateModal = () => setShowUpdateModal(true);
-  const handleCloseUpdateModal = () => setShowUpdateModal(false);
-  const handleShowDeleteModal = () => setShowDeleteModal(true);
-  const handleCloseDeleteModal = () => setShowDeleteModal(false);
-
   return (
-    <div>
-      <button onClick={handleShowCreateModal}>Crear Categoría</button>
-      <button onClick={handleShowUpdateModal}>Actualizar Categoría</button>
-      <button onClick={handleShowDeleteModal}>Eliminar Categoría</button>
+    <div className="mantenedor-container">
+      <button className="btn btn-create" onClick={() => setShowCreateModal(true)}>Crear Categoría</button>
+      <button className="btn btn-update" onClick={() => setShowUpdateModal(true)}>Actualizar Categoría</button>
+      <button className="btn btn-delete" onClick={() => setShowDeleteModal(true)}>Eliminar Categoría</button>
 
       {/* Modal para Crear */}
       {showCreateModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={handleCloseCreateModal}>&times;</span>
+            <span className="close" onClick={() => setShowCreateModal(false)}>&times;</span>
             {/* Contenido del modal para crear categoría */}
           </div>
         </div>
@@ -33,7 +25,7 @@ const MantenedorCategoriaComponent = () => {
       {showUpdateModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={handleCloseUpdateModal}>&times;</span>
+            <span className="close" onClick={() => setShowUpdateModal(false)}>&times;</span>
             {/* Contenido del modal para actualizar categoría */}
           </div>
         </div>
@@ -43,7 +35,7 @@ const MantenedorCategoriaComponent = () => {
       {showDeleteModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={handleCloseDeleteModal}>&times;</span>
+            <span className="close" onClick={() => setShowDeleteModal(false)}>&times;</span>
             {/* Contenido del modal para eliminar categoría */}
           </div>
         </div>
