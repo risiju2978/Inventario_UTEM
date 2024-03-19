@@ -213,7 +213,7 @@ const artController = {
 
 
       // Validación de campos obligatorios para insertar en la tabla articulo
-      if (!articulo_estado_id || !categoria_id || !usuario_id || !office_id || !imgArticulo) {
+      if (!articulo_estado_id || !categoria_id || !usuario_id || !office_id ) {
         return res.status(400).json({
           status: 400,
           error:

@@ -79,10 +79,10 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
       isValid = false;
     }
 
-    if (!file) {
+   /* if (!file) {
       errors.img = "El path de la imagen es requerido";
       isValid = false;
-    }
+    }*/
 
     // if (!formData.articulo_estado_id) {
     //   errors.articulo_estado_id = "El estado del artículo es requerido";
