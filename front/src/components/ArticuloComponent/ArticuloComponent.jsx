@@ -7,7 +7,7 @@ import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
 import { Api } from "../../api/api";
 import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
-import '../../App.css';
+import "../../App.css";
 import Search from "../SearchComponent/SearchComponent";
 
 function ArticuloComponent() {
@@ -15,12 +15,10 @@ function ArticuloComponent() {
   const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
-  const [ vistaDataOriginal, setVistaDataOriginal] = useState([])
+  const [vistaDataOriginal, setVistaDataOriginal] = useState([]);
   const [nombreUsuario, setNombreUsuario] = useState("");
   const [currentPage, setCurrentPage] = useState(1); // Añadido para paginación
-  const [itemsPerPage] = useState(5); // Añadido para paginación, 30 artículos por página
-
-  const [search, setSearch] = useState([]);
+  const [itemsPerPage] = useState(5); // Añadido para paginación, 30 artículos por págin
 
   const [user, setUser] = useState(null);
   const usuario = window.localStorage.getItem("USER_APP");
@@ -44,13 +42,12 @@ function ArticuloComponent() {
     return date.toLocaleDateString("es-CL", options); // Cambia 'es-CL' al locale que necesites
   };
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await Api.getReadVista();
         setVistaData(response); // Aquí asumimos que los datos están en response.data.data
-        setVistaDataOriginal(response)
+        setVistaDataOriginal(response);
       } catch (error) {
         console.error("Error al obtener datos de la vista:", error);
       }
@@ -58,9 +55,6 @@ function ArticuloComponent() {
 
     fetchData();
   }, []);
-
-
-
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -72,60 +66,99 @@ function ArticuloComponent() {
   const handleBaja = async (event) => {
     setIdArticuloToBajar(event.target.value);
     setNombreUsuario(user.username);
-  }
+  };
 
-//AÑADIDO ADICIONAL
- // Añadido para paginación
- const lastItemIndex = currentPage * itemsPerPage;
- const firstItemIndex = lastItemIndex - itemsPerPage;
- const currentItems = vistaData.slice(firstItemIndex, lastItemIndex);
+  //AÑADIDO ADICIONAL
+  // Añadido para paginación
+  const lastItemIndex = currentPage * itemsPerPage;
+  const firstItemIndex = lastItemIndex - itemsPerPage;
+  const currentItems = vistaData.slice(firstItemIndex, lastItemIndex);
 
- // Añadido para paginación - Cambio de página
- const totalPages = Math.ceil(vistaData.length / itemsPerPage);
- const changePage = (newPage) => {
-   setCurrentPage(newPage);
- }
+  // Añadido para paginación - Cambio de página
+  const totalPages = Math.ceil(vistaData.length / itemsPerPage);
+  const changePage = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
- const findArticulo = (term) => {
-  const filteredArticulos = vistaDataOriginal.filter((articulo) => {
-    const articuloNombre = articulo.art_nombre.toLowerCase();
-    const articuloCodigo = articulo.art_codigo.toLowerCase();
-    const termLower = term.toLowerCase();
-    return articuloNombre.includes(termLower) || articuloCodigo.includes(termLower)
-  });
+  const findArticulo = (term) => {
+    const filteredArticulos = vistaDataOriginal.filter((articulo) => {
+      const articuloNombre = articulo.art_nombre.toLowerCase();
+      const articuloCodigo = articulo.art_codigo.toLowerCase();
+      const termLower = term.toLowerCase();
+      return (
+        articuloNombre.includes(termLower) || articuloCodigo.includes(termLower)
+      );
+    });
 
-  if (filteredArticulos.length > 0) {
-    setVistaData(filteredArticulos);
-    setSearch(filteredArticulos)
-  }
-}
+    if (filteredArticulos.length > 0) {
+      setVistaData(filteredArticulos);
+    }
+  };
 
-useEffect(() => {
-  setCurrentPage(1);
-}, [vistaData]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [vistaData]);
 
+  // funcionalidad de ordenar de mayor a menor por fecha de ingreso
+  const handleSort = (event) => {
+    const sortBy = event.target.value;
+ 
+    // eslint-disable-next-line array-callback-return
+    const ordenados = [...vistaData].sort((a, b) => {
+      if (sortBy === "asc") {
+        return a.anio - b.anio;
+      } else if (sortBy === "desc") {
+        return b.anio - a.anio;
+      }
+     
+    });
+    return setVistaData(ordenados);
+  };
 
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
       <div className="d-flex flex-row">
-      {user && user.rol === 3 ? null : (
-        <button className="btn btn-success mx-3" data-bs-toggle="modal"
-        data-bs-target="#ingresarModal"
-        title="Agregar artículo"  onClick={() => {
-          setIdUserToCrearteArticulo(user.id)
-          }}>
-        Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
-      </button>
-      )}
-      <ButtonDescargar tipo="XLS" url={variables.urlReporteExcel} />
-      <ButtonDescargar tipo="PDF" url={variables.urlReportePdf} marginLeft="10px"  />
-      <button className="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#filtroModal">
-        Reporte personalizado <i className="bi bi-funnel-fill"></i>
-      </button>
-      <Search onSumit={findArticulo} />
+        {user && user.rol === 3 ? null : (
+          <button
+            className="btn btn-success mx-1"
+            data-bs-toggle="modal"
+            data-bs-target="#ingresarModal"
+            title="Agregar artículo"
+            onClick={() => {
+              setIdUserToCrearteArticulo(user.id);
+            }}
+          >
+            Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
+          </button>
+        )}
+        <ButtonDescargar tipo="XLS" url={variables.urlReporteExcel} />
+        <ButtonDescargar
+          tipo="PDF"
+          url={variables.urlReportePdf}
+          marginLeft="10px"
+        />
+        <button
+          className="btn btn-primary mx-1"
+          data-bs-toggle="modal"
+          data-bs-target="#filtroModal"
+        >
+          Reporte personalizado <i className="bi bi-funnel-fill"></i>
+        </button>
+        <Search onSumit={findArticulo} />
+        <div>
+        <select className="mx-1 px-3 py-2 border-1 rounded rounded-lg" onChange={handleSort}>
+          <option defaultValue>Ordenar por año</option>
+          <option value="asc">Menor a mayor</option>
+          <option value="desc">Mayor a menor</option>
+        </select>
+        </div>
+        {/* 
+      <button className="btn btn-secondary mx-3" onClick={() => setVistaData(vistaDataOriginal)}>
+        Limpiar filtros <i className="bi bi-x-lg"></i>
+      </button> */}
       </div>
-      <table className="table table-striped  " >
+      <table className="table table-striped  ">
         <thead>
           <tr>
             <th>Año</th>
@@ -141,17 +174,14 @@ useEffect(() => {
             <th>Categoria</th>
             <th>imagen articulo</th>
             <th>Articulo estado</th>
-            {user && user.rol === 3 ? <th></th> :
-            <th>
-              Acciones
-            </th>}
+            {user && user.rol === 3 ? <th></th> : <th>Acciones</th>}
           </tr>
         </thead>
-     <tbody className="fw-lighter " >
-          {/* CAMBIO EN LEER LA VISTA    fw-lighter*/ }
-        {currentItems.length !== 0
-          ? currentItems.map((item, index) => (
-              <tr key={item.ID}>
+        <tbody className="fw-lighter ">
+          {/* CAMBIO EN LEER LA VISTA    fw-lighter*/}
+          {currentItems.length !== 0
+            ? currentItems.map((item, index) => (
+                <tr key={item.ID}>
                   <td>{item.anio}</td>
                   <td>{item.dimension}</td>
                   <td>{item.art_num}</td>
@@ -175,33 +205,33 @@ useEffect(() => {
                   </td>
                   <td>
                     <div className="d-flex flex">
-                      {user && user.rol === 3 ? null :
-                      <>
-                      <div>
-                        <button
-                          className="btn btn-danger mx-2"
-                          onClick={handleBaja}
-                          data-bs-toggle="modal"
-                          data-bs-target="#bajarlModal"
-                          title="Dar de baja"
-                          value={item.ID}
-                        >
-                          <i className="bi bi-file-earmark-x"></i>
-                        </button>
-                      </div>
-                      <div>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => setArticuloToUpdate(item)}
-                          data-bs-toggle="modal"
-                          data-bs-target="#editarlModal"
-                          title="Editar"
-                        >
-                          <i className="bi bi-pencil-square"></i>
-                        </button>
-                      </div>
-                      </>
-                      }
+                      {user && user.rol === 3 ? null : (
+                        <>
+                          <div>
+                            <button
+                              className="btn btn-danger mx-2"
+                              onClick={handleBaja}
+                              data-bs-toggle="modal"
+                              data-bs-target="#bajarlModal"
+                              title="Dar de baja"
+                              value={item.ID}
+                            >
+                              <i className="bi bi-file-earmark-x"></i>
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              className="btn btn-warning"
+                              onClick={() => setArticuloToUpdate(item)}
+                              data-bs-toggle="modal"
+                              data-bs-target="#editarlModal"
+                              title="Editar"
+                            >
+                              <i className="bi bi-pencil-square"></i>
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -209,18 +239,21 @@ useEffect(() => {
             : "Cargando..."}
         </tbody>
       </table>
- {/* Controles de paginación */}
- <nav>
-      <ul className="pagination">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-          <li key={page} className={`page-item ${currentPage === page ? "active" : ""}`}>
-            <button onClick={() => changePage(page)} className="page-link">
-              {page}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
+      {/* Controles de paginación */}
+      <nav>
+        <ul className="pagination">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <li
+              key={page}
+              className={`page-item ${currentPage === page ? "active" : ""}`}
+            >
+              <button onClick={() => changePage(page)} className="page-link">
+                {page}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       {/* <!-- Modal editar articulo --> */}
       <div
@@ -296,7 +329,7 @@ useEffect(() => {
         aria-labelledby="ingresarLabel"
         aria-hidden="true"
         data-bs-backdrop="static"
-        data-bs-keyboard="false" 
+        data-bs-keyboard="false"
       >
         <div class="modal-dialog">
           <div class="modal-content">
@@ -310,9 +343,11 @@ useEffect(() => {
               ></button> */}
             </div>
             <div class="modal-body">
-              <AgregarArticulo idUser={idUserToCrearteArticulo} limpiar={true}/>
+              <AgregarArticulo
+                idUser={idUserToCrearteArticulo}
+                limpiar={true}
+              />
             </div>
-            
           </div>
         </div>
       </div>
