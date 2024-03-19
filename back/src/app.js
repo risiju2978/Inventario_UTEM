@@ -40,10 +40,7 @@ app.use((req, res, next) => {
 //   }
 // );
 
-// // Configura body-parser con un límite de tamaño de carga de 50MB
 
-
-// // Rutas del servidor
 
 const usuarioRoutes = require('./services/usuario/userRoutes/userRoutes');
 const articuloRoutes = require('./services/articulo/artRoutes/artRoutes');
@@ -63,7 +60,7 @@ app.use('/api/vista', vistaRoutes);
 app.use('/api/informe', infGenerator);
 app.use('/api/articulo', articuloRoutes);
 app.use('/api/usuario', usuarioRoutes);
-app.use('/api/categoria', categoriaRoutes);
+app.use('/api/categoria', categoriaRoutes); 
 app.use('/api/departamento', departamentoRoutes);
 app.use('/api/sede', sedeRoutes);
 app.use('/api/articuloEstado', articuloEstadoRoutes);
