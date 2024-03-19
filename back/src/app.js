@@ -55,6 +55,7 @@ const vistaUsersRoutes = require('./services/V_Users/V_UserRoutes/V_UserRoutes')
 
 // Rutas
 app.use('/uploads/articulos/', express.static(path.join('uploads/articulos/')))
+app.use('/uploads/public/', express.static(path.join('uploads/public/')))
 app.use('/api/vistaUsers', vistaUsersRoutes);
 app.use('/api/vista', vistaRoutes);
 app.use('/api/informe', infGenerator);

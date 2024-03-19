@@ -16,13 +16,21 @@ import ActualizarPasswordComponent from "../ActualizarPasswordComponet/Actualiza
 
 
 
+
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
   const [userPerfil, setUserPerfil] = useState(null);
   const [idUser, setIdUser] = useState(null);
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
+  
 //ADICIONAL
+<<<<<<< HEAD
 const [selectedUserId, setSelectedUserId] = useState(null);
+=======
+  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
+>>>>>>> origin2/develop
 
 
   
@@ -93,6 +101,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
               </p>
             </div>
             <hr />
+            {userPerfil && userPerfil.rol === 2 ? null :
             <button
               type="button"
               className="btn btn-primary w-50 mx-auto mb-3"
@@ -100,7 +109,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
               data-bs-target="#registrarModal"
             >
               Agregar nuevo usuario
-            </button>
+            </button>}
           </div>
           <hr />
           <DatosDashComponent />
@@ -109,8 +118,12 @@ const [selectedUserId, setSelectedUserId] = useState(null);
           <hr/>
           <MantenedorOficinaComponent/>
           <hr/>
+<<<<<<< HEAD
         
           <MantenedorDepartamentoComponent/>
+=======
+          <MantenedorDepartamentoComponent />
+>>>>>>> origin2/develop
           <hr/>
           <MantenedorCampusComponent/>
         </div>
@@ -197,7 +210,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
                         {/* <button type="button" className="btn btn-primary">
                           <i className="bi bi-pencil-square"></i>
                         </button> */}
-                        {usuario.user_state === 1 ? (
+                        {userPerfil && userPerfil.rol === 2 ? null : usuario.user_state === 1 ? (
                           <button
                             type="button"
                             className="btn btn-danger mx-2"
@@ -214,6 +227,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
                             <i className="bi bi-check"></i>
                           </button>
                         )}
+                        {userPerfil && userPerfil.rol === 2 ? null :
                         <button
                           onClick={() => idUpdateRol(usuario.user_id)}
                           type="button"
@@ -222,7 +236,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
                           data-bs-target="#rolModal"
                         >
                           <i className="bi bi-eye"></i>
-                        </button>
+                        </button>}
                       {/*ADICIONAL BOTON PASSWORD */}
                       <button
                        className="btn btn-info"
