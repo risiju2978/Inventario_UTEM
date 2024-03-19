@@ -151,8 +151,7 @@ function UserComponent() {
           <hr/>
           <MantenedorOficinaComponent/>
           <hr/>
-        
-      
+          <MantenedorDepartamentoComponent />
           <hr/>
           <MantenedorCampusComponent/>
         </div>
