@@ -20,6 +20,7 @@ function ArticuloComponent() {
   const [currentPage, setCurrentPage] = useState(1); // Añadido para paginación
   const [itemsPerPage] = useState(5); // Añadido para paginación, 30 artículos por página
 
+  const [search, setSearch] = useState([]);
 
   const [user, setUser] = useState(null);
   const usuario = window.localStorage.getItem("USER_APP");
@@ -95,8 +96,13 @@ function ArticuloComponent() {
 
   if (filteredArticulos.length > 0) {
     setVistaData(filteredArticulos);
+    setSearch(filteredArticulos)
   }
 }
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [vistaData]);
 
 
   return (
