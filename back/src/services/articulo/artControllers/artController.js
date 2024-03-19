@@ -273,7 +273,7 @@ const artController = {
             art_codigo,
             (art_ingreso = new Date()),
             art_glosa,
-            (art_image_path = imgArticulo.path), // Guardamos la ruta del archivo en la base de datos
+            art_image_path = imgArticulo === undefined ? "uploads/public/image.png" : imgArticulo.path, // Guardamos la ruta del archivo en la base de datos
           ];
 
           await db
