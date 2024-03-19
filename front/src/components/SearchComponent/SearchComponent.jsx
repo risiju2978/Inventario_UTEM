@@ -15,7 +15,7 @@ const Search = ({onSumit}) => {
           <div>
           <input        
             onChange={submit}
-            className="p-2 border-none rounded-md"
+            className="px-3 py-2 border-1 rounded rounded-lg"
             type="search"
             placeholder={"Buscar..."}
             name="search"
