@@ -16,7 +16,7 @@ function ArticuloComponent() {
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
   const [nombreUsuario, setNombreUsuario] = useState("");
   const [currentPage, setCurrentPage] = useState(1); // Añadido para paginación
-  const [itemsPerPage] = useState(8); // Añadido para paginación, 30 artículos por página
+  const [itemsPerPage] = useState(5); // Añadido para paginación, 30 artículos por página
 
 
   const [user, setUser] = useState(null);
