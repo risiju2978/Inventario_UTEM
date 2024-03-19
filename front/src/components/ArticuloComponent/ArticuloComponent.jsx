@@ -8,12 +8,14 @@ import { variables } from "../../config/const";
 import { Api } from "../../api/api";
 import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
 import '../../App.css';
+import Search from "../SearchComponent/SearchComponent";
 
 function ArticuloComponent() {
   const [articuloToUpdate, setArticuloToUpdate] = useState(null);
   const [idArticuloToBajar, setIdArticuloToBajar] = useState(null);
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
   const [vistaData, setVistaData] = useState([]); // Estado para almacenar los datos de la vista
+  const [ vistaDataOriginal, setVistaDataOriginal] = useState([])
   const [nombreUsuario, setNombreUsuario] = useState("");
   const [currentPage, setCurrentPage] = useState(1); // Añadido para paginación
   const [itemsPerPage] = useState(5); // Añadido para paginación, 30 artículos por página
@@ -41,11 +43,13 @@ function ArticuloComponent() {
     return date.toLocaleDateString("es-CL", options); // Cambia 'es-CL' al locale que necesites
   };
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await Api.getReadVista();
         setVistaData(response); // Aquí asumimos que los datos están en response.data.data
+        setVistaDataOriginal(response)
       } catch (error) {
         console.error("Error al obtener datos de la vista:", error);
       }
@@ -81,10 +85,24 @@ function ArticuloComponent() {
    setCurrentPage(newPage);
  }
 
+ const findArticulo = (term) => {
+  const filteredArticulos = vistaDataOriginal.filter((articulo) => {
+    const articuloNombre = articulo.art_nombre.toLowerCase();
+    const articuloCodigo = articulo.art_codigo.toLowerCase();
+    const termLower = term.toLowerCase();
+    return articuloNombre.includes(termLower) || articuloCodigo.includes(termLower)
+  });
+
+  if (filteredArticulos.length > 0) {
+    setVistaData(filteredArticulos);
+  }
+}
+
 
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
+      <div className="d-flex flex-row">
       {user && user.rol === 3 ? null : (
         <button className="btn btn-success mx-3" data-bs-toggle="modal"
         data-bs-target="#ingresarModal"
@@ -99,6 +117,8 @@ function ArticuloComponent() {
       <button className="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#filtroModal">
         Reporte personalizado <i className="bi bi-funnel-fill"></i>
       </button>
+      <Search onSumit={findArticulo} />
+      </div>
       <table className="table table-striped  " >
         <thead>
           <tr>
