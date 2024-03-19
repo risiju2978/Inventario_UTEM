@@ -16,6 +16,7 @@ router.put("/editar_rol", userController.editarRolUsuario);
 router.put('/editar_usuario',userController.editarUsuario);
 // Endpoint para obtener información personal del usuario
 router.get("/info_User", userController.getInfoUser);
-
+//endpoint para editar contraseña de un usuario
+router.put("/edit_Password",userController.editarPasswordUsuario);
 
 module.exports = router;

@@ -12,6 +12,9 @@ import MantenedorCategoriaComponent from "../mantenedores/MantenedorCategoria";
 import MantenedorOficinaComponent from "../mantenedores/MantenedorOficina";
 import MantenedorDepartamentoComponent from "../mantenedores/MantenedorDepartamento";
 import MantenedorCampusComponent from "../mantenedores/MantenedorCampus";
+import ActualizarPasswordComponent from "../ActualizarPasswordComponet/ActualizarPassword";
+
+
 
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
@@ -19,54 +22,9 @@ function UserComponent() {
   const [idUser, setIdUser] = useState(null);
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
 //ADICIONAL
-  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
-
-  const [selectedUser, setSelectedUser] = useState(null);
+const [selectedUserId, setSelectedUserId] = useState(null);
 
 
-  const handleShowUpdatePasswordModal = (userId) => {
-    const user = usuarios.find((user) => user.user_id === userId);
-    if (user) {
-      setSelectedUser(user);
-      setShowUpdatePasswordModal(true);
-    }
-  };
-  
-  
-  const handleCloseUpdatePasswordModal = () => {
-    setShowUpdatePasswordModal(false);
-    setNewPassword('');
-  };
-  
-  const handleUpdatePassword = async () => {
-    if (!newPassword) {
-      alert("Por favor, ingresa un nuevo password.");
-      return;
-    }
-  
-    if (!selectedUser) {
-      alert("No se ha seleccionado ningún usuario.");
-      return;
-    }
-  
-    const userData = {
-      user_id: selectedUser.user_id,
-      username: selectedUser.username,
-      email: selectedUser.email,
-      password: newPassword,
-    };
-  
-    try {
-      const response = await Api.editUser(userData);
-      console.log("Usuario actualizado con éxito", response);
-      alert("Usuario actualizado con éxito");
-      handleCloseUpdatePasswordModal();
-    } catch (error) {
-      console.error("Error al actualizar el usuario", error);
-      alert("Error al actualizar el usuario");
-    }
-  };
   
   //FIN DE ADICIONAL
 
@@ -152,7 +110,7 @@ function UserComponent() {
           <MantenedorOficinaComponent/>
           <hr/>
         
-      
+          <MantenedorDepartamentoComponent/>
           <hr/>
           <MantenedorCampusComponent/>
         </div>
@@ -259,14 +217,22 @@ function UserComponent() {
                         <button
                           onClick={() => idUpdateRol(usuario.user_id)}
                           type="button"
-                          className="btn btn-warning"
+                          className="btn btn-warning mx-3"
                           data-bs-toggle="modal"
                           data-bs-target="#rolModal"
                         >
                           <i className="bi bi-eye"></i>
                         </button>
                       {/*ADICIONAL BOTON PASSWORD */}
-                    <button onClick={() => handleShowUpdatePasswordModal(usuario.user_id)}>Actualizar Password</button>
+                      <button
+                       className="btn btn-info"
+                        data-bs-toggle="modal"
+                        data-bs-target="#updatePasswordModal"
+                           onClick={() => setSelectedUserId(usuario.user_id)}
+                          >
+                             <i className="bi bi-key"></i> 
+                              </button>
+
     
                       </div>
                     </td>
@@ -375,22 +341,31 @@ function UserComponent() {
           </div>
         </div>
       </div>
-{/* MODAL CAMBIAR PASSWORD */}
-{showUpdatePasswordModal && (
-  <div className="modal">
+   {/* Modal para cambiar la contraseña */}
+   // Modal para cambiar la contraseña
+<div
+  className="modal fade"
+  id="updatePasswordModal"
+  tabIndex="-1"
+  aria-labelledby="updatePasswordLabel"
+  aria-hidden="true"
+>
+  <div className="modal-dialog">
     <div className="modal-content">
-      <span className="close" onClick={handleCloseUpdatePasswordModal}>&times;</span>
-      <h4>Actualizar Password</h4>
-      <input
-        type="password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        placeholder="Ingresa el nuevo password"
-      />
-      <button onClick={handleUpdatePassword}>Actualizar</button>
+      <div className="modal-header">
+        <h5 className="modal-title" id="updatePasswordLabel">Actualizar Contraseña</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+      {selectedUserId && <ActualizarPasswordComponent userId={selectedUserId} />}
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
     </div>
   </div>
-)}
+</div>
+
 
     </div>
   </div>

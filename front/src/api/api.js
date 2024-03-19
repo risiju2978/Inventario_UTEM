@@ -52,7 +52,7 @@ export class Api {
     const response = await axios.put(`${url}/usuario/editar_usuario`, userData);
     return response.data.data;
   }
-
+  
   static async donwloadReport(data) {
     const response = await axios.get(`${url}/informe/generator_inf`, data);
     return response.data.data;
@@ -195,8 +195,11 @@ static async  deleteSede( ID_Campus) {
   return response.data;
 } 
 
-
-
+//editar password usuario
+static async editarPasswordUsuario(userData) {
+  const response = await axios.put(`${url}/usuario/edit_Password`, userData);
+  return response.data.data;
+}
 
 
 }
