@@ -24,13 +24,8 @@ function UserComponent() {
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
   
 //ADICIONAL
-<<<<<<< HEAD
-const [selectedUserId, setSelectedUserId] = useState(null);
-=======
-  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
+
   const [selectedUser, setSelectedUser] = useState(null);
->>>>>>> origin2/develop
 
 
   
@@ -118,12 +113,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
           <hr/>
           <MantenedorOficinaComponent/>
           <hr/>
-<<<<<<< HEAD
-        
-          <MantenedorDepartamentoComponent/>
-=======
           <MantenedorDepartamentoComponent />
->>>>>>> origin2/develop
           <hr/>
           <MantenedorCampusComponent/>
         </div>
@@ -242,7 +232,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
                        className="btn btn-info"
                         data-bs-toggle="modal"
                         data-bs-target="#updatePasswordModal"
-                           onClick={() => setSelectedUserId(usuario.user_id)}
+                           onClick={() => setSelectedUser(usuario.user_id)}
                           >
                              <i className="bi bi-key"></i> 
                               </button>
@@ -371,7 +361,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
-      {selectedUserId && <ActualizarPasswordComponent userId={selectedUserId} />}
+      {selectedUser && <ActualizarPasswordComponent userId={selectedUser} />}
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
