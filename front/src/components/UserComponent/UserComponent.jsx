@@ -136,6 +136,7 @@ function UserComponent() {
               </p>
             </div>
             <hr />
+            {userPerfil && userPerfil.rol === 2 ? null :
             <button
               type="button"
               className="btn btn-primary w-50 mx-auto mb-3"
@@ -143,7 +144,7 @@ function UserComponent() {
               data-bs-target="#registrarModal"
             >
               Agregar nuevo usuario
-            </button>
+            </button>}
           </div>
           <hr />
           <DatosDashComponent />

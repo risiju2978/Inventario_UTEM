@@ -108,9 +108,9 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
     e.preventDefault();
 
     if (validateForm()) {
-      if (!file) {
-        return alert("Por favor seleccione un archivo");
-      }
+      // if (!file) {
+      //   return alert("Por favor seleccione un archivo");
+      // }
       if (userIdToCreate === null) {
         return alert("Por favor seleccione un usuario");
       }
