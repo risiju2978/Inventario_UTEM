@@ -57,7 +57,7 @@ export function MenuComponent() {
             
           </ul>
         </div>
-        <div>{usuario && usuario.rol === 1 ? <button type="button" className="btn btn-info mx-3"><Link className="text-white text-decoration-none" to={"/admin/usuario"}>Administrar sistema</Link> </button>: null}</div>
+        <div>{usuario && (usuario.rol === 1 || usuario.rol === 2 ) ? <button type="button" className="btn btn-info mx-3"><Link className="text-white text-decoration-none" to={"/admin/usuario"}>Administrar sistema</Link> </button>: null}</div>
         <div>{!loging ? null : <button type="button" className="btn btn-danger" onClick={handleLogout}>Cerrar sesión</button>}</div>
       </div>
     </nav>
