@@ -13,15 +13,16 @@ import MantenedorOficinaComponent from "../mantenedores/MantenedorOficina";
 import MantenedorDepartamentoComponent from "../mantenedores/MantenedorDepartamento";
 import MantenedorCampusComponent from "../mantenedores/MantenedorCampus";
 
+
 function UserComponent() {
   const [usuarios, setUsuarios] = useState([]);
   const [userPerfil, setUserPerfil] = useState(null);
   const [idUser, setIdUser] = useState(null);
   const [idUserToCrearteArticulo, setIdUserToCrearteArticulo] = useState(null);
+  
 //ADICIONAL
   const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState('');
-
   const [selectedUser, setSelectedUser] = useState(null);
 
 
@@ -238,7 +239,7 @@ function UserComponent() {
                         {/* <button type="button" className="btn btn-primary">
                           <i className="bi bi-pencil-square"></i>
                         </button> */}
-                        {usuario.user_state === 1 ? (
+                        {userPerfil && userPerfil.rol === 2 ? null : usuario.user_state === 1 ? (
                           <button
                             type="button"
                             className="btn btn-danger mx-2"
@@ -255,6 +256,7 @@ function UserComponent() {
                             <i className="bi bi-check"></i>
                           </button>
                         )}
+                        {userPerfil && userPerfil.rol === 2 ? null :
                         <button
                           onClick={() => idUpdateRol(usuario.user_id)}
                           type="button"
@@ -263,7 +265,7 @@ function UserComponent() {
                           data-bs-target="#rolModal"
                         >
                           <i className="bi bi-eye"></i>
-                        </button>
+                        </button>}
                       {/*ADICIONAL BOTON PASSWORD */}
                     <button onClick={() => handleShowUpdatePasswordModal(usuario.user_id)}>Actualizar Password</button>
     
