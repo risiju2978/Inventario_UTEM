@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/UserAppContext";
 import { useAuthContext } from "../../context/AuthContext";
+import { Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+
 
 export function MenuComponent() {
   const { user, userSetOffSession } = useUserContext();
@@ -20,16 +24,14 @@ export function MenuComponent() {
    window.location.href = '/';
   }
 
-  const handleClickAdmin = () => {
-    window.location.href = '/admin/usuario';
-  }
-
-  return (
+  return (<>
     <nav className="navbar navbar-expand-lg bg-body-tertiary mb-2 justify-content-center">
       <div className="container-fluid">
+        <Link to="/" className="text-decoration-none">
         <span className="navbar-brand">
           Inventario UTEM
         </span>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -55,9 +57,11 @@ export function MenuComponent() {
             
           </ul>
         </div>
-        <div>{usuario && usuario.rol === 1 ? <button type="button" className="btn btn-info mx-3" onClick={handleClickAdmin}>Administrar sistema</button>: null}</div>
+        <div>{usuario && usuario.rol === 1 ? <button type="button" className="btn btn-info mx-3"><Link className="text-white text-decoration-none" to={"/admin/usuario"}>Administrar sistema</Link> </button>: null}</div>
         <div>{!loging ? null : <button type="button" className="btn btn-danger" onClick={handleLogout}>Cerrar sesión</button>}</div>
       </div>
     </nav>
+    <Outlet />
+    </>
   );
 }
