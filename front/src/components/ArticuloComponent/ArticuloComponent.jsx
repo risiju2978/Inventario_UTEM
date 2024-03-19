@@ -54,6 +54,9 @@ function ArticuloComponent() {
     fetchData();
   }, []);
 
+
+
+
   const navigate = useNavigate();
   useEffect(() => {
     if (localStorage.getItem("MY_AUTH_APP") !== "true") {
