@@ -12,6 +12,6 @@ router.get('/getAllDepartaments', departamentoCRUD.getAllDepartamentos);
 router.get('/getDepartamentsByID', departamentoCRUD.getDepartamentoById);
 router.post('/createDepartament', departamentoCRUD.createDepartamento);
 router.put('/updateDepartament', departamentoCRUD.updateDepartamento);
-router.delete('/deleteDepartament', departamentoCRUD.deleteDepartamento);
+router.delete('/deleteDepartament/:departament_id', departamentoCRUD.deleteDepartamento);
 
 module.exports = router;

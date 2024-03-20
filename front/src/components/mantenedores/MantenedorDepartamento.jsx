@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CrearDepartamento from "./departamentos/CrearDepartamento";
+import ListarDepartamentos from "./departamentos/ListarDepartamentos";
 
 const MantenedorDepartamentoComponent = () => {
   return (
@@ -65,7 +66,9 @@ const MantenedorDepartamentoComponent = () => {
             <div class="modal-header">
               <h3>Actualizar departamento</h3>
             </div>
-            <div class="modal-body">Actualizar departamento</div>
+            <div class="modal-body">
+              <ListarDepartamentos />
+              </div>
           </div>
         </div>
       </div>
