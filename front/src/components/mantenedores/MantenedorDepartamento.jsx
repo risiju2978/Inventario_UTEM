@@ -5,8 +5,8 @@ import ListarDepartamentos from "./departamentos/ListarDepartamentos";
 const MantenedorDepartamentoComponent = () => {
   return (
     <div className="mantenedor-container">
-      <h3>Gestión departamentos</h3>
-      <div className="d-flex flex-colum">
+      <h3>Gestión departamentos</h3>  
+      <div className="d-flex align-start">
         <button
           type="button"
           className="btn btn-primary w-auto mx-auto mb-3"
@@ -21,16 +21,16 @@ const MantenedorDepartamentoComponent = () => {
           data-bs-toggle="modal"
           data-bs-target="#actualizarDepartamentoModal"
         >
-          Actualizar Departamento
+          Ver departamentos
         </button>
-        <button
+        {/* <button
           ype="button"
           className="btn btn-primary w-auto mx-auto mb-3"
           data-bs-toggle="modal"
           data-bs-target="#eliminarDepartamentoModal"
         >
           Eliminar Departamento
-        </button>
+        </button> */}
       </div>
 
       {/* <!-- Modal ingresar nuevo departamento --> */}
@@ -64,7 +64,7 @@ const MantenedorDepartamentoComponent = () => {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h3>Actualizar departamento</h3>
+              <h3>Departamentos</h3>
             </div>
             <div class="modal-body">
               <ListarDepartamentos />
