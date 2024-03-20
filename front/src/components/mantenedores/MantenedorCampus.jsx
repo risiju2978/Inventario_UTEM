@@ -1,5 +1,6 @@
 import React from "react";
 import CrearCampus from "./campus/CrearCampus";
+import Listarcampus from "./campus/ListarCampus";
 
 const MantenedorCampusComponent = () => {
  
@@ -64,10 +65,10 @@ const MantenedorCampusComponent = () => {
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h3>campus</h3>
+                <h3>Listado de Campus</h3>
               </div>
               <div class="modal-body">
-                {/* <Listarcampuss /> */}
+               <Listarcampus />
                 </div>
             </div>
           </div>
