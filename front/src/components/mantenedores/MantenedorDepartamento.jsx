@@ -1,45 +1,91 @@
 import React, { useState } from "react";
+import CrearDepartamento from "./departamentos/CrearDepartamento";
 
 const MantenedorDepartamentoComponent = () => {
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   return (
     <div className="mantenedor-container">
-      <button className="btn btn-create" onClick={() => setShowCreateModal(true)}>Crear Departamento</button>
-      <button className="btn btn-update" onClick={() => setShowUpdateModal(true)}>Actualizar Departamento</button>
-      <button className="btn btn-delete" onClick={() => setShowDeleteModal(true)}>Eliminar Departamento</button>
+      <h3>Gestión departamentos</h3>
+      <div className="d-flex flex-colum">
+        <button
+          type="button"
+          className="btn btn-primary w-auto mx-auto mb-3"
+          data-bs-toggle="modal"
+          data-bs-target="#crearDepartamentoModal"
+        >
+          Crear Departamento
+        </button>
+        <button
+          ype="button"
+          className="btn btn-primary w-auto mx-auto mb-3"
+          data-bs-toggle="modal"
+          data-bs-target="#actualizarDepartamentoModal"
+        >
+          Actualizar Departamento
+        </button>
+        <button
+          ype="button"
+          className="btn btn-primary w-auto mx-auto mb-3"
+          data-bs-toggle="modal"
+          data-bs-target="#eliminarDepartamentoModal"
+        >
+          Eliminar Departamento
+        </button>
+      </div>
 
-      {/* Modal para Crear */}
-      {showCreateModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowCreateModal(false)}>&times;</span>
-            {/* Contenido del modal para crear departamento */}
+      {/* <!-- Modal ingresar nuevo departamento --> */}
+      <div
+        class="modal fade"
+        id="crearDepartamentoModal"
+        tabindex="-1"
+        aria-labelledby="crearDepartamentoLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Agregar nuevo departamento</h3>
+            </div>
+            <div class="modal-body">
+              <CrearDepartamento  />
+
+            </div>
           </div>
         </div>
-      )}
-
-      {/* Modal para Actualizar */}
-      {showUpdateModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowUpdateModal(false)}>&times;</span>
-            {/* Contenido del modal para actualizar departamento */}
+      </div>
+      {/* <!-- Modal actualizar departamento --> */}
+      <div
+        class="modal fade"
+        id="actualizarDepartamentoModal"
+        tabindex="-1"
+        aria-labelledby="actualizarDepartamentoLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Actualizar departamento</h3>
+            </div>
+            <div class="modal-body">Actualizar departamento</div>
           </div>
         </div>
-      )}
-
-      {/* Modal para Eliminar */}
-      {showDeleteModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowDeleteModal(false)}>&times;</span>
-            {/* Contenido del modal para eliminar departamento */}
+      </div>
+      {/* <!-- Modal eliminar departamento --> */}
+      <div
+        class="modal fade"
+        id="eliminarDepartamentoModal"
+        tabindex="-1"
+        aria-labelledby="eliminarDepartamentoLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Eliminar departamento</h3>
+            </div>
+            <div class="modal-body">Eliminar departamento</div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
