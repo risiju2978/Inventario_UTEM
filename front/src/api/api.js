@@ -85,29 +85,28 @@ export class Api {
   //ADICIONAL MANTENEDORES
     //manteneddor de categoria
   static async createCategoria(nombreCategoria) {
-    const response = await axios.post(`${url}/categoria/CreateCategories`, {
-      categoria: nombreCategoria
-    });
+    const response = await axios.post(`${url}/categoria/CreateCategories`,nombreCategoria);
+    return response.data.data;
+  };
   
+
+  
+  static async updateCategoria(UpdateCategoria) {
+    const response = await axios.put(`${url}/categoria/updateCategories`,UpdateCategoria );
+    
+      return response.data.data;
+    };
+  
+   
+  
+  
+  static async deleteCategoria(categoriasEliminar) {
+    const response = await axios.delete(`${url}/categoria/deleteCategories`, { data: categoriasEliminar });
     return response.data;
   }
-  static async updateCategoria(ID_Categoria, nombreCategoria) {
-    const response = await axios.put(`${url}/categoria/updateCategories`, {
-      categoria_id: ID_Categoria,
-      categoria: nombreCategoria
-    });
   
-    return response.data;
-  }
+
   
-  static async deleteCategoria(ID_Categoria) {
-    const response = await axios.put(`${url}/categoria/deleteCategories`, {
-      categoria_id: ID_Categoria,
-     
-    });
-  
-    return response.data;
-  }
       //mantenedor de oficina
       static async createOficina(ID_Departamento,nombreOficina) {
         const response = await axios.post(`${url}/oficina/createOficinas`, {

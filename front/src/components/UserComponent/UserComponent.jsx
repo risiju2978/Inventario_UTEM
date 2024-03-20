@@ -8,7 +8,7 @@ import ButtonDescargar from "../common/buttonDescargar";
 import { variables } from "../../config/const";
 import FiltroReportsComponent from "../FiltrosReportsComponent/FiltroReportsComponent";
 import DatosDashComponent from "../DatosDashBoard/DatosDashComponent";
-import MantenedorCategoriaComponent from "../mantenedores/MantenedorCategoria";
+import MantenedorCategoriaComponent from "../mantenedores/CategoriaComponent/MantenedorCategoria";
 import MantenedorOficinaComponent from "../mantenedores/MantenedorOficina";
 import MantenedorDepartamentoComponent from "../mantenedores/MantenedorDepartamento";
 import MantenedorCampusComponent from "../mantenedores/MantenedorCampus";
@@ -125,7 +125,7 @@ function UserComponent() {
               {" "}
               <button
                 type="button"
-                className="btn btn-primary mt-3"
+                className="btn btn-primary mt-3 me-3"
                 onClick={handleClickVerListado}
               >
                 Ver inventario
@@ -256,7 +256,7 @@ function UserComponent() {
       <div
         class="modal fade"
         id="registrarModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
@@ -292,7 +292,7 @@ function UserComponent() {
       <div
         class="modal fade"
         id="rolModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="rolLabel"
         aria-hidden="true"
       >
@@ -325,7 +325,7 @@ function UserComponent() {
       <div
         class="modal fade"
         id="ingresarModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="ingresarLabel"
         aria-hidden="true"
         data-bs-backdrop="static"
