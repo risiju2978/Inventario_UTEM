@@ -346,7 +346,6 @@ function UserComponent() {
         </div>
       </div>
    {/* Modal para cambiar la contraseña */}
-   // Modal para cambiar la contraseña
 <div
   className="modal fade"
   id="updatePasswordModal"
