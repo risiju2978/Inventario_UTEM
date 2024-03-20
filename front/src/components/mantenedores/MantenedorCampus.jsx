@@ -1,47 +1,97 @@
-import React, { useState } from "react";
+import React from "react";
+import CrearCampus from "./campus/CrearCampus";
+import Listarcampus from "./campus/ListarCampus";
 
 const MantenedorCampusComponent = () => {
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  return (
-    <div className="mantenedor-container">
-      <button className="btn btn-create" onClick={() => setShowCreateModal(true)}>Crear Campus</button>
-      <button className="btn btn-update" onClick={() => setShowUpdateModal(true)}>Actualizar Campus</button>
-      <button className="btn btn-delete" onClick={() => setShowDeleteModal(true)}>Eliminar Campus</button>
-
-      {/* Modal para Crear */}
-      {showCreateModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowCreateModal(false)}>&times;</span>
-            {/* Contenido del modal para crear campus */}
+ 
+    return (
+      <div className="mantenedor-container">
+        <h3>Gestión campus</h3>  
+        <div className="d-flex align-start">
+          <button
+            type="button"
+            className="btn btn-primary w-auto mx-auto mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#crearCampusModal"
+          >
+            Crear campus
+          </button>
+          <button
+            ype="button"
+            className="btn btn-primary w-auto mx-auto mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#actualizarCampusModal"
+          >
+            Ver campus
+          </button>
+          {/* <button
+            ype="button"
+            className="btn btn-primary w-auto mx-auto mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#eliminarCampusModal"
+          >
+            Eliminar campus
+          </button> */}
+        </div>
+  
+        {/* <!-- Modal ingresar nuevo campus --> */}
+        <div
+          class="modal fade"
+          id="crearCampusModal"
+          tabindex="-1"
+          aria-labelledby="crearcampusLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Agregar nuevo campus</h3>
+              </div>
+              <div class="modal-body">
+                <CrearCampus  />
+  
+              </div>
+            </div>
           </div>
         </div>
-      )}
-
-      {/* Modal para Actualizar */}
-      {showUpdateModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowUpdateModal(false)}>&times;</span>
-            {/* Contenido del modal para actualizar campus */}
+        {/* <!-- Modal actualizar campus --> */}
+        <div
+          class="modal fade"
+          id="actualizarCampusModal"
+          tabindex="-1"
+          aria-labelledby="actualizarcampusLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Listado de Campus</h3>
+              </div>
+              <div class="modal-body">
+               <Listarcampus />
+                </div>
+            </div>
           </div>
         </div>
-      )}
-
-      {/* Modal para Eliminar */}
-      {showDeleteModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowDeleteModal(false)}>&times;</span>
-            {/* Contenido del modal para eliminar campus */}
+        {/* <!-- Modal eliminar campus --> */}
+        <div
+          class="modal fade"
+          id="eliminarCampusModal"
+          tabindex="-1"
+          aria-labelledby="eliminarcampusLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Eliminar campus</h3>
+              </div>
+              <div class="modal-body">Eliminar campus</div>
+            </div>
           </div>
         </div>
-      )}
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
 export default MantenedorCampusComponent;
