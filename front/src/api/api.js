@@ -179,9 +179,9 @@ export class Api {
     return response.data;
   }
 
-  static async deleteSede(ID_Campus) {
-    const response = await axios.delete(`${url}/sede/deleteSede`, {
-      campus_id: ID_Campus,
+  static async deleteSede(campus_id) {
+    const response = await axios.delete(`${url}/sede/deleteSede/${campus_id}`, {
+      campus_id: campus_id,
     });
     return response.data;
   }

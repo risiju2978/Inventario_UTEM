@@ -16,7 +16,7 @@ const Listarcampus = () => {
   }, []);
 
   const handleDeletecampus = (id) => {
-    Api.deletecampus(id)
+    Api.deleteSede(id)
       .then((response) => {
         console.log(
           "campus eliminado correctamente de la base de datos",
