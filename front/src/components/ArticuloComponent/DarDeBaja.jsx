@@ -52,7 +52,7 @@ const DarDeBaja = ({ articulo, usuario }) => {
           <label htmlFor="autorizacion" className="form-label">
             Autorización:
           </label>
-          <p>Uuario activo: <strong>{usuario}</strong></p>
+          <p>Usuario activo: <strong>{usuario}</strong></p>
         </div>
         {error && <div className="text-danger">{error}</div>}
         <button type="button" className="btn btn-danger" onClick={darDeBaja}>
