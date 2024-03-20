@@ -207,7 +207,7 @@ function ArticuloComponent() {
                     <div className="d-flex flex">
                       {user && user.rol === 3 ? null : (
                         <>
-                          <div>
+                          {item.articulo_estado_id === 1 ? null : <div>
                             <button
                               className="btn btn-danger mx-2"
                               onClick={handleBaja}
@@ -218,7 +218,7 @@ function ArticuloComponent() {
                             >
                               <i className="bi bi-file-earmark-x"></i>
                             </button>
-                          </div>
+                          </div>}
                           <div>
                             <button
                               className="btn btn-warning"

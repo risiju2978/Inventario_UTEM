@@ -91,8 +91,8 @@ const sedeController = {
    //REVISADO Y FUNCIONANDO
   deleteSede: async (req, res) => {
     try {
-      const { campus_id } = req.body;
-      const [result] = await db.promise().query('DELETE FROM sede WHERE campus_id = ?', [campus_id]);
+      const { campus_id } = req.params;
+      const [result] = await db.promise().execute('DELETE FROM sede WHERE campus_id = ?', [campus_id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({ 

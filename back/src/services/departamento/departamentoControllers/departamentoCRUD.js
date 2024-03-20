@@ -64,9 +64,10 @@ const departamentoCRUD = {
   updateDepartamento: async (req, res) => {
     try {
       
-      const {  departament, campus_id } = req.body;
+      const {  departament, departament_id } = req.body;
 
-      const [result] = await db.promise().query('UPDATE departamento SET  departament = ?  WHERE campus_id = ?', [ departament, campus_id]);
+
+      const [result] = await db.promise().execute('UPDATE departamento SET  departament = ?  WHERE departament_id = ?', [ departament, departament_id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
@@ -90,8 +91,10 @@ const departamentoCRUD = {
  //REVISADO Y FUNCIONANDO
   deleteDepartamento: async (req, res) => {
     try {
-      const { departament_id } = req.body;
-      const [result] = await db.promise().query('DELETE FROM departamento WHERE departament_id = ?', [departament_id]);
+      const { departament_id } = req.params;
+
+      const [result] = await db.promise().execute('DELETE FROM departamento WHERE departament_id = ?', [departament_id]);
+      console.log(result)
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
