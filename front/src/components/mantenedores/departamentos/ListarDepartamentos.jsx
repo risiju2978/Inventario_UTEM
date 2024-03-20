@@ -87,16 +87,17 @@ const ListarDepartamentos = () => {
           ))}
         </tbody>
       </table>:
-      <>
+      <div className="d-flex flex">
       <UpdateDepartamento departamentoUpdate={departamentoUpdate} />
-      <button type="button" className="btn btn-secondary" onClick={handleCLoseUpdate}>Cerrar</button>
-      </>
+      <button type="button" className="btn btn-danger h-auto" onClick={handleCLoseUpdate}><i class="bi bi-x-circle"></i></button>
+      </div>
       }
-      <div class="modal-footer">
+      <div class="modal-footer " >
         <button
           type="button"
           className="btn btn-secondary"
           data-bs-dismiss="modal"
+          onClick={() => setDepartamentoUpdate(null)}
         >
           Cerrar
         </button>
