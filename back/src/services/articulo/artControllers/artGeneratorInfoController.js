@@ -21,36 +21,29 @@ const infGeneratorController = {
         const sql =
           "SELECT * FROM `v_infogenerator` WHERE `articulo_estado_id` = ?";
 
-        const combo = [
-          articulo_estado_id = 1,
-        ];
+        const combo = [(articulo_estado_id = 1)];
         //hacer validacion del rows y ver qwue tenga contenido  con su largo
         // Ejecutar la consulta
         [datos] = await db.promise().execute(sql, combo);
 
         datosParaEnviarAConstruirPDF = datos;
-      }else if (activo == 2){
+      } else if (activo == 2) {
         const sql =
           "SELECT * FROM `v_infogenerator` WHERE `articulo_estado_id` = ?";
 
-        const combo = [
-          articulo_estado_id = 2,
-        ];
+        const combo = [(articulo_estado_id = 2)];
         //hacer validacion del rows y ver qwue tenga contenido  con su largo
         // Ejecutar la consulta
         [datos] = await db.promise().execute(sql, combo);
         datosParaEnviarAConstruirPDF = datos;
-        
       } else if (activo === undefined || activo === null) {
-
         [datos] = await db.promise().query("CALL Read_v_infogenerator()");
         // const datos = await obtenerDatosInforme();
 
         datosParaEnviarAConstruirPDF = datos[0];
       }
 
-      console.log("datos para enviar a buildPdf",datosParaEnviarAConstruirPDF)
-
+      console.log("datos para enviar a buildPdf", datosParaEnviarAConstruirPDF);
 
       try {
         const fileName = `documento-${Math.random().toString(36).substring(7)}`;
@@ -80,25 +73,97 @@ const infGeneratorController = {
   },
 
   generarReporteGeneralXLS: async (req, res) => {
+    const { activo } = req.query;
+
+    let datos;
+    let datosParaEnviarAConstruirXLS;
     try {
-      [data] = await db.promise().query("CALL Read_v_infogenerator()");
-      // const data = await obtenerDatosInforme();
+      if (activo == 1) {
+        const sql =
+          "SELECT * FROM `v_infogenerator` WHERE `articulo_estado_id` = ?";
+
+        const combo = [(articulo_estado_id = 1)];
+        //hacer validacion del rows y ver qwue tenga contenido  con su largo
+        // Ejecutar la consulta
+        [datos] = await db.promise().execute(sql, combo);
+
+        datosParaEnviarAConstruirXLS = datos;
+      } else if (activo == 2) {
+        const sql =
+          "SELECT * FROM `v_infogenerator` WHERE `articulo_estado_id` = ?";
+
+        const combo = [(articulo_estado_id = 2)];
+        //hacer validacion del rows y ver qwue tenga contenido  con su largo
+        // Ejecutar la consulta
+        [datos] = await db.promise().execute(sql, combo);
+        datosParaEnviarAConstruirXLS = datos;
+      } else if (activo === undefined || activo === null) {
+        [datos] = await db.promise().query("CALL Read_v_infogenerator()");
+        // const datos = await obtenerDatosInforme();
+
+        datosParaEnviarAConstruirXLS = datos[0];
+      }
       const wb = new excel.Workbook();
       const ws = wb.addWorksheet("Reporte inventario");
-      ws.cell(1, 1).string("ID");
-      ws.cell(1, 2).string("Nombre");
-      ws.cell(1, 3).string("Código");
-      ws.cell(1, 4).string("Departamento");
-      ws.cell(1, 5).string("Categoria");
-      // filas con los datos
-      console.log("data:", data);
-      data[0].forEach((row, i) => {
-        ws.cell(i + 2, 1).number(row.ID);
-        ws.cell(i + 2, 2).string(row.art_nombre);
-        ws.cell(i + 2, 3).string(row.art_codigo);
-        ws.cell(i + 2, 4).string(row.departament);
-        ws.cell(i + 2, 5).string(row.categoria);
-      });
+
+      if (activo == 1) {
+        ws.cell(1, 1).string("ID");
+        ws.cell(1, 2).string("Nombre");
+        ws.cell(1, 3).string("Código");
+        ws.cell(1, 4).string("Departamento");
+        ws.cell(1, 5).string("Categoria");
+        ws.cell(1, 6).string("Estado");
+        ws.cell(1, 7).string("Año");
+        // filas con los datos
+        datosParaEnviarAConstruirXLS.forEach((row, i) => {
+          ws.cell(i + 2, 1).number(row.ID);
+          ws.cell(i + 2, 2).string(row.art_nombre);
+          ws.cell(i + 2, 3).string(row.art_codigo);
+          ws.cell(i + 2, 4).string(row.departament);
+          ws.cell(i + 2, 5).string(row.categoria);
+          ws.cell(i + 2, 6).string(
+            row.articulo_estado_id === 1 ? "Activo" : "Dado de baja"
+          );
+          ws.cell(i + 2, 7).string(row.anio);
+        });
+      } else if (activo == 2) {
+        ws.cell(1, 1).string("ID");
+        ws.cell(1, 2).string("Nombre");
+        ws.cell(1, 3).string("Código");
+        ws.cell(1, 4).string("Departamento");
+        ws.cell(1, 5).string("Categoria");
+        ws.cell(1, 6).string("Estado");
+        ws.cell(1, 7).string("Fecha de baja");
+        ws.cell(1, 8).string("Autorización");
+
+        datosParaEnviarAConstruirXLS.forEach((row, i) => {
+          ws.cell(i + 2, 1).number(row.ID);
+          ws.cell(i + 2, 2).string(row.art_nombre);
+          ws.cell(i + 2, 3).string(row.art_codigo);
+          ws.cell(i + 2, 4).string(row.departament);
+          ws.cell(i + 2, 5).string(row.categoria);
+          ws.cell(i + 2, 6).string(
+            row.articulo_estado_id === 1 ? "Activo" : "Dado de baja"
+          );
+          ws.cell(i + 2, 7).date(row.fecha_baja);
+          ws.cell(i + 2, 8).string(row.autorizacion);
+        });
+      } else if (activo === undefined || activo === null) {
+        ws.cell(1, 1).string("ID");
+        ws.cell(1, 2).string("Nombre");
+        ws.cell(1, 3).string("Código");
+        ws.cell(1, 4).string("Departamento");
+        ws.cell(1, 5).string("Categoria");
+        // filas con los datos
+        datosParaEnviarAConstruirXLS.forEach((row, i) => {
+          ws.cell(i + 2, 1).number(row.ID);
+          ws.cell(i + 2, 2).string(row.art_nombre);
+          ws.cell(i + 2, 3).string(row.art_codigo);
+          ws.cell(i + 2, 4).string(row.departament);
+          ws.cell(i + 2, 5).string(row.categoria);
+        });
+      }
+
       const fileName = `documento-${Math.random()
         .toString(36)
         .substring(7)}.xlsx`;
