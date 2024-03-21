@@ -63,8 +63,8 @@ function ArticuloComponent() {
     }
   }, [navigate]);
 
-  const handleBaja = async (event) => {
-    setIdArticuloToBajar(event.target.value);
+  const handleBaja = async (id) => {
+    setIdArticuloToBajar(id);
     setNombreUsuario(user.username);
   };
 
@@ -216,7 +216,7 @@ function ArticuloComponent() {
                             <div>
                               <button
                                 className="btn btn-danger mx-2"
-                                onClick={handleBaja}
+                                onClick={() => handleBaja(item.ID)}
                                 data-bs-toggle="modal"
                                 data-bs-target="#bajarlModal"
                                 title="Dar de baja"
@@ -316,15 +316,7 @@ function ArticuloComponent() {
             <div class="modal-body">
               <DarDeBaja articulo={idArticuloToBajar} usuario={nombreUsuario} />
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cerrar
-              </button>
-            </div>
+            
           </div>
         </div>
       </div>
