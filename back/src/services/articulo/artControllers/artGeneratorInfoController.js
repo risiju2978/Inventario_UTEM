@@ -5,34 +5,71 @@ const mysql = require("mysql2/promise");
 const excel = require("excel4node");
 const fs = require("fs");
 const path = require("path");
-const  buildPDF  = require("../../../../utils/utils.pdfBuild");
+const buildPDF = require("../../../../utils/utils.pdfBuild");
 const obtenerDatosInforme = require("../../../helpers/obtenerDatosInforme");
 const buildExcel = require("../../../../utils/utils.excelBuild");
 
 const infGeneratorController = {
   generarReporteGeneralPDF: async (req, res) => {
-    try {
-      [datos] = await db.promise().query('CALL Read_v_infogenerator()');
-      // const datos = await obtenerDatosInforme();
+    const { activo } = req.query;
+
+    let datos;
+    let datosParaEnviarAConstruirPDF;
 
     try {
-        const fileName = `documento-${Math.random().toString(36).substring(7)}`
+      if (activo == 1) {
+        const sql =
+          "SELECT * FROM `v_infogenerator` WHERE `articulo_estado_id` = ?";
+
+        const combo = [
+          articulo_estado_id = 1,
+        ];
+        //hacer validacion del rows y ver qwue tenga contenido  con su largo
+        // Ejecutar la consulta
+        [datos] = await db.promise().execute(sql, combo);
+
+        datosParaEnviarAConstruirPDF = datos;
+      }else if (activo == 2){
+        const sql =
+          "SELECT * FROM `v_infogenerator` WHERE `articulo_estado_id` = ?";
+
+        const combo = [
+          articulo_estado_id = 2,
+        ];
+        //hacer validacion del rows y ver qwue tenga contenido  con su largo
+        // Ejecutar la consulta
+        [datos] = await db.promise().execute(sql, combo);
+        datosParaEnviarAConstruirPDF = datos;
+        
+      } else if (activo === undefined || activo === null) {
+
+        [datos] = await db.promise().query("CALL Read_v_infogenerator()");
+        // const datos = await obtenerDatosInforme();
+
+        datosParaEnviarAConstruirPDF = datos[0];
+      }
+
+      console.log("datos para enviar a buildPdf",datosParaEnviarAConstruirPDF)
+
+
+      try {
+        const fileName = `documento-${Math.random().toString(36).substring(7)}`;
         const stream = res.writeHead(200, {
           "Content-Type": "application/pdf",
-          "Content-Disposition":`attachment; filename=${fileName}.pdf`,
+          "Content-Disposition": `attachment; filename=${fileName}.pdf`,
         });
-      
+
         buildPDF(
           (data) => stream.write(data),
           () => stream.end(),
-          datos[0]
+          datosParaEnviarAConstruirPDF,
+          activo
         );
         return;
-      
-    } catch (error) {
-      console.error(error);
-      throw new Error("Error al generar el informe");
-    }
+      } catch (error) {
+        console.error(error);
+        throw new Error("Error al generar el informe");
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({
@@ -44,38 +81,40 @@ const infGeneratorController = {
 
   generarReporteGeneralXLS: async (req, res) => {
     try {
-      [data] = await db.promise().query('CALL Read_v_infogenerator()');
+      [data] = await db.promise().query("CALL Read_v_infogenerator()");
       // const data = await obtenerDatosInforme();
       const wb = new excel.Workbook();
-      const ws = wb.addWorksheet('Reporte inventario');
-      ws.cell(1, 1).string('ID');
-      ws.cell(1, 2).string('Nombre');
-      ws.cell(1, 3).string('Código');
-      ws.cell(1, 4).string('Departamento');
-      ws.cell(1, 5).string('Categoria');
+      const ws = wb.addWorksheet("Reporte inventario");
+      ws.cell(1, 1).string("ID");
+      ws.cell(1, 2).string("Nombre");
+      ws.cell(1, 3).string("Código");
+      ws.cell(1, 4).string("Departamento");
+      ws.cell(1, 5).string("Categoria");
       // filas con los datos
-      console.log('data:', data);
+      console.log("data:", data);
       data[0].forEach((row, i) => {
-          ws.cell(i + 2, 1).number(row.ID);
-          ws.cell(i + 2, 2).string(row.art_nombre);
-          ws.cell(i + 2, 3).string(row.art_codigo);
-          ws.cell(i + 2, 4).string(row.departament);
-          ws.cell(i + 2, 5).string(row.categoria);
+        ws.cell(i + 2, 1).number(row.ID);
+        ws.cell(i + 2, 2).string(row.art_nombre);
+        ws.cell(i + 2, 3).string(row.art_codigo);
+        ws.cell(i + 2, 4).string(row.departament);
+        ws.cell(i + 2, 5).string(row.categoria);
       });
-      const fileName = `documento-${Math.random().toString(36).substring(7)}.xlsx`;
-  
+      const fileName = `documento-${Math.random()
+        .toString(36)
+        .substring(7)}.xlsx`;
+
       const dirPath = path.join(process.cwd(), "/uploads/xls/", fileName);
       wb.write(dirPath, (err, stats) => {
-          if (err) {
-              console.error('Error al escribir el archivo:', err);
-              throw new Error('Error al escribir el archivo');
-          } else {
-              function downloadFile(){
-                  res.download(dirPath)
-              }
-              downloadFile()
-              return false;
+        if (err) {
+          console.error("Error al escribir el archivo:", err);
+          throw new Error("Error al escribir el archivo");
+        } else {
+          function downloadFile() {
+            res.download(dirPath);
           }
+          downloadFile();
+          return false;
+        }
       });
     } catch (error) {
       console.error(error);
@@ -85,7 +124,6 @@ const infGeneratorController = {
       });
     }
   },
-
 
   generarInforme: async (req, res) => {
     try {
@@ -99,13 +137,12 @@ const infGeneratorController = {
         departament_id,
         id_articulo_baja,
         articulo_estado_id,
-        anio
+        anio,
       } = req.body;
 
-      console.log('req.body:', req.body);
+      console.log("req.body:", req.body);
 
       // VALIDACIONES
-
 
       // if (!fecha_inicio || !fecha_fin || fecha_inicio > fecha_fin) {
       //   return res.status(400).json({
@@ -166,35 +203,38 @@ const infGeneratorController = {
         id_articulo_baja,
         articulo_estado_id,
         anio
-        )
+      );
 
-    try {
+      try {
         if (tipo_formato.toLowerCase() === "pdf" && datos.length !== false) {
-        const fileName = `documento-${new Date().toISOString()}`;
-        const stream = res.writeHead(200, {
-          "Content-Type": "application/pdf",
-          "Content-Disposition":`attachment; filename=${fileName}.pdf`,
-        });
-        console.log('datos:', datos);
-      
-        buildPDF(
-          (data) => stream.write(data),
-          () => stream.end(),
-          datos
-        );
-        return;
-      } else if (tipo_formato.toLowerCase() === "xls" && datos.length !== false) {
-        const wb = new excel.Workbook();
-        const ws = wb.addWorksheet('Reporte inventario');
-        ws.cell(1, 1).string('ID');
-        ws.cell(1, 2).string('Nombre');
-        ws.cell(1, 3).string('Código');
-        ws.cell(1, 4).string('Departamento');
-        ws.cell(1, 5).string('Categoria');
-        ws.cell(1, 6).string('Año');
-        ws.cell(1, 7).string('Estado');
-        // filas con los datos
-        datos.forEach((row, i) => {
+          const fileName = `documento-${new Date().toISOString()}`;
+          const stream = res.writeHead(200, {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `attachment; filename=${fileName}.pdf`,
+          });
+          console.log("datos:", datos);
+
+          buildPDF(
+            (data) => stream.write(data),
+            () => stream.end(),
+            datos
+          );
+          return;
+        } else if (
+          tipo_formato.toLowerCase() === "xls" &&
+          datos.length !== false
+        ) {
+          const wb = new excel.Workbook();
+          const ws = wb.addWorksheet("Reporte inventario");
+          ws.cell(1, 1).string("ID");
+          ws.cell(1, 2).string("Nombre");
+          ws.cell(1, 3).string("Código");
+          ws.cell(1, 4).string("Departamento");
+          ws.cell(1, 5).string("Categoria");
+          ws.cell(1, 6).string("Año");
+          ws.cell(1, 7).string("Estado");
+          // filas con los datos
+          datos.forEach((row, i) => {
             ws.cell(i + 2, 1).number(row.ID);
             ws.cell(i + 2, 2).string(row.art_nombre);
             ws.cell(i + 2, 3).string(row.art_codigo);
@@ -202,28 +242,29 @@ const infGeneratorController = {
             ws.cell(i + 2, 5).string(row.categoria);
             ws.cell(i + 2, 6).string(row.anio);
             ws.cell(i + 2, 7).string(row.articulo_estado_id);
-        });
-        const fileName = `documento-${Math.random().toString(36).substring(7)}.xlsx`;
-    
-        const dirPath = path.join(process.cwd(), "/uploads/xls/", fileName);
-        wb.write(dirPath, (err, stats) => {
+          });
+          const fileName = `documento-${Math.random()
+            .toString(36)
+            .substring(7)}.xlsx`;
+
+          const dirPath = path.join(process.cwd(), "/uploads/xls/", fileName);
+          wb.write(dirPath, (err, stats) => {
             if (err) {
-                console.error('Error al escribir el archivo:', err);
-                throw new Error('Error al escribir el archivo');
+              console.error("Error al escribir el archivo:", err);
+              throw new Error("Error al escribir el archivo");
             } else {
-                function downloadFile(){
-                    res.download(dirPath)
-                }
-                downloadFile()
-                return false;
+              function downloadFile() {
+                res.download(dirPath);
+              }
+              downloadFile();
+              return false;
             }
-        });
-      
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        throw new Error("Error al generar el informe");
       }
-    } catch (error) {
-      console.error(error);
-      throw new Error("Error al generar el informe");
-    }
     } catch (error) {
       console.error(error);
       res.status(500).json({
