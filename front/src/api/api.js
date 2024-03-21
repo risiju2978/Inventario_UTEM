@@ -118,13 +118,13 @@ static async deleteCategoria(categoriasEliminar) {
 
     return response.data;
   }
-  static async deleteOficina(ID_Oficina) {
-    const response = await axios.delete(`${url}/oficina/deleteOficinas`, {
-      office_id: ID_Oficina,
+  static async deleteOficina(office_id) {
+    const response = await axios.delete(`${url}/oficina/deleteOficinas/${office_id}`, {
+      office_id: office_id,
     });
     return response.data;
   }
-
+ 
   static async updateOficina(ID_Oficina, ID_Departamento, nombreOficina) {
     const response = await axios.put(`${url}/oficina/updateOficinas`, {
       office_id: ID_Oficina,

@@ -93,7 +93,7 @@ const oficinaController = {
  //REVISADO Y FUNCIONANDO
   deleteOficina: async (req, res) => {
     try {
-      const { office_id } = req.body;
+      const { office_id } =req.params;
       const [result] = await db.promise().query('DELETE FROM oficina WHERE office_id = ?', [office_id]);
 
       if (result.affectedRows === 0) {

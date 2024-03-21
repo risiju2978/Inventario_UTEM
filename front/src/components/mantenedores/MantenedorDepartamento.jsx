@@ -37,7 +37,7 @@ const MantenedorDepartamentoComponent = () => {
       <div
         class="modal fade"
         id="crearDepartamentoModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="crearDepartamentoLabel"
         aria-hidden="true"
       >
@@ -57,7 +57,7 @@ const MantenedorDepartamentoComponent = () => {
       <div
         class="modal fade"
         id="actualizarDepartamentoModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="actualizarDepartamentoLabel"
         aria-hidden="true"
       >
@@ -76,7 +76,7 @@ const MantenedorDepartamentoComponent = () => {
       <div
         class="modal fade"
         id="eliminarDepartamentoModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="eliminarDepartamentoLabel"
         aria-hidden="true"
       >

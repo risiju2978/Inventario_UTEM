@@ -1,45 +1,69 @@
-import React, { useState } from "react";
+import React from "react";
+import CrearOficina from "./OficinaComponent/CrearOficina";
+import ListarOficinas from "./oficinasOficinaComponent/ListarOficina";
 
 const MantenedorOficinaComponent = () => {
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   return (
     <div className="mantenedor-container">
-      <button className="btn btn-create" onClick={() => setShowCreateModal(true)}>Crear Oficina</button>
-      <button className="btn btn-update" onClick={() => setShowUpdateModal(true)}>Actualizar Oficina</button>
-      <button className="btn btn-delete" onClick={() => setShowDeleteModal(true)}>Eliminar Oficina</button>
+      <h3>Gestión de oficinas</h3>  
+      <div className="d-flex justify-content-start">
+        <button
+          type="button"
+          className="btn btn-primary w-auto me-3 mb-3" // Agregué me-3 para margen a la derecha
+          data-bs-toggle="modal"
+          data-bs-target="#crearOficinaModal"
+        >
+          Crear Oficina
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary w-auto mb-3"
+          data-bs-toggle="modal"
+          data-bs-target="#verOficinasModal"
+        >
+          Ver oficinas
+        </button>
+      </div>
 
-      {/* Modal para Crear */}
-      {showCreateModal && (
-        <div className="modal">
+      {/* <!-- Modal para crear nueva oficina --> */}
+      <div
+        className="modal fade"
+        id="crearOficinaModal"
+        tabIndex="-1"
+        aria-labelledby="crearOficinaLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowCreateModal(false)}>&times;</span>
-            {/* Contenido del modal para crear oficina */}
+            <div className="modal-header">
+              <h3>Agregar nueva oficina</h3>
+            </div>
+            <div className="modal-body">
+              <CrearOficina />
+            </div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Modal para Actualizar */}
-      {showUpdateModal && (
-        <div className="modal">
+      {/* <!-- Modal para listar oficinas --> */}
+      <div
+        className="modal fade"
+        id="verOficinasModal"
+        tabIndex="-1"
+        aria-labelledby="verOficinasLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowUpdateModal(false)}>&times;</span>
-            {/* Contenido del modal para actualizar oficina */}
+            <div className="modal-header">
+              <h3>Oficinas</h3>
+            </div>
+            <div className="modal-body">
+              <ListarOficinas />
+            </div>
           </div>
         </div>
-      )}
-
-      {/* Modal para Eliminar */}
-      {showDeleteModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowDeleteModal(false)}>&times;</span>
-            {/* Contenido del modal para eliminar oficina */}
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
