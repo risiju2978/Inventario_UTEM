@@ -98,6 +98,8 @@ const infGeneratorController = {
         campus_id,
         departament_id,
         id_articulo_baja,
+        articulo_estado_id,
+        anio
       } = req.body;
 
       console.log('req.body:', req.body);
@@ -161,7 +163,10 @@ const infGeneratorController = {
         office_id,
         campus_id,
         departament_id,
-        id_articulo_baja)
+        id_articulo_baja,
+        articulo_estado_id,
+        anio
+        )
 
     try {
         if (tipo_formato.toLowerCase() === "pdf" && datos.length !== false) {
@@ -186,6 +191,8 @@ const infGeneratorController = {
         ws.cell(1, 3).string('Código');
         ws.cell(1, 4).string('Departamento');
         ws.cell(1, 5).string('Categoria');
+        ws.cell(1, 6).string('Año');
+        ws.cell(1, 7).string('Estado');
         // filas con los datos
         datos.forEach((row, i) => {
             ws.cell(i + 2, 1).number(row.ID);
@@ -193,6 +200,8 @@ const infGeneratorController = {
             ws.cell(i + 2, 3).string(row.art_codigo);
             ws.cell(i + 2, 4).string(row.departament);
             ws.cell(i + 2, 5).string(row.categoria);
+            ws.cell(i + 2, 6).string(row.anio);
+            ws.cell(i + 2, 7).string(row.articulo_estado_id);
         });
         const fileName = `documento-${Math.random().toString(36).substring(7)}.xlsx`;
     

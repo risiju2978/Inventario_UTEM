@@ -87,8 +87,9 @@ function ArticuloComponent() {
       const articuloGlosa = articulo.art_glosa.toLowerCase();
       const termLower = term.toLowerCase();
       return (
-        articuloNombre.includes(termLower) || articuloCodigo.includes(termLower)
-        || articuloGlosa.includes(termLower)
+        articuloNombre.includes(termLower) ||
+        articuloCodigo.includes(termLower) ||
+        articuloGlosa.includes(termLower)
       );
     });
 
@@ -104,7 +105,7 @@ function ArticuloComponent() {
   // funcionalidad de ordenar de mayor a menor por fecha de ingreso
   const handleSort = (event) => {
     const sortBy = event.target.value;
- 
+
     // eslint-disable-next-line array-callback-return
     const ordenados = [...vistaData].sort((a, b) => {
       if (sortBy === "asc") {
@@ -112,7 +113,6 @@ function ArticuloComponent() {
       } else if (sortBy === "desc") {
         return b.anio - a.anio;
       }
-     
     });
     return setVistaData(ordenados);
   };
@@ -149,11 +149,14 @@ function ArticuloComponent() {
         </button>
         <Search onSumit={findArticulo} />
         <div>
-        <select className="mx-1 px-3 py-2 border-1 rounded rounded-lg" onChange={handleSort}>
-          <option defaultValue>Ordenar por año</option>
-          <option value="asc">Menor a mayor</option>
-          <option value="desc">Mayor a menor</option>
-        </select>
+          <select
+            className="mx-1 px-3 py-2 border-1 rounded rounded-lg"
+            onChange={handleSort}
+          >
+            <option defaultValue>Ordenar por año</option>
+            <option value="asc">Menor a mayor</option>
+            <option value="desc">Mayor a menor</option>
+          </select>
         </div>
         {/* 
       <button className="btn btn-secondary mx-3" onClick={() => setVistaData(vistaDataOriginal)}>
@@ -209,18 +212,20 @@ function ArticuloComponent() {
                     <div className="d-flex flex">
                       {user && user.rol === 3 ? null : (
                         <>
-                          {item.articulo_estado_id === 1 ? null : <div>
-                            <button
-                              className="btn btn-danger mx-2"
-                              onClick={handleBaja}
-                              data-bs-toggle="modal"
-                              data-bs-target="#bajarlModal"
-                              title="Dar de baja"
-                              value={item.ID}
-                            >
-                              <i className="bi bi-file-earmark-x"></i>
-                            </button>
-                          </div>}
+                          {item.articulo_estado_id === 1 ? null : (
+                            <div>
+                              <button
+                                className="btn btn-danger mx-2"
+                                onClick={handleBaja}
+                                data-bs-toggle="modal"
+                                data-bs-target="#bajarlModal"
+                                title="Dar de baja"
+                                value={item.ID}
+                              >
+                                <i className="bi bi-file-earmark-x"></i>
+                              </button>
+                            </div>
+                          )}
                           <div>
                             <button
                               className="btn btn-warning"
@@ -360,6 +365,8 @@ function ArticuloComponent() {
         tabindex="-1"
         aria-labelledby="filtroLabel"
         aria-hidden="true"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
       >
         <div class="modal-dialog">
           <div class="modal-content">
@@ -373,15 +380,6 @@ function ArticuloComponent() {
             </div>
             <div class="modal-body">
               <FiltroReportsComponent />
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cerrar
-              </button>
             </div>
           </div>
         </div>

@@ -23,8 +23,8 @@ function buildPDF(dataCallback, endCallback, data) {
     }
 
     const table = {
-        headers: ["ID", "Nombre", "Código", "Departamento", "Categoria"],
-        rows: data.map((row) => [row.ID, row.art_nombre, row.art_codigo, row.departament, row.categoria]),
+        headers: ["ID", "Nombre", "Código", "Departamento", "Categoria", "Año", "Estado"],
+        rows: data.map((row) => [row.ID, row.art_nombre, row.art_codigo, row.departament, row.categoria, row.anio, row.articulo_estado_id === 1 ? "Activo": "Dado de baja"]),
     };
     doc.table(table, {
         prepareHeader: () => doc.font("Helvetica-Bold"),
