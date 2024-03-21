@@ -134,7 +134,7 @@ function ArticuloComponent() {
             Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
           </button>
         )}
-        <ButtonDescargar tipo="XLS" url={variables.urlReporteExcel} />
+        {/* <ButtonDescargar tipo="XLS" url={variables.urlReporteExcel} /> */}
         <ButtonDescargar
           tipo="PDF"
           url={variables.urlReportePdf}
