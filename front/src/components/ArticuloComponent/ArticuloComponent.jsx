@@ -85,11 +85,18 @@ function ArticuloComponent() {
       const articuloNombre = articulo.art_nombre.toLowerCase();
       const articuloCodigo = articulo.art_codigo.toLowerCase();
       const articuloGlosa = articulo.art_glosa.toLowerCase();
+      const articuloAnio = articulo.anio.toLowerCase();
+      const articuloOffice = articulo.office.toLowerCase();
+      const articuloCampus = articulo.campus.toLowerCase();
+
       const termLower = term.toLowerCase();
       return (
         articuloNombre.includes(termLower) ||
         articuloCodigo.includes(termLower) ||
-        articuloGlosa.includes(termLower)
+        articuloGlosa.includes(termLower) ||
+        articuloAnio.includes(termLower) ||
+        articuloOffice.includes(termLower) ||
+        articuloCampus.includes(termLower)
       );
     });
 
