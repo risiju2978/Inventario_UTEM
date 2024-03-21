@@ -124,7 +124,7 @@ const infGeneratorController = {
           ws.cell(i + 2, 6).string(
             row.articulo_estado_id === 1 ? "Activo" : "Dado de baja"
           );
-          ws.cell(i + 2, 7).number(row.art_anio);
+          ws.cell(i + 2, 7).string(row.anio);
         });
       } else if (activo == 2) {
         ws.cell(1, 1).string("ID");
