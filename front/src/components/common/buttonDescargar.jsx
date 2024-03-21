@@ -32,7 +32,7 @@ const ButtonDescargar = ({ url, tipo, margenTop, marginLeft }) => {
             Descargar reporte {tipo}
           </button>
           <div className="d-flex flex-row space-between align-items-center my-1">
-            <select className="px-1 py-1 border-1 rounded rounded-sm" onChange={handleTypeOfReport}>
+            <select className="px-1 py-1 border-1 rounded rounded-sm mx-auto" onChange={handleTypeOfReport}>
               <option defaultValue value={""}>Selecciona un tipo</option>
               <option value={"todos"}>Todos</option>
               <option value={"1"}>Activos</option>

@@ -120,7 +120,8 @@ function ArticuloComponent() {
   return (
     <div className="container mx-0">
       <h1>Listado de Artículos</h1>
-      <div className="d-flex flex-row">
+      <div className="d-flex flex-row space-between">
+        <div>
         {user && user.rol === 3 ? null : (
           <button
             className="btn btn-success mx-1"
@@ -134,12 +135,18 @@ function ArticuloComponent() {
             Agregar Artículo <i className="bi bi-file-earmark-plus-fill"></i>
           </button>
         )}
+        </div>
+        <div>
         {/* <ButtonDescargar tipo="XLS" url={variables.urlReporteExcel} /> */}
+        </div>
+        <div>
         <ButtonDescargar
           tipo="PDF"
           url={variables.urlReportePdf}
           marginLeft="10px"
         />
+        </div>
+        <div>
         <button
           className="btn btn-primary mx-1"
           data-bs-toggle="modal"
@@ -147,7 +154,10 @@ function ArticuloComponent() {
         >
           Reporte personalizado <i className="bi bi-funnel-fill"></i>
         </button>
+        </div>
+        <div>
         <Search onSumit={findArticulo} />
+        </div>
         <div>
           <select
             className="mx-1 px-3 py-2 border-1 rounded rounded-lg"
