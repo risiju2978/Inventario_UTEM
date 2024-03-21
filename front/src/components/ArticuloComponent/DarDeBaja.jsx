@@ -15,7 +15,7 @@ const DarDeBaja = ({ articulo, usuario }) => {
       return;
     }
     try {
-      const fechaBaja = new Date().toDateString()
+      const fechaBaja = new Date().toISOString().slice(0, 19).replace("T", " ");
       console.log("Datos baja");
       const response = await Api.darBajaArticulo({
         id_articulo: articulo,
