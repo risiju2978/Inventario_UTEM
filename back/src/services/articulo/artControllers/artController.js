@@ -145,7 +145,7 @@ const artController = {
           // Actualizar el estado del artículo en la tabla articulo a "dado de baja"
           const sqlActualizarArticulo = `
           UPDATE articulo
-          SET articulo_estado_id = 1
+          SET articulo_estado_id = 2
           WHERE id_articulo = ?
         `;
 

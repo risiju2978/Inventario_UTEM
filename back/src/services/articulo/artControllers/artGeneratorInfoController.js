@@ -145,7 +145,7 @@ const infGeneratorController = {
           ws.cell(i + 2, 6).string(
             row.articulo_estado_id === 1 ? "Activo" : "Dado de baja"
           );
-          ws.cell(i + 2, 7).date(row.fecha_baja);
+          ws.cell(i + 2, 7).date(row.fecha_baja, "DD/MM/YYYY");
           ws.cell(i + 2, 8).string(row.autorizacion);
         });
       } else if (activo === undefined || activo === null) {
@@ -154,6 +154,8 @@ const infGeneratorController = {
         ws.cell(1, 3).string("Código");
         ws.cell(1, 4).string("Departamento");
         ws.cell(1, 5).string("Categoria");
+        ws.cell(1, 6).string("Estado");
+        ws.cell(1, 7).string("Año");
         // filas con los datos
         datosParaEnviarAConstruirXLS.forEach((row, i) => {
           ws.cell(i + 2, 1).number(row.ID);
@@ -161,6 +163,8 @@ const infGeneratorController = {
           ws.cell(i + 2, 3).string(row.art_codigo);
           ws.cell(i + 2, 4).string(row.departament);
           ws.cell(i + 2, 5).string(row.categoria);
+          ws.cell(i + 2, 6).string( row.articulo_estado_id === 1 ? "Activo" : "Dado de baja");
+          ws.cell(i + 2, 7).string(row.anio);
         });
       }
 
