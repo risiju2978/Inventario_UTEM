@@ -15,7 +15,7 @@ const Search = ({ onSumit }) => {
           placeholder={"Buscar..."}
           name="search"
           title="Buscar por nombre y código"
-          size={10}
+          size={25}
         />
       </div>
     </div>

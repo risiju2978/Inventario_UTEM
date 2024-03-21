@@ -13,6 +13,8 @@ router.put('/edit_art', upload.single('img'), artController.editArticulo);
 router.post('/baja_art', artController.bajaArticulo);
 // Endpoint para crear articulo
 router.post("/income_art", upload.single('img'), artController.incomeArticulo);
+// Endpoint para listar años
+router.get('/anios', artController.getAniosFromDataBase)
 
 
 

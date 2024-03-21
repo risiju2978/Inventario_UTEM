@@ -7,17 +7,20 @@ async function obtenerDatosInforme(
   office_id,
   campus_id,
   departament_id,
-  id_articulo_baja
+  id_articulo_baja,
+  articulo_estado_id,
+  anio
 ) {
-
-
-  const sql = 'SELECT * FROM `v_infogenerator` WHERE `categoria_id` = ? AND `office_id` = ? AND `campus_id` = ? AND `departament_id` = ?';
+  const sql =
+    "SELECT * FROM `v_infogenerator` WHERE `categoria_id` = ? AND `office_id` = ? AND `campus_id` = ? AND `departament_id` = ? AND `articulo_estado_id` = ? AND `anio`= ?";
 
   const combo = [
     categoria_id,
     office_id,
     campus_id,
     departament_id,
+    articulo_estado_id,
+    anio,
   ];
 
   //hacer validacion del rows y ver qwue tenga contenido  con su largo

@@ -144,11 +144,11 @@ function UserComponent() {
               </button>
             </div>
             <div className="col-6 align-center">
-              <ButtonDescargar
+              {/* <ButtonDescargar
                 tipo="XLS"
                 url={variables.urlReporteExcel}
                 margenTop="10px"
-              />
+              /> */}
               <ButtonDescargar
                 tipo="PDF"
                 url={variables.urlReportePdf}

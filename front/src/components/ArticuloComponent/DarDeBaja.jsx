@@ -6,15 +6,22 @@ const DarDeBaja = ({ articulo, usuario }) => {
   const [motivoBaja, setMotivoBaja] = useState("");
   const [autorizacion, setAutorizacion] = useState("");
   const [error, setError] = useState("");
+  const [articuloId, setArticuloId] = useState("");
 
   const darDeBaja = async () => {
+    console.log(articuloId, autorizacion, motivoBaja)
+    if(!articuloId || !autorizacion || !motivoBaja){
+      setError("Debe completar todos los campos");
+      return;
+    }
     try {
       const fechaBaja = new Date().toISOString().slice(0, 19).replace("T", " ");
+      console.log("Datos baja");
       const response = await Api.darBajaArticulo({
         id_articulo: articulo,
         motivo_baja: motivoBaja,
         autorizacion: autorizacion,
-        articulo_estado_id: 1,
+        articulo_estado_id: 2,
         fecha_baja: fechaBaja,
       });
       console.log("Artículo dado de baja correctamente:", response.data);
@@ -27,11 +34,18 @@ const DarDeBaja = ({ articulo, usuario }) => {
   };
 
   useEffect(() => {
-    if (usuario) {
+   
       setAutorizacion(usuario);
-    }
-  }
-  , [usuario]);
+      setArticuloId(articulo);
+  
+  }, [articulo, usuario]);
+
+  const limpiarForm = () => {
+    setAutorizacion("");
+    setMotivoBaja("");
+    setError("");
+    document.getElementById("motivoBaja");
+  };
 
   return (
     <>
@@ -52,13 +66,20 @@ const DarDeBaja = ({ articulo, usuario }) => {
           <label htmlFor="autorizacion" className="form-label">
             Autorización:
           </label>
-          <p>Usuario activo: <strong>{usuario}</strong></p>
+          <p>
+            Usuario activo: <strong>{usuario}</strong>
+          </p>
         </div>
         {error && <div className="text-danger">{error}</div>}
         <button type="button" className="btn btn-danger" onClick={darDeBaja}>
           Confirmar Baja
         </button>
       </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={limpiarForm}>
+          Cerrar
+        </button>
+      </div>
     </>
   );
 };
