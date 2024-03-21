@@ -379,7 +379,7 @@ function ArticuloComponent() {
               ></button>
             </div>
             <div class="modal-body">
-              <FiltroReportsComponent />
+              <FiltroReportsComponent showButton={true} />
             </div>
           </div>
         </div>

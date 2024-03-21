@@ -4,7 +4,7 @@ import axios from "axios";
 import FileSaver from "file-saver";
 import { variables } from "../../config/const";
 
-const FiltroReportsComponent = () => {
+const FiltroReportsComponent = ({showButton}) => {
   const [categorias, setCategorias] = useState([]);
   const [oficinas, setOficinas] = useState([]);
   const [campus, setCampus] = useState([]);
@@ -261,6 +261,7 @@ const FiltroReportsComponent = () => {
         </div>
       </form>
       <div class="modal-footer">
+        {showButton && 
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -268,7 +269,7 @@ const FiltroReportsComponent = () => {
                 onClick={cleanForm} // Limpia el formulario al cerrar el modal
               >
                 Cerrar
-              </button>
+              </button> }
             </div>
     </>
   );
