@@ -190,4 +190,9 @@ static async deleteCategoria(categoriasEliminar) {
     const response = await axios.put(`${url}/usuario/edit_Password`, userData);
     return response.data.data;
   }
+
+  static async getAniosFromDataBase() {
+    const response = await axios.get(`${url}/articulo/anios`);
+    return response.data.data;
+  }
 }
