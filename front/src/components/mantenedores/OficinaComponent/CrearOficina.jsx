@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Api } from "../../../api/api";
 
 const CrearOficina = () => {
-  const [dataCampusForSelect, setDataCampusForSelect] = useState([]);
+  const [datadepartamentForSelect, setDatadepartamentForSelect] = useState([]);
 
   const [departament, setdepartament] = useState(null);
   const [nombre, setNombre] = useState(null);
@@ -36,19 +36,19 @@ const CrearOficina = () => {
   const limpiarForm = () => {
     document.getElementById("departament").value = "";
     document.getElementById("nombre").value = "";
-    setCampus(null);
+    setdepartament(null);
     setNombre(null);
   };
 
   useEffect(() => {
-    Api.getAlldepartament().then((data) => {
+    Api.getAllDeparments().then((data) => {
       setDatadepartamentForSelect(data);
     });
   }, []);
 
   return (
     <div className="container">
-      <h5>Indicar el departament y el nombre de la nueva oficina</h5>
+      <h5>Indicar el departamento y el nombre de la nueva oficina</h5>
       <form>
         <div className="mb-3">
           <label htmlFor="departament" className="form-label">

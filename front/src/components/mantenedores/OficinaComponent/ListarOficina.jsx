@@ -14,8 +14,8 @@ const ListarOficinas = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleDeleteOficina = (id) => {
-    Api.deleteOficina(id)
+  const handleDeleteOficina = (office_id) => {
+    Api.deleteOficina(office_id)
       .then((response) => {
         console.log("Oficina eliminada correctamente de la base de datos", response);
         alert("Oficina eliminada correctamente");

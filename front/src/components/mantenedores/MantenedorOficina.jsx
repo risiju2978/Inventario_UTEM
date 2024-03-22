@@ -1,15 +1,15 @@
 import React from "react";
 import CrearOficina from "./OficinaComponent/CrearOficina";
-import ListarOficinas from "./oficinasOficinaComponent/ListarOficina";
+import ListarOficinas from "./OficinaComponent/ListarOficina";
 
 const MantenedorOficinaComponent = () => {
   return (
     <div className="mantenedor-container">
       <h3>Gestión de oficinas</h3>  
-      <div className="d-flex justify-content-start">
+      <div className="d-flex align-start">
         <button
           type="button"
-          className="btn btn-primary w-auto me-3 mb-3" // Agregué me-3 para margen a la derecha
+          className="btn btn-primary w-auto mx-auto mb-3" 
           data-bs-toggle="modal"
           data-bs-target="#crearOficinaModal"
         >
@@ -17,7 +17,7 @@ const MantenedorOficinaComponent = () => {
         </button>
         <button
           type="button"
-          className="btn btn-primary w-auto mb-3"
+          className="btn btn-primary w-auto mx-auto mb-3"
           data-bs-toggle="modal"
           data-bs-target="#verOficinasModal"
         >

@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Api } from '../../../api/api';
 
-const UpdateOficina = ({ oficinaUpdate }) => {
-  const [newOficina, setNewOficina] = useState("");
+const UpdateOficina = ({  oficinaUpdate  }) => {
+  const [newNombreOficina, setNewNombreOficina] = useState("");
 
-  const handleUpdateOficina = (oficina_id) => {
-    if (newOficina === "") {
+  const handleUpdateOficina = (oficinaData) => {
+    if (newNombreOficina === "") {
       alert("Ingrese un nuevo nombre de oficina");
       return;
     }
+  // Usar directamente oficinaData para obtener oficina_id y departament_id
+  const { office_id, departament_id } = oficinaData;
 
-    Api.updateOficina(oficina_id, newOficina)
+    Api.updateOficina(office_id, departament_id, newNombreOficina)
       .then(res => {
         console.log(res);
         alert("Oficina actualizada correctamente");
@@ -20,7 +22,7 @@ const UpdateOficina = ({ oficinaUpdate }) => {
   };
 
   const handleNewValue = (e) => {
-    setNewOficina(e.target.value);
+    setNewNombreOficina(e.target.value);
   };
 
   return (
@@ -37,7 +39,7 @@ const UpdateOficina = ({ oficinaUpdate }) => {
         <button
           type="button"
           className="btn btn-primary mx-3"
-          onClick={() => handleUpdateOficina(oficinaUpdate.oficina_id)}
+          onClick={() => handleUpdateOficina(oficinaUpdate)}
         >
           Actualizar
         </button>
