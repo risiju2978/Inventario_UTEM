@@ -124,7 +124,7 @@ const AgregarArticulo = ({ idUser, limpiar }) => {
       formDataFormat.append("art_nombre", formData.art_nombre);
       formDataFormat.append("art_codigo", formData.art_codigo);
       formDataFormat.append("art_glosa", formData.art_glosa);
-      formDataFormat.append("articulo_estado_id", 1);
+      formDataFormat.append("articulo_estado_id", 3);
       formDataFormat.append("categoria_id", formData.categoria_id);
       formDataFormat.append("office_id", formData.office_id);
 

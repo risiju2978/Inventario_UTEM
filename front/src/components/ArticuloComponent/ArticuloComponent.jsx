@@ -223,7 +223,7 @@ function ArticuloComponent() {
                     />
                   </td>
                   <td>
-                    {item.articulo_estado_id === 1 ? "Activo" : "Inactivo"}
+                    {item.articulo_estado_id === 3 ? "Activo" : "Inactivo"}
                   </td>
                   <td>
                     <div className="d-flex flex">
