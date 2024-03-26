@@ -87,6 +87,7 @@ const infGeneratorController = {
         // Ejecutar la consulta
         [datos] = await db.promise().execute(sql, combo);
 
+        
         datosParaEnviarAConstruirXLS = datos;
       } else if (activo == 2) {
         const sql =
