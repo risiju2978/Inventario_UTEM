@@ -31,7 +31,7 @@ const infGeneratorController = {
         const sql =
           "SELECT * FROM `v_infogenerator` WHERE `articulo_estado_id` = ?";
 
-        const combo = [(articulo_estado_id = 2)];
+        const combo = [(articulo_estado_id = 1)];
         //hacer validacion del rows y ver qwue tenga contenido  con su largo
         // Ejecutar la consulta
         [datos] = await db.promise().execute(sql, combo);
@@ -87,13 +87,13 @@ const infGeneratorController = {
         // Ejecutar la consulta
         [datos] = await db.promise().execute(sql, combo);
 
-        
+
         datosParaEnviarAConstruirXLS = datos;
       } else if (activo == 2) {
         const sql =
           "SELECT * FROM `v_infogenerator` WHERE `articulo_estado_id` = ?";
 
-        const combo = [(articulo_estado_id = 2)];
+        const combo = [(articulo_estado_id = 3)];
         //hacer validacion del rows y ver qwue tenga contenido  con su largo
         // Ejecutar la consulta
         [datos] = await db.promise().execute(sql, combo);
@@ -123,7 +123,7 @@ const infGeneratorController = {
           ws.cell(i + 2, 4).string(row.departament);
           ws.cell(i + 2, 5).string(row.categoria);
           ws.cell(i + 2, 6).string(
-            row.articulo_estado_id === 1 ? "Activo" : "Dado de baja"
+            row.articulo_estado_id === 3 ? "Activo" : "Dado de baja"
           );
           ws.cell(i + 2, 7).string(row.anio);
         });
@@ -144,7 +144,7 @@ const infGeneratorController = {
           ws.cell(i + 2, 4).string(row.departament);
           ws.cell(i + 2, 5).string(row.categoria);
           ws.cell(i + 2, 6).string(
-            row.articulo_estado_id === 1 ? "Activo" : "Dado de baja"
+            row.articulo_estado_id === 3 ? "Activo" : "Dado de baja"
           );
           ws.cell(i + 2, 7).date(row.fecha_baja, "DD/MM/YYYY");
           ws.cell(i + 2, 8).string(row.autorizacion);

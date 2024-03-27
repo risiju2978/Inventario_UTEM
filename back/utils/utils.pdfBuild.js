@@ -43,7 +43,7 @@ function buildPDF(dataCallback, endCallback, data, activo) {
         row.departament,
         row.categoria,
         row.anio,
-        row.articulo_estado_id === 1 ? "Activo" : "Dado de baja",
+        row.articulo_estado_id === 3 ? "Activo" : "Dado de baja",
         row.fecha_baja === null ? "Sin registro" : new Date(row.fecha_baja).toISOString().split("T")[0],
         row.autorizacion === null ? "Sin registro" : row.autorizacion,
       ]),
@@ -67,7 +67,7 @@ function buildPDF(dataCallback, endCallback, data, activo) {
         row.departament,
         row.categoria,
         row.anio,
-        row.articulo_estado_id === 1 ? "Activo" : "Dado de baja",
+        row.articulo_estado_id === 3 ? "Activo" : "Dado de baja",
       ]),
     };
   } else if (activo === undefined || activo === null) {
@@ -88,7 +88,7 @@ function buildPDF(dataCallback, endCallback, data, activo) {
         row.departament,
         row.categoria,
         row.anio,
-        row.articulo_estado_id === 1 ? "Activo" : "Dado de baja",
+        row.articulo_estado_id === 3 ? "Activo" : "Dado de baja",
       ]),
     };
   }
